@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${quiz.title}">Quiz</title>
+    <style>
+        .wrap { max-width: 700px; margin: 0 auto; padding: 60px 20px; }
+        .question { border: 1px solid #eee; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+        .question label { display:block; margin: 6px 0; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
+<main class="wrap">
+    <h1 th:text="${quiz.title}">Quiz title</h1>
+    <p th:text="${quiz.description}">Description</p>
+    <p th:if="${currentUser == null}"><a href="/login">Log in</a> to take this quiz and earn reward points.</p>
+
+    <form th:if="${currentUser != null}" method="post" th:action="@{'/quiz/' + ${quiz.id} + '/submit'}">
+        <div class="question" th:each="q : ${questions}">
+            <p th:text="${q.questionText}">Question?</p>
+            <label><input type="radio" th:name="'q_' + ${q.id}" value="A"/> <span th:text="${q.optionA}">A</span></label>
+            <label><input type="radio" th:name="'q_' + ${q.id}" value="B"/> <span th:text="${q.optionB}">B</span></label>
+            <label th:if="${q.optionC}"><input type="radio" th:name="'q_' + ${q.id}" value="C"/> <span th:text="${q.optionC}">C</span></label>
+            <label th:if="${q.optionD}"><input type="radio" th:name="'q_' + ${q.id}" value="D"/> <span th:text="${q.optionD}">D</span></label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit answers</button>
+    </form>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

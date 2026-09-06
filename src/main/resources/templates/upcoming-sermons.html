@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dharma Club - Upcoming Sermons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gentium+Basic:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+	<link rel = "stylesheet" href = "/css/upcoming_sermons.css">
+</head>
+<style>
+    .header-img {
+        position: relative;
+        height: 720px;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url('/assets/images/pexels-2152214764-32117889.jpg') no-repeat center;
+        background-size: cover;
+        background-color: #233c9b; /* Fallback color (dark blue-ish) if image fails */
+    }
+    .header-img h2 {
+        position: absolute;
+        top: 20px;
+        left: 50%; /* Centered horizontally */
+        transform: translateX(-50%) translateY(320px); /* Adjust vertical as needed */
+        font-size: 36px;
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        z-index: 10;
+        font-family: "Gentium Basic-Bold", Helvetica, sans-serif;
+        text-align: center;
+        white-space: nowrap; /* Keeps text from wrapping oddly */
+    }
+    /* If .line-container or .white-line need dynamic tweaks, add them here too—but they're static, so external CSS is fine */
+
+	
+</style>
+<body>
+
+    <header>
+        <div class="header-img">
+          <h2>Upcoming Sermons</h2>
+            <div class="line-container">
+                <hr class="white-line">
+            </div>
+            <div class="header-top">
+                <p class="location">
+                    203 Fake St. Mountain View, San Francisco, California, USA
+                </p>
+                <div class="social-media">
+                    <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
+                        <i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span>
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
+                        <i class="fab fa-twitter"></i><span class="sr-only">Twitter</span>
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
+                        <i class="fab fa-instagram"></i><span class="sr-only">Instagram</span>
+                    </a>
+                </div>
+            </div>
+            <div class="header-main">
+                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#sermons" class="nav-link">Sermons</a>
+                    <a href="/events" class="nav-link">Events</a>
+                    <a href="/blog" class="nav-link">Blog</a>
+                    <a href="/contact" class="nav-link">Contact</a>
+                    <a href = "#" class="nav-link">Discuss</a>
+                    <a href="/donate" class="nav-link donate-btn">Donate</a>
+                </nav>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="sermons-container">
+            <div class="search-nav">
+                <div class="search-bar">
+                    <input type="text" id="sermonSearch" placeholder="Search sermons...">
+                    <button onclick="searchSermons()">Search</button>
+                </div>
+                <div class="nav-tabs">
+                    <button class="active" onclick="setView('upcoming')">Upcoming</button>
+                    <button onclick="setView('recorded')">Recorded</button>
+                </div>
+            </div>
+            <div class="nav-controls">
+                <div class="date-nav">
+                    <button onclick="navigate('prev')">&larr; Previous</button>
+                    <button onclick="navigate('today')">Today</button>
+                    <button onclick="navigate('next')">Next &rarr;</button>
+                </div>
+                <div class="date-display" id="dateDisplay">Now - Aug 31, 2025</div>
+            </div>
+            <div class="sermon-list" id="sermonList">
+                <div class="sermon-date">September 2025</div>
+                <div class="sermon-item">
+                    <div class="sermon-details">
+                        <div class="date">Sun 31</div>
+                        <div class="time">Aug 31, 2025 @ 10:00 AM - 12:00 PM</div>
+                        <div class="title">The Path to Enlightenment</div>
+                        <div class="speaker">Ajahn Brahm</div>
+                    </div>
+                    <div class="sermon-image"><img src="/assets/images/pexels-2152214764-32117889.jpg" alt="The Path to Enlightenment"></div>
+                </div>
+                <div class="sermon-item">
+                    <div class="sermon-details">
+                        <div class="date">Mon 1</div>
+                        <div class="time">Sep 1, 2025 @ 07:00 PM - 09:00 PM</div>
+                        <div class="title">Mindfulness in Daily Life</div>
+                        <div class="speaker">Ajahn Thanissaro</div>
+                    </div>
+                    <div class="sermon-image"><img src="/assets/images/pexels-pixabay-220650.jpg" alt="Mindfulness in Daily Life"></div>
+                </div>
+            </div>
+            <div class="pagination-controls">
+                <a href="#" onclick="loadPreviousSermons()">Previous Sermons</a>
+                <div class="nav-buttons">
+                    <button onclick="loadNextSermons()">Next</button>
+                    <button onclick="addToCalendar()">Add to Calendar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc">
+                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+            </div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc">
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="#about">About</a></h4>
+                <h4><a href="#sermons">Sermons</a></h4>
+                <h4><a href="/events">Events</a></h4>
+            </div>
+        </div>
+        <div class="part3">
+            <h2>HAVE A QUESTION?</h2>
+            <div class="part3-desc">
+                <h4>203 Fake St. Mountain View, San Francisco, California, USA</h4>
+                <h4>+977 97820099</h4>
+                <h4>info@gmail.com</h4>
+            </div>
+        </div>
+    </div>
+    <div class="footer-sec2">
+        <div class="line">
+            <hr class="white-line-footer">
+        </div>
+        <div class="copyright">
+            <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+            <div class="copyright-sub">
+                <h4><a href="#terms">Terms & Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+                <h4><a href="#refund">Cancellation & Refund Policy</a></h4>
+            </div>
+        </div>
+    </div>
+    <script src="/JS/upcoming_sermons.js"></script>
+</body>
+</html>

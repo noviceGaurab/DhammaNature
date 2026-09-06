@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dhamma Nature - Donation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/home_donation.css">
+    <style>
+        .msg-err { color: #721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; margin: 20px 8% 0; }
+        .campaign-picker { padding: 30px 8% 0; }
+        .campaign-picker select { padding: 8px; width: 100%; max-width: 420px; }
+        .progress-track { background:#eee; border-radius: 8px; height: 10px; overflow:hidden; margin: 6px 0 14px; }
+        .progress-fill { background:#233c9b; height:100%; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader('DONATE', 'FR-05: Donation Management, strongly validated at Ashok Stupa')}"></div>
+<p class="msg-err" th:if="${error}" th:text="${error}"></p>
+<main>
+    <section class="donation-container">
+        <div class="donation-content">
+            <div class="donation-header">
+                <h1>Donation</h1>
+                <p>Your contribution changes lives! Total raised on the platform so far: <strong th:text="${totalDonated}">0</strong></p>
+            </div>
+            <div class="campaign-picker">
+                <form method="get" action="/donate">
+                    <label for="campaignId">Donate towards a specific charity campaign (optional)</label><br>
+                    <select id="campaignId" name="campaignId" onchange="this.form.submit()">
+                        <option value="">General donation</option>
+                        <option th:each="c : ${campaigns}" th:value="${c.id}" th:selected="${c.id == selectedCampaignId}"
+                                th:text="${c.title} + ' (' + ${c.raisedAmount} + ' / ' + ${c.goalAmount} + ')'">Campaign</option>
+                    </select>
+                </form>
+            </div>
+            <div class="donation-content-section">
+                <div class="donation-info">
+                    <form class="personal-info" id="donationForm" method="post" action="/donate">
+                        <input type="hidden" name="campaignId" th:value="${selectedCampaignId}"/>
+                        <h3>Your Info</h3>
+                        <input type="text" name="firstName" placeholder="First Name" required>
+                        <input type="text" name="lastName" placeholder="Last Name">
+                        <input type="email" name="email" placeholder="Email Address">
+                        <label>Amount</label>
+                        <input type="number" name="amount" value="100" min="1" step="0.01" required>
+                        <label>Payment Method</label>
+                        <select name="paymentMethod">
+                            <option value="Card">Card</option>
+                            <option value="eSewa">eSewa</option>
+                            <option value="Khalti">Khalti</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                        <button type="submit" class="donate-now-btn">Donate Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

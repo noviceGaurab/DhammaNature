@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dhamma Nature - Charity Campaigns</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; padding: 60px 8%; }
+        .card { border: 1px solid #eee; border-radius: 10px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+        .progress-track { background:#eee; border-radius: 8px; height: 10px; overflow:hidden; margin: 10px 0; }
+        .progress-fill { background:#233c9b; height:100%; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader('CHARITY CAMPAIGNS', 'NFR-05: requested directly by the visitors interviewed at Ashok Stupa')}"></div>
+<main>
+    <p style="padding: 30px 8% 0;" th:if="${#lists.isEmpty(campaigns)}">No active campaigns right now.</p>
+    <div class="grid">
+        <div class="card" th:each="c : ${campaigns}">
+            <h3 th:text="${c.title}">Campaign</h3>
+            <p th:text="${c.description}">Description</p>
+            <div class="progress-track">
+                <div class="progress-fill"
+                     th:style="'width:' + ${c.goalAmount.compareTo(T(java.math.BigDecimal).ZERO) > 0 ? (c.raisedAmount.divide(c.goalAmount, 2, T(java.math.RoundingMode).HALF_UP).multiply(T(java.math.BigDecimal).valueOf(100))) : 0} + '%'"></div>
+            </div>
+            <p><span th:text="${c.raisedAmount}"></span> raised of <span th:text="${c.goalAmount}"></span> goal</p>
+            <p><small th:text="${c.meditationCenter.name}"></small></p>
+            <a th:href="@{/donate(campaignId=${c.id})}" class="btn btn-primary">Donate to this campaign</a>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

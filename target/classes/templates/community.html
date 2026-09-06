@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharma Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gentium+Basic:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link rel = "stylesheet" href = "/css/users_variety.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+            <div class="hero">
+                <p class="mb-4">
+                    DISCUSS
+                </p>
+            </div>
+            <div class="line-container">
+                <hr class="white-line">
+            </div>
+            <div class="header-top">
+                <p class="location">
+                    203 Fake St. Mountain View, San Francisco, California, USA
+                </p>
+                <div class="social-media">
+                    <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
+                        <i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span>
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
+                        <i class="fab fa-twitter"></i><span class="sr-only">Twitter</span>
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
+                        <i class="fab fa-instagram"></i><span class="sr-only">Instagram</span>
+                    </a>
+                </div>
+            </div>
+            <div class="header-main">
+                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#sermons" class="nav-link">Sermons</a>
+                    <a href="/events" class="nav-link">Events</a>
+                    <a href="/blog" class="nav-link">Blog</a>
+                    <a href="/contact" class="nav-link">Contact</a>
+                    <a href="#" class="nav-link">Discuss</a>
+                    <a href="/donate" class="nav-link donate-btn">Donate</a>
+                </nav>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="main-container">
+            <div class="content-wrapper">
+                <h1 class="main-title">Discuss & Discover</h1>
+                <hr class="title-divider">
+                <div class="main-content">
+                    <!-- Sidebar -->
+                    <div class="sidebar">
+                        <div class="sidebar-section">
+                            <div class="nav-item">
+                                <i class="fas fa-book"></i>
+                                <span>Topics</span>
+                            </div>
+                            <div class="nav-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>About</span>
+                            </div>
+                            <div class="nav-item">
+                                <i class="fas fa-question-circle"></i>
+                                <span>FAQ</span>
+                            </div>
+                            <div class="nav-item">
+                                <i class="fas fa-gavel"></i>
+                                <span>Guidelines</span>
+                            </div>
+                            <div class="nav-item">
+                                <i class="fas fa-ellipsis-h"></i>
+                                <span>More</span>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="categories-header">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>CATEGORIES</span>
+                            </div>
+                            <div class="category-item">
+                                <i class="fas fa-circle category-dot"></i>
+                                <span>Discussion</span>
+                            </div>
+                            <div class="category-item">
+                                <i class="fas fa-circle category-dot"></i>
+                                <span>Q & A</span>
+                            </div>
+                            <div class="category-item">
+                                <i class="fas fa-circle category-dot"></i>
+                                <span>Essays</span>
+                            </div>
+                            <div class="nav-item">
+                                <i class="fas fa-list"></i>
+                                <span>All categories</span>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="tags-section">
+                                <div class="tags-content">
+                                    <div class="categories-header">
+                                        <i class="fas fa-chevron-down"></i>
+                                        <span>TAGS</span>
+                                    </div>
+                                    <div class="tag-item">
+                                        <i class="fas fa-tag"></i>
+                                        <span>bodhi</span>
+                                    </div>
+                                    <div class="tag-item">
+                                        <i class="fas fa-tag"></i>
+                                        <span>ebt-translation</span>
+                                    </div>
+                                    <div class="tag-item">
+                                        <i class="fas fa-tag"></i>
+                                        <span>pali</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Content -->
+                    <div class="right-content">
+                        <div class="header-section">
+                            <div class="week-info">
+                                <span class="week-title">Week</span>
+                                <span class="week-date">Jul 9 - Jul 15</span>
+                                <i class="fas fa-chevron-down dropdown-icon"></i>
+                            </div>
+                            <p class="last-updated">Last updated: July 25, 2025 at 10:30 pm</p>
+                            <div class="header-right">
+                                <span class="users-count">3737 users</span>
+                                <div class="search-container">
+                                    <input type="text" class="search-input" placeholder="Filter by username" />
+                                    <i class="fas fa-magnifying-glass search-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- User List -->
+                        <div class="user-list">
+                            <!-- User Card 1 -->
+                            <div class="user-card">
+                                <div class="user-avatar">
+                                	</div>
+                                <div class="user-info">
+                                    <div class="user-name">
+                                        Cdpatton<br />
+                                        <span>Charles Patton</span>
+                                    </div>
+                                    <div class="user-details">
+                                        <i class="fas fa-globe website-icon"></i>
+                                        <span class="website-text">dhammapearls.net</span>
+                                    </div>
+                                    <p class="user-stats">Posted 2 hours ago, Joined Feb 23, 2016, Read 26D (1D recently)</p>
+                                    <p class="user-stats">Solutions: 23</p>
+                                    <p class="user-stats">Gender identification: male</p>
+                                    <div class="guidelines-text">
+                                        <span class="bold">Community Guidelines (read)</span>: <span class="bold">Yes</span>
+                                    </div>
+                                    <div class="badges-container">
+                                        <div class="badge"><span>Regular</span></div>
+                                        <div class="badge"><span>Admired</span></div>
+                                        <div class="badge"><span>Empathetic</span></div>
+                                        <div class="badge"><span>+28 More</span></div>
+                                    </div>
+                                    <div class="stats-divider"></div>
+                                    <div class="stats-section">
+                                        <div class="stats-grid">
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <div style="display: flex; align-items: center; gap: 5px;">
+                                                    <span class="stat-label">Received</span>
+                                                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                                                </div>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Given</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Topics created</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Replies posted</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Topics viewed</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Posts read</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Days visited</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- User Card 2 -->
+                            <div class="user-card">
+                                <div class="user-avatar-2">
+                                	</div>
+                                <div class="user-info">
+                                    <div class="user-header">
+                                        <div class="user-title">
+                                            Adutiya<br />
+                                            Paul H<br />
+                                            Moderator
+                                        </div>
+                                        <i class="fas fa-shield-alt moderator-badge"></i>
+                                    </div>
+                                    <p class="user-description">
+                                        I came to Sutta Central and Discuss and Discover because I want to stay connected with The Buddha, the Dhamma and the Sangha. I find it a great
+                                    </p>
+                                    <p class="user-location">Paso Robles, California</p>
+                                    <p class="user-stats">Posted 2 hours ago, Joined Feb 23, 2016, Read 26D (1D recently)</p>
+                                    <p class="user-stats">Solutions: 23</p>
+                                    <p class="user-stats">Gender identification: male</p>
+                                    <div class="guidelines-text">
+                                        <span class="bold">Community Guidelines (read)</span>: <span class="bold">Yes</span>
+                                    </div>
+                                    <div class="badges-container">
+                                        <div class="badge"><span>Regular</span></div>
+                                        <div class="badge"><span>Admired</span></div>
+                                        <div class="badge"><span>Empathetic</span></div>
+                                        <div class="badge"><span>+28 More</span></div>
+                                    </div>
+                                    <div class="stats-divider"></div>
+                                    <div class="stats-section">
+                                        <div class="stats-grid">
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <div style="display: flex; align-items: center; gap: 5px;">
+                                                    <span class="stat-label">Received</span>
+                                                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                                                </div>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Given</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Topics created</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Replies posted</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Topics viewed</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Posts read</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-number">28</span>
+                                                <span class="stat-label">Days visited</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc">
+                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+            </div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc">
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="#about">About</a></h4>
+                <h4><a href="#sermons">Sermons</a></h4>
+                <h4><a href="/events">Events</a></h4>
+            </div>
+        </div>
+        <div class="part3">
+            <h2>HAVE A QUESTION?</h2>
+            <div class="part3-desc">
+                <h4>203 Fake St. Mountain View, San Francisco, California, USA</h4>
+                <h4>+977 97820099</h4>
+                <h4>info@gmail.com</h4>
+            </div>
+        </div>
+    </div>
+    <div class="footer-sec2">
+        <div class="line">
+            <hr class="white-line-footer">
+        </div>
+        <div class="copyright">
+            <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+            <div class="copyright-sub">
+                <h4><a href="#terms">Terms & Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+                <h4><a href="#refund">Cancellation & Refund Policy</a></h4>
+            </div>
+        </div>
+    </div>
+    <script src="/JS/users_variety.js"></script>
+</body>
+</html>

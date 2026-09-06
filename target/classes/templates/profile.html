@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Account - Dhamma Nature</title>
+    <style>
+        .wrap { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
+        section { margin-bottom: 34px; }
+        table { width:100%; border-collapse: collapse; }
+        td, th { padding: 8px; border-bottom: 1px solid #eee; text-align:left; font-size: 14px; }
+        .msg-ok { color:#155724; background:#d4edda; padding:10px 14px; border-radius:6px; }
+        .msg-err { color:#721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; }
+        .vendor-form input { padding:8px; margin-right:6px; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
+<main class="wrap">
+    <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+
+    <h1>Hello, <span th:text="${currentUser.fullName}"></span></h1>
+    <p>Reward points: <strong th:text="${currentUser.rewardPoints}"></strong> &middot; Role: <span th:text="${currentUser.role}"></span></p>
+
+    <section>
+        <h2>My bookings</h2>
+        <p th:if="${#lists.isEmpty(bookings)}">No bookings yet.</p>
+        <table th:unless="${#lists.isEmpty(bookings)}">
+            <tr><th>Event</th><th>Mode</th><th>Status</th><th>Booked on</th></tr>
+            <tr th:each="b : ${bookings}">
+                <td th:text="${b.event.title}"></td>
+                <td th:text="${b.attendanceMode}"></td>
+                <td th:text="${b.status}"></td>
+                <td th:text="${#temporals.format(b.bookingDate, 'dd MMM yyyy')}"></td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>My donations</h2>
+        <p th:if="${#lists.isEmpty(donations)}">No donations yet.</p>
+        <table th:unless="${#lists.isEmpty(donations)}">
+            <tr><th>Amount</th><th>Campaign</th><th>Receipt</th><th>Date</th></tr>
+            <tr th:each="d : ${donations}">
+                <td th:text="${d.amount}"></td>
+                <td th:text="${d.campaign != null ? d.campaign.title : 'General'}"></td>
+                <td th:text="${d.receiptNumber}"></td>
+                <td th:text="${#temporals.format(d.donationDate, 'dd MMM yyyy')}"></td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>My marketplace orders</h2>
+        <p th:if="${#lists.isEmpty(orders)}">No orders yet.</p>
+        <table th:unless="${#lists.isEmpty(orders)}">
+            <tr><th>Product</th><th>Qty</th><th>Total</th><th>Status</th><th>Date</th></tr>
+            <tr th:each="o : ${orders}">
+                <td th:text="${o.product.productName}"></td>
+                <td th:text="${o.quantity}"></td>
+                <td th:text="${o.totalPrice}"></td>
+                <td th:text="${o.status}"></td>
+                <td th:text="${#temporals.format(o.orderDate, 'dd MMM yyyy')}"></td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Volunteer registrations</h2>
+        <p th:if="${#lists.isEmpty(volunteerRegistrations)}">You haven't signed up for anything yet.</p>
+        <table th:unless="${#lists.isEmpty(volunteerRegistrations)}">
+            <tr><th>Opportunity</th><th>Status</th><th>Registered on</th></tr>
+            <tr th:each="v : ${volunteerRegistrations}">
+                <td th:text="${v.opportunity.title}"></td>
+                <td th:text="${v.status}"></td>
+                <td th:text="${#temporals.format(v.registeredAt, 'dd MMM yyyy')}"></td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Reward point history</h2>
+        <p th:if="${#lists.isEmpty(rewardHistory)}">No reward activity yet.</p>
+        <table th:unless="${#lists.isEmpty(rewardHistory)}">
+            <tr><th>Date</th><th>Type</th><th>Points</th><th>Reason</th></tr>
+            <tr th:each="tx : ${rewardHistory}">
+                <td th:text="${#temporals.format(tx.createdAt, 'dd MMM yyyy')}"></td>
+                <td th:text="${tx.type}"></td>
+                <td th:text="${tx.points}"></td>
+                <td th:text="${tx.reason}"></td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Notifications</h2>
+        <p th:if="${#lists.isEmpty(notifications)}">No notifications yet.</p>
+        <ul>
+            <li th:each="n : ${notifications}">
+                <strong th:text="${n.title}"></strong> - <span th:text="${n.message}"></span>
+                <small th:text="${#temporals.format(n.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+            </li>
+        </ul>
+    </section>
+
+    <section th:if="${currentUser.role.name() == 'USER'}">
+        <h2>Become a vendor</h2>
+        <p>List authentic Dhamma products (prayer beads, incense, statues, handicrafts) on the marketplace - pending admin verification.</p>
+        <form class="vendor-form" method="post" action="/vendor/apply">
+            <input type="text" name="vendorName" placeholder="Vendor / shop name" required>
+            <input type="text" name="contactDetails" placeholder="Contact details">
+            <input type="text" name="address" placeholder="Address">
+            <button type="submit" class="btn btn-primary">Apply</button>
+        </form>
+    </section>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Meditation Centers</title>
+    <link th:replace="~{fragments/admin-nav :: bootstrapCss}" />
+    <style>
+        body { padding: 0 24px 40px; font-family: 'Roboto', sans-serif; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+        th { background: #f4f4f4; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .badge.yes { background: #d4edda; color: #155724; }
+        .badge.no { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+<nav th:replace="~{fragments/admin-nav :: adminNav}"></nav>
+<h1>Meditation Centers</h1>
+<p>Administrators approve organizations before their profile, events and campaigns go live (Business Rule 2 / Rule 8).</p>
+<hr>
+<table>
+<tr><th>ID</th><th>Name</th><th>Location</th><th>Contact</th><th>Verified</th><th></th></tr>
+<tr th:each="c : ${centers}">
+    <td th:text="${c.id}"></td>
+    <td th:text="${c.name}"></td>
+    <td th:text="${c.location}"></td>
+    <td th:text="${c.contactEmail}"></td>
+    <td><span class="badge" th:classappend="${c.verified} ? 'yes' : 'no'" th:text="${c.verified} ? 'Verified' : 'Pending'"></span></td>
+    <td>
+        <form th:unless="${c.verified}" method="post" th:action="@{'/admin/centers/' + ${c.id} + '/verify'}">
+            <button type="submit">Approve</button>
+        </form>
+    </td>
+</tr>
+</table>
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${event.title}">Event</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/home_events_descrpt.css">
+    <style>
+        .wrap { max-width: 700px; margin: 0 auto; padding: 60px 20px; }
+        .msg-ok { color: #155724; background:#d4edda; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+        .msg-err { color: #721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+        .booking-form label { display:block; margin-top:12px; font-weight:600; }
+        .booking-form select, .booking-form input { padding:8px; width:100%; max-width:240px; margin-top:4px; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
+<main class="wrap">
+    <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+
+    <h1 th:text="${event.title}">Event title</h1>
+    <p><strong th:text="${#temporals.format(event.eventDate, 'dd MMM yyyy, HH:mm')}">Date</strong> &middot; <span th:text="${event.mode}">Mode</span></p>
+    <p th:if="${event.venue}"><i class="fas fa-location-dot"></i> <span th:text="${event.venue}">Venue</span></p>
+    <p th:text="${event.description}">Description</p>
+    <p>Hosted by <a th:href="@{'/centers/' + ${event.meditationCenter.id}}" th:text="${event.meditationCenter.name}">Center</a></p>
+
+    <h2>Book this session</h2>
+    <form class="booking-form" method="post" th:action="@{'/events/' + ${event.id} + '/book'}">
+        <label>Attendance mode</label>
+        <select name="mode">
+            <option value="PHYSICAL" th:if="${event.meditationCenter.supportsPhysicalSessions}">In person</option>
+            <option value="ONLINE" th:if="${event.meditationCenter.supportsOnlineSessions}">Online</option>
+        </select>
+        <label>Number of attendees</label>
+        <input type="number" name="attendees" min="1" value="1">
+        <button type="submit" class="btn btn-primary" style="margin-top:16px;">Confirm booking</button>
+    </form>
+    <p style="margin-top:8px; color:#666;"><small>Log in first to book - you'll also earn 5 reward points.</small></p>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

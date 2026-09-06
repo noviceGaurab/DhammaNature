@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Page Interactions</title>
+    <link th:replace="~{fragments/admin-nav :: bootstrapCss}" />
+    <style>
+        body { padding: 0 24px 40px; font-family: 'Roboto', sans-serif; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+        th { background: #f4f4f4; }
+    </style>
+</head>
+<body>
+<nav th:replace="~{fragments/admin-nav :: adminNav}"></nav>
+<h1>Page Interactions</h1>
+<hr>
+<p th:if="${#lists.isEmpty(interactionData)}">No interaction data available.</p>
+<table th:unless="${#lists.isEmpty(interactionData)}">
+<tr><th>ID</th><th>User ID</th><th>Page Name</th><th>Section</th><th>Content Interaction</th><th>Interaction Time</th></tr>
+<tr th:each="pi : ${interactionData}">
+    <td th:text="${pi.id}"></td>
+    <td th:text="${pi.user != null ? pi.user.id : '-'}"></td>
+    <td th:text="${pi.pageName}"></td>
+    <td th:text="${pi.section}"></td>
+    <td th:text="${pi.contentInteraction}"></td>
+    <td th:text="${#temporals.format(pi.interactionTime, 'dd MMM yyyy HH:mm')}"></td>
+</tr>
+</table>
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

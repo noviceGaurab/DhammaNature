@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dharma Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link rel = "stylesheet" href = "/css/home_contact.css">
+</head>
+<body>
+    <header>
+        <div class="header-img">
+            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+            <div class = "line-container">
+                <hr class = "white-line">
+            </div>
+            <div class="underline-img">
+                <div class="header-top">
+                    <p class="location">
+                        203 Fake St. Mountain View, San Francisco, California, USA
+                    </p>
+                    <div class = "social-media">
+                        <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
+                            <i class="fab fa-facebook-f"></i>
+                            <span class="sr-only">Facebook</span>
+                        </a>
+                        <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
+                            <i class="fab fa-twitter"></i>
+                            <span class="sr-only">Twitter</span>
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
+                            <i class="fab fa-instagram"></i>
+                            <span class="sr-only">Instagram</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="header-main">
+                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <nav>  <!--nav afai div ko kaam gari raxa jasto xah -->
+                    <a href="#">Home</a>
+                    <a href="#">About</a>
+                    <a href="#">Sermons</a>
+                    <a href="#">Events</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Contact</a>
+                    <a href="#" class="donate-btn">Donate</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!--end of nav bar-->
+    <main>
+        </section>
+        <section class = "hero">
+            <div class = "container">
+                <h2>HOME   >>   CONTACT US   >></h2>
+                <h1 class = "mb-3">CONTACT US</h1>                
+            </div>
+        </section>
+        <section class="contact-section">
+            <div class="contact-form">
+                <form>
+                    <input type="text" id = "Name"placeholder="Your Name" required>
+                    <div id = "NameError" style: color:green> </div>
+                    <input type="email" id = "Email" placeholder="Your Email" required>
+                    <div id = "EmailError" style: color:green> </div>
+                    <input type="text" id = "Subject" placeholder="Subject" required>
+                    <div id = "SubjectError" style: color:green> </div>
+                    <textarea placeholder="Message" id = "Message" required></textarea>
+                    <div id = "MessageError" style: color:green> </div>
+                    <button type="submit" onclick= "onClickSubmit ()">Send Message</button>
+                </form>
+            </div>
+            <div class="contact-image">
+                <img src="/assets/images/pexels-koithyr-1360255.jpg" alt="Group Image">
+            </div>
+        </section>
+    </main>
+ 
+        </section>
+            <div class = "newsletter-container">
+            <div class = "newsletter">
+                <h2>Sign Up And Subscribe to our Newsletter</h2>
+            </div>
+            <div class = "form-container">
+                <!-- Replace the action attribute with your form handling URL -->
+                <form action="#" method="post">
+                    <input type="email" placeholder="Enter your email" required class = "email-input">
+                    <button type="submit" class = "button-last">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class = "footer">
+            <div class = "part1">
+                <img src = "assets/images/transparent_logo.png" alt = "logo" width = "260px" height = "190px">
+                <div class = "part1-desc">
+                    <h4>Two similes are useful to keep in mind when we look at the Two similes
+                    are useful to keep in mind when we look at..</h2>
+                </div>
+            </div>
+            <div class = "part2">
+                <h2>QUICK LINKS</h2>
+                <div class = "part2-desc">
+                    <h4>Home</h4>
+                    <h4>About</h4>
+                    <h4>Sermons</h4>
+                    <h4>Events</h4>
+                </div>
+            </div>
+            <div class = "part3">
+                <h2>HAVE A QUESTION?</h2>
+                <div class = "part3-desc">
+                    <h4>203 Fake St. Mountain View, San Francisco, California, USA</h4>
+                    <h4>+977 97820099</h4>
+                    <h4>info@gmail.com</h4>
+                </div>
+            </div>
+        </div>
+        <div class = "footer-sec2">
+            <div class = "line">
+                <hr class = "white-line-footer">
+            </div>
+            <div class = "copyright">
+                <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+                <div class = "copyright-sub">
+                    <h4>Terms & Conditions</h4>
+                    <h4>Privacy Policy</h4>
+                    <h4>Cancellation & Refund Policy</h4>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/JS/home_contact.js"></script>
+</body>
+</html>
+

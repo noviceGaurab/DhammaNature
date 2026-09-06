@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Vendors</title>
+    <link th:replace="~{fragments/admin-nav :: bootstrapCss}" />
+    <style>
+        body { padding: 0 24px 40px; font-family: 'Roboto', sans-serif; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+        th { background: #f4f4f4; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .badge.yes { background: #d4edda; color: #155724; }
+        .badge.no { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+<nav th:replace="~{fragments/admin-nav :: adminNav}"></nav>
+<h1>Marketplace Vendors</h1>
+<p>Administrators verify vendors before their products become publicly available (Business Rule 3).</p>
+<hr>
+<table>
+<tr><th>ID</th><th>Vendor</th><th>Contact</th><th>Address</th><th>Products</th><th>Verified</th><th></th></tr>
+<tr th:each="v : ${vendors}">
+    <td th:text="${v.id}"></td>
+    <td th:text="${v.vendorName}"></td>
+    <td th:text="${v.contactDetails}"></td>
+    <td th:text="${v.address}"></td>
+    <td th:text="${#lists.size(v.products)}"></td>
+    <td><span class="badge" th:classappend="${v.verified} ? 'yes' : 'no'" th:text="${v.verified} ? 'Verified' : 'Pending'"></span></td>
+    <td>
+        <form th:unless="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/verify'}">
+            <button type="submit">Approve</button>
+        </form>
+    </td>
+</tr>
+</table>
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

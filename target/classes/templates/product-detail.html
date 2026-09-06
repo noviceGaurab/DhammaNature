@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${product.productName}">Product</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .wrap { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+        .msg-ok { color:#155724; background:#d4edda; padding:10px 14px; border-radius:6px; }
+        .msg-err { color:#721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; }
+        img.hero { width:100%; max-height: 320px; object-fit:cover; border-radius:10px; }
+        .price { font-size: 22px; font-weight:700; color:#233c9b; }
+        .review { border-top:1px solid #eee; padding: 10px 0; }
+        form.inline { display:inline-block; margin-right:8px; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
+<main class="wrap">
+    <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+
+    <img class="hero" th:if="${product.imageUrl}" th:src="@{'/assets/images/' + ${product.imageUrl}}" alt="product"/>
+    <h1 th:text="${product.productName}">Product</h1>
+    <p class="price" th:text="${product.price}">$0</p>
+    <p th:text="${product.description}">Description</p>
+    <p>Sold by <strong th:text="${product.vendor.vendorName}"></strong> &middot; <span th:text="${product.stockQuantity}"></span> in stock</p>
+
+    <div th:if="${currentUser != null}">
+        <form class="inline" method="post" th:action="@{'/marketplace/' + ${product.id} + '/buy'}">
+            <input type="number" name="quantity" min="1" value="1" style="width:70px;">
+            <button type="submit" class="btn btn-primary">Buy now</button>
+        </form>
+        <form class="inline" method="post" th:action="@{'/marketplace/' + ${product.id} + '/wishlist'}">
+            <button type="submit" class="btn btn-outline-secondary">
+                <span th:if="${currentUser.wishlist.contains(product)}">Remove from wishlist</span>
+                <span th:unless="${currentUser.wishlist.contains(product)}">Save to wishlist</span>
+            </button>
+        </form>
+    </div>
+    <p th:if="${currentUser == null}"><a href="/login">Log in</a> to buy or save this item.</p>
+
+    <h2 style="margin-top:30px;">Reviews</h2>
+    <form th:if="${currentUser != null}" method="post" th:action="@{'/marketplace/' + ${product.id} + '/review'}">
+        <select name="rating">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Good</option>
+            <option value="3">3 - Okay</option>
+            <option value="2">2 - Poor</option>
+            <option value="1">1 - Bad</option>
+        </select>
+        <input type="text" name="reviewText" placeholder="Write a short review..." style="width:60%;">
+        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+    </form>
+    <p th:if="${#lists.isEmpty(reviews)}">No reviews yet.</p>
+    <div class="review" th:each="r : ${reviews}">
+        <strong th:text="${r.rating} + '/5'">5/5</strong> - <span th:text="${r.user.fullName}">Name</span>
+        <p th:text="${r.reviewText}">Review text</p>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

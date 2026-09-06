@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Result</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
+<main style="max-width:600px; margin:60px auto; padding:0 20px; text-align:center;">
+    <h1>You scored <span th:text="${attempt.score}"></span> / <span th:text="${attempt.totalQuestions}"></span></h1>
+    <p th:text="'Quiz: ' + ${quiz.title}"></p>
+    <a href="/quiz" class="btn btn-primary">Back to quizzes</a>
+    <a href="/rewards" class="btn btn-outline-primary">View reward points</a>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

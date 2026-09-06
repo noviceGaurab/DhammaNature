@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dhamma Nature - Community Discussion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/community_discuss.css">
+    <style>
+        .discuss-wrap { max-width: 700px; margin: 0 auto; padding: 60px 20px; }
+        .comment { border-bottom: 1px solid #eee; padding: 14px 0; }
+        .comment .meta { color:#888; font-size: 13px; }
+        .comment-form input, .comment-form textarea { width:100%; padding:10px; margin-top:6px; }
+        .msg-err { color: #721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader('COMMUNITY DISCUSSION', 'FR-06: a shared forum instead of scattered Facebook comments')}"></div>
+<main class="discuss-wrap">
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+
+    <form class="comment-form" method="post" action="/discuss">
+        <input type="hidden" name="topic" th:value="${slug}"/>
+        <input type="text" name="name" placeholder="Your name" th:if="${currentUser == null}">
+        <input type="email" name="email" placeholder="Your email (optional)" th:if="${currentUser == null}">
+        <textarea name="content" rows="3" placeholder="Share your thoughts..." required></textarea>
+        <button type="submit" class="btn btn-primary" style="margin-top:8px;">Post</button>
+    </form>
+
+    <h2 style="margin-top:30px;">Recent posts</h2>
+    <p th:if="${#lists.isEmpty(comments)}">No posts yet - be the first to share.</p>
+    <div class="comment" th:each="c : ${comments}">
+        <div class="meta">
+            <strong th:text="${c.name}">Name</strong> &middot;
+            <span th:text="${#temporals.format(c.createdAt, 'dd MMM yyyy, HH:mm')}">Date</span>
+        </div>
+        <p th:text="${c.content}">Comment content</p>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

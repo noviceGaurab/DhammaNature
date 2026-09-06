@@ -1,0 +1,230 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+    }
+
+    .header-img {
+      position: relative;
+      width: 100%;
+    }
+
+    .header-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .underline-img {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .header-top {
+      color: #fff;
+      padding: 5px 40px;
+      font-size: 14px;
+    }
+
+    .location {
+      margin: 0;
+      color: #fff;
+    }
+
+    .header-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      color: white;
+      width: 100%;
+    }
+
+    .logo {
+      height: 50px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 22px;
+    }
+
+    nav a.donate-btn {
+      background-color: #228B22;
+      padding: 5px 15px;
+      border-radius: 5px;
+      color: #fff;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
+      max-width: 1500px;
+      margin: 300px auto;
+    }
+
+    .contact-form {
+      flex: 1;
+      min-width: 400px;
+      background-color: #8B0000;
+      padding: 20px;
+      color: #fff;
+    }
+
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      height: 48px;
+    }
+
+    .contact-form textarea {
+      height: 270px;
+      resize: none;
+      margin-bottom: 30px;
+    }
+
+    .contact-form button {
+      background-color: #228B22;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 190px;
+      height: 50px;
+    }
+
+    .contact-image {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .contact-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .text h2 {
+        position: absolute;
+        left: 10px;
+        top: 1100px;
+        color: white;
+        font-size: 60px;
+        padding-left: 40px;
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header-main {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-top:10px;
+      }
+
+      nav a {
+        margin: 5px 10px;
+      }
+
+      .header-top {
+        padding: 5px 20px;
+        font-size: 12px;
+      }
+
+      .contact-section {
+        flex-direction: column;
+      }
+
+      .contact-form,
+      .contact-image {
+        width: 100%;
+      }
+
+      /* Basic container styling */
+  .container {
+    width: 100%;
+    max-width: 1200px; /* Adjust based on your design */
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  /* Flexbox for the row */
+  .row {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    gap: 20px; /* Space between items */
+    justify-content: space-between; /* Spread items evenly */
+  }
+
+  /* Styling for the columns (Worship, Connect, God's Love) */
+  .col {
+    flex: 1; /* Each column takes equal space */
+    min-width: 200px; /* Minimum width before wrapping */
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+
+  /* Styling for the red container */
+  .red-container {
+    flex: 0 0 300px; /* Fixed width for the red container */
+    background: #d32f2f; /* Red background */
+    color: #fff;
+    padding: 20px;
+    margin-top: -50px; /* Lifts the red container above the banner */
+  }
+
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column; /* Stack items vertically on small screens */
+      align-items: center;
+    }
+
+    .col, .red-container {
+      flex: 0 0 100%; /* Full width on smaller screens */
+      max-width: 100%;
+    }
+
+    .red-container {
+      margin-top: 20px; /* Remove the lift on smaller screens for better flow */
+    }
+  }
+    }

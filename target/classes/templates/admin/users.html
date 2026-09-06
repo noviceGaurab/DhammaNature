@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Users</title>
+    <link th:replace="~{fragments/admin-nav :: bootstrapCss}" />
+    <style>
+        body { padding: 0 24px 40px; font-family: 'Roboto', sans-serif; }
+        .stat-cards { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+        .stat-card { background: #233c9b; color: #fff; border-radius: 10px; padding: 18px 24px; min-width: 150px; }
+        .stat-card h3 { margin: 0; font-size: 28px; }
+        .stat-card p { margin: 4px 0 0; opacity: .85; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+        th { background: #f4f4f4; }
+    </style>
+</head>
+<body>
+<nav th:replace="~{fragments/admin-nav :: adminNav}"></nav>
+<h1>Welcome, <span th:text="${currentUser != null ? currentUser.fullName : 'Admin'}"></span></h1>
+<div class="stat-cards">
+    <div class="stat-card"><h3 th:text="${totalUsers}">0</h3><p>Registered Users</p></div>
+    <div class="stat-card"><h3 th:text="${totalCenters}">0</h3><p>Meditation Centers</p></div>
+    <div class="stat-card"><h3 th:text="${totalDonations}">0</h3><p>Donations</p></div>
+    <div class="stat-card"><h3 th:text="${totalBookings}">0</h3><p>Bookings</p></div>
+    <div class="stat-card"><h3 th:text="${totalOrders}">0</h3><p>Marketplace Orders</p></div>
+</div>
+<hr>
+<h2>Users</h2>
+<p th:if="${#lists.isEmpty(userData)}">No user data available.</p>
+<table th:unless="${#lists.isEmpty(userData)}">
+<tr>
+    <th>ID</th><th>Full Name</th><th>Email</th><th>Role</th><th>Reward Points</th>
+    <th>Read Guidelines</th><th>Understood Guidelines</th><th>Accepted Terms</th><th>Joined</th>
+</tr>
+<tr th:each="u : ${userData}">
+    <td th:text="${u.id}"></td>
+    <td th:text="${u.fullName}"></td>
+    <td th:text="${u.email}"></td>
+    <td th:text="${u.role}"></td>
+    <td th:text="${u.rewardPoints}"></td>
+    <td th:text="${u.readGuidelines}"></td>
+    <td th:text="${u.understoodGuidelines}"></td>
+    <td th:text="${u.acceptedTerms}"></td>
+    <td th:text="${#temporals.format(u.createdAt, 'dd MMM yyyy')}"></td>
+</tr>
+</table>
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

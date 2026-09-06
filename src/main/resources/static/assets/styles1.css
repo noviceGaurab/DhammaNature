@@ -1,0 +1,54 @@
+
+
+
+.row {
+    text-decoration: underline;
+    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    gap: 1100px;
+    padding-left: 40px;
+    padding-top: 4px;
+}
+
+.justify-content {
+    display: flex;
+    
+}
+
+.justify-content-center {
+    border-style: solid;
+    border-color: white;
+}
+
+* {
+    color: white;
+    background-color: black;;
+}
+
+
+
+.navbar-nav {
+    flex-direction: row;
+    display: flex;
+    gap: 30px;
+    text-decoration: none;;
+}
+
+.navbar-toggler {
+    height: 50px;
+    width: 80px;
+}
+
+.nav-item cta {
+    color: white;
+    border: 1px solid green;
+    background-color: green;;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding-top: 20px;
+    align-items:self-start;
+}

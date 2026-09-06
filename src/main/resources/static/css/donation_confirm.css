@@ -1,0 +1,547 @@
+
+        /* Global reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Gentium Basic', serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Header Image and Hero Section Styling */
+        .header-img {
+            position: relative;
+            height: 500px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-img img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: brightness(0.7);
+        }
+
+        .header-img img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Hero Section Styling */
+        .hero {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 900px;
+            padding: 0 20px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            z-index: 10;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            animation: slideInLeft 0.8s ease forwards;
+            margin-top: 100px;
+        }
+
+        /* Line Container Styling */
+        .line-container {
+            position: absolute;
+            top: 80px;
+            width: 80%;
+            margin: 14px 10%;
+            color: #fff;
+            z-index: 10;
+        }
+
+        .white-line {
+            border-top: 1px solid #fff;
+            width: 100%;
+            margin-left: 30px;
+        }
+
+        /* Header Top Styling */
+        .header-top {
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            position: absolute;
+            top: 10px;
+            font-weight: normal;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1500px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .location {
+            margin: 0;
+        }
+
+        /* Social Media Icons */
+        .social-media {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .justify-content-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            text-decoration: none;
+            color: #fff;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .justify-content-center:hover {
+            background-color: #006015;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Header Main Styling */
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 40px;
+            color: #fff;
+            width: 100%;
+            max-width: 1500px;
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .header-main .logo {
+            height: 180px;
+            width: auto;
+            transition: transform 0.3s;
+            margin-top: 60px;
+        }
+
+        .header-main .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Navigation Styling */
+        nav {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 22px;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #ffd700;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+            transform: translateY(-2px);
+        }
+
+        nav a.donate-btn {
+            background-color: #065B0B;
+            padding: 5px 15px;
+            border-radius: 56px;
+            color: #fff;
+            border: 1px solid #006015;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        nav a.donate-btn:hover {
+            background-color: #008000;
+            transform: scale(1.05);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            font-size: 30px;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 1001;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Donation Confirmation Styles */
+        .donation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .donation-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .donation-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .donation-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .success-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #e6f4ea;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success-message i {
+            font-size: 30px;
+            color: #2e7d32;
+            transition: transform 0.3s;
+        }
+
+        .success-message:hover i {
+            transform: scale(1.1);
+        }
+
+        .success-message p {
+            font-size: 18px;
+            color: #2e7d32;
+            margin: 0;
+        }
+
+        .receipt-table {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .receipt-table h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+            margin: -20px -20px 20px -20px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-label {
+            font-weight: 700;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .receipt-value {
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* Footer Section */
+        .footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            padding: 40px 20px;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .footer-sec2 {
+            display: flex;
+            flex-direction: column;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .white-line-footer {
+            width: 80%;
+            border-top: 1px solid #fff;
+            margin: 20px auto;
+        }
+
+        .part1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .part1 img {
+            padding-top: 20px;
+            width: 260px;
+            height: 190px;
+        }
+
+        .part1-desc {
+            padding: 20px;
+            width: 400px;
+            font-weight: normal;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .part2 {
+            display: flex;
+            flex-direction: column;
+            padding-left: 50px;
+        }
+
+        .part2 h2 {
+            padding-top: 16px;
+            font-size: 24px;
+            color: #ffd700;
+        }
+
+        .part2-desc {
+            padding-top: 20px;
+            font-weight: normal;
+        }
+
+        .part2-desc h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .part2-desc h4 i {
+            font-size: 16px;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        .part2-desc h4:hover i {
+            color: #ffd700;
+        }
+
+        .part2-desc a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .part2-desc a:hover {
+            color: #ffd700;
+        }
+
+        .part3 {
+            display: flex;
+            flex-direction: column;
+            padding-left: 50px;
+        }
+
+        .part3 h2 {
+            padding-top: 16px;
+            font-size: 24px;
+            color: #ffd700;
+        }
+
+        .part3-desc {
+            padding-top: 20px;
+            font-weight: normal;
+            padding-right: 20px;
+        }
+
+        .part3-desc h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .part3-desc h4 i {
+            font-size: 16px;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        .part3-desc h4:hover i {
+            color: #ffd700;
+        }
+
+        .copyright {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px 240px;
+            margin-bottom: 40px;
+        }
+
+        .copyright-sub {
+            display: flex;
+            gap: 40px;
+        }
+
+        .copyright-sub h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s;
+            font-size: 14px;
+        }
+
+        .copyright-sub h4 i {
+            font-size: 14px;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        .copyright-sub h4:hover, .copyright-sub h4:hover i {
+            color: #ffd700;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-img {
+                height: 400px;
+            }
+
+            .hero h2 {
+                font-size: 36px;
+                margin-top: 80px;
+            }
+
+            .header-main {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-main .logo {
+                height: 120px;
+                margin-top: 20px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .donation-card {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            .donation-header h2 {
+                font-size: 24px;
+            }
+
+            .receipt-table h3 {
+                font-size: 20px;
+            }
+
+            .receipt-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .receipt-label, .receipt-value {
+                font-size: 16px;
+            }
+
+            .footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .part1, .part2, .part3 {
+                padding-left: 0;
+                text-align: center;
+            }
+
+            .copyright {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+        }

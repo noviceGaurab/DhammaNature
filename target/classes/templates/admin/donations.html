@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Donations</title>
+    <link th:replace="~{fragments/admin-nav :: bootstrapCss}" />
+    <style>
+        body { padding: 0 24px 40px; font-family: 'Roboto', sans-serif; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+        th { background: #f4f4f4; }
+    </style>
+</head>
+<body>
+<nav th:replace="~{fragments/admin-nav :: adminNav}"></nav>
+<h1>Donation Records</h1>
+<hr>
+<p th:if="${#lists.isEmpty(donationData)}">No donation data available.</p>
+<table th:unless="${#lists.isEmpty(donationData)}">
+<tr>
+    <th>Donation ID</th><th>Donor</th><th>Campaign</th><th>Amount</th>
+    <th>Type</th><th>Payment Method</th><th>Receipt #</th><th>Date</th>
+</tr>
+<tr th:each="d : ${donationData}">
+    <td th:text="${d.id}"></td>
+    <td th:text="${d.firstName + ' ' + (d.lastName ?: '')}"></td>
+    <td th:text="${d.campaign != null ? d.campaign.title : '-'}"></td>
+    <td th:text="${d.amount}"></td>
+    <td th:text="${d.donationType}"></td>
+    <td th:text="${d.paymentMethod}"></td>
+    <td th:text="${d.receiptNumber}"></td>
+    <td th:text="${#temporals.format(d.donationDate, 'dd MMM yyyy HH:mm')}"></td>
+</tr>
+</table>
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

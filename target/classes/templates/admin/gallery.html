@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Gallery</title>
+    <link th:replace="~{fragments/admin-nav :: bootstrapCss}" />
+    <style>
+        body { padding: 0 24px 40px; font-family: 'Roboto', sans-serif; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+        th { background: #f4f4f4; }
+        img { max-width: 100px; height: auto; }
+    </style>
+</head>
+<body>
+<nav th:replace="~{fragments/admin-nav :: adminNav}"></nav>
+<h1>Gallery</h1>
+<hr>
+<form method="post" action="/admin/gallery/add" style="margin-bottom:20px; display:flex; gap:8px; flex-wrap:wrap;">
+    <input type="text" name="title" placeholder="Title" required>
+    <input type="text" name="imageUrl" placeholder="Image filename under /assets/images/" required>
+    <input type="text" name="description" placeholder="Description" style="flex:1; min-width:200px;">
+    <button type="submit">Add Image</button>
+</form>
+<p th:if="${#lists.isEmpty(galleryData)}">No gallery images yet.</p>
+<table th:unless="${#lists.isEmpty(galleryData)}">
+<tr><th>ID</th><th>Title</th><th>Image</th><th>Description</th><th>Center</th></tr>
+<tr th:each="img : ${galleryData}">
+    <td th:text="${img.id}"></td>
+    <td th:text="${img.title ?: 'No Title'}"></td>
+    <td><img th:src="@{'/assets/images/' + ${img.imageUrl}}" th:alt="${img.title}" onerror="this.style.display='none'"/></td>
+    <td th:text="${img.description ?: 'No Description'}"></td>
+    <td th:text="${img.meditationCenter != null ? img.meditationCenter.name : '-'}"></td>
+</tr>
+</table>
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dhamma Nature - Rewards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .wrap { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
+        .msg-ok { color:#155724; background:#d4edda; padding:10px 14px; border-radius:6px; }
+        .msg-err { color:#721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; }
+        .points-badge { background:#233c9b; color:#fff; padding:8px 18px; border-radius: 20px; display:inline-block; font-weight:600; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap:16px; margin-top: 20px; }
+        .item { border:1px solid #eee; border-radius:10px; padding:16px; }
+        .item h4 { margin:0 0 6px; }
+        table { width:100%; border-collapse: collapse; margin-top:20px; }
+        td, th { padding:8px; border-bottom:1px solid #eee; text-align:left; font-size:14px;}
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader('REWARDS', 'NFR-04: earn points, redeem incense coupons, discounts & more')}"></div>
+<main class="wrap">
+    <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+
+    <p th:if="${currentUser != null}">
+        Your balance: <span class="points-badge" th:text="${currentUser.rewardPoints} + ' points'">0 points</span>
+    </p>
+    <p th:if="${currentUser == null}">
+        <a href="/login">Log in</a> to see your reward point balance and redeem items.
+    </p>
+
+    <h2>Reward Catalog</h2>
+    <p th:if="${#lists.isEmpty(catalog)}">No rewards available right now.</p>
+    <div class="grid">
+        <div class="item" th:each="item : ${catalog}">
+            <h4 th:text="${item.name}">Item</h4>
+            <p th:text="${item.description}">Description</p>
+            <p><strong th:text="${item.pointsCost}"></strong> points &middot; <small th:text="${item.category}"></small></p>
+            <form th:if="${currentUser != null}" method="post" th:action="@{'/rewards/' + ${item.id} + '/redeem'}">
+                <button type="submit" class="btn btn-primary">Redeem</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${history != null}">
+        <h2>Your reward history</h2>
+        <table>
+            <tr><th>Date</th><th>Type</th><th>Points</th><th>Reason</th></tr>
+            <tr th:each="tx : ${history}">
+                <td th:text="${#temporals.format(tx.createdAt, 'dd MMM yyyy')}"></td>
+                <td th:text="${tx.type}"></td>
+                <td th:text="${tx.points}"></td>
+                <td th:text="${tx.reason}"></td>
+            </tr>
+        </table>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

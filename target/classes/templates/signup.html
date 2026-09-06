@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="/css/SignupPage.css">
+</head>
+<body>
+    <div class="container">
+        <div class="image-section">
+            <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Background Image" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="form-section">
+            <h1>Welcome!</h1>
+            <p style="color:red" th:if="${signupfail}" th:text="${signupfail}"></p>
+            <form method="post" action="/signup">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="Email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="Password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender identification (exception)</label>
+                    <input type="text" id="gender" name="Gender_Identity" placeholder="Let us know if you'd like to clarify your gender or orientation, and your pronoun">
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="readGuidelines"> I have read the community guidelines.</label>
+                    <label><input type="checkbox" name="understoodGuidelines"> Community guidelines (understood)</label>
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="acceptTerms" required> I accept the Terms of Service.</label>
+                    <p>By registering, you agree to the privacy policy and terms of service.</p>
+                </div>
+                <button class="btn" type="submit">Sign Up</button>
+            </form>
+            <div class="login-link">
+                Already have an account? <a href="/login">Log in</a>
+            </div>
+        </div>
+    </div>
+    <script src="/JS/SignupPage.js"></script>
+</body>
+</html>
