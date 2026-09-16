@@ -4,6 +4,7 @@ import io.virinchi.dhammanature.model.Gallery;
 import io.virinchi.dhammanature.repository.GalleryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,8 +18,20 @@ public class GalleryService {
         return galleryRepository.findAll();
     }
 
-    public Gallery add(String title, String imageUrl, String description) {
+    public Gallery add(String title, byte[] imageData, String imageContentType, String description) {
         return galleryRepository.save(Gallery.builder()
-                .title(title).imageUrl(imageUrl).description(description).build());
+                .title(title).imageData(imageData).imageContentType(imageContentType).description(description)
+                .imageUrl("").build());
+    }
+
+    /** Creates a bare gallery entry (no image) from the public REST API (POST /api/gallery). */
+    public Gallery createFromApi(String title, String description) {
+        return galleryRepository.save(Gallery.builder()
+                .title(title).description(description).imageUrl("").build());
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        galleryRepository.deleteById(id);
     }
 }

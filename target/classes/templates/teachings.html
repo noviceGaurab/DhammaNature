@@ -3,109 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dharma Club</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Dhamma Nature - Teachings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-	<link rel = "stylesheet" href = "/css/sermon1.css">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; line-height: 1.6; background: #f9fafb; }
+        .teach-main { max-width: 1200px; margin: 0 auto; padding: 50px 24px 20px; }
+        .section-hero { text-align: center; margin-bottom: 44px; }
+        .section-hero h1 { font-size: 40px; color: #005c15; }
+        .section-hero p { color: #666; font-size: 17px; max-width: 640px; margin: 10px auto 0; }
+        .accent-line { width: 70px; height: 4px; background: #008000; border: none; margin: 18px auto 0; border-radius: 2px; }
+        /* Intro pills */
+        .intro-pills { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+        .pill { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #eee; border-radius: 30px; padding: 10px 20px; box-shadow: 0 2px 8px rgba(0,0,0,.04); font-size: 14px; color: #555; }
+        .pill i { color: #008000; font-size: 18px; }
+        .pill strong { color: #333; }
+        /* Featured teaching */
+        .featured-teach { display: grid; grid-template-columns: 1.2fr 1fr; gap: 0; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.1); margin-bottom: 34px; }
+        .featured-teach .ft-img { width: 100%; height: 100%; min-height: 360px; object-fit: cover; display: block; }
+        .featured-teach .ft-body { padding: 34px 36px; display: flex; flex-direction: column; justify-content: center; }
+        .chip { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; background: #e6f4ea; color: #008000; margin-bottom: 14px; width: fit-content; }
+        .ft-body .ft-meta { font-size: 13px; color: #999; margin-bottom: 10px; }
+        .ft-body h2 { font-size: 26px; color: #333; line-height: 1.3; margin-bottom: 12px; }
+        .ft-body h3.sub { font-size: 15px; color: #666; font-weight: 700; margin-bottom: 6px; }
+        .ft-body p { color: #666; font-size: 14px; margin-bottom: 14px; line-height: 1.65; }
+        .ft-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+        .ft-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 26px; font-weight: 700; font-size: 14px; text-decoration: none; transition: all .2s; }
+        .ft-btn.primary { background: #008000; color: #fff; }
+        .ft-btn.primary:hover { background: #006015; transform: translateY(-2px); }
+        .ft-btn.secondary { background: #f5f5f5; color: #555; }
+        .ft-btn.secondary:hover { background: #e8e8e8; }
+        /* Sidebar layout */
+        .teach-layout { display: grid; grid-template-columns: 2.2fr 1fr; gap: 34px; align-items: start; }
+        .t-side { display: flex; flex-direction: column; gap: 22px; }
+        .tw { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        .tw h3 { font-size: 17px; color: #333; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #008000; }
+        .tw p { font-size: 14px; color: #666; margin-bottom: 12px; }
+        .dl-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .dl-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border: 2px solid #e8e8e8; border-radius: 10px; font-weight: 700; font-size: 13px; color: #555; cursor: pointer; background: #fff; transition: all .2s; }
+        .dl-btn:hover { border-color: #008000; color: #008000; }
+        .share-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .share-btn { padding: 9px 16px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 13px; font-weight: 700; color: #555; cursor: pointer; background: #fff; transition: all .2s; }
+        .share-btn:hover { border-color: #008000; color: #008000; }
+        .share-btn i { margin-right: 5px; }
+        /* Toolbar (categories + search) */
+        .cat-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 14px 18px; box-shadow: 0 4px 12px rgba(0,0,0,.04); }
+        .ct-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+        .ct-tab { padding: 8px 16px; border: 2px solid #e8e8e8; background: #fff; border-radius: 24px; cursor: pointer; font-weight: 700; font-size: 13px; color: #555; transition: all .2s; }
+        .ct-tab:hover { border-color: #008000; color: #008000; }
+        .ct-tab.active { background: #008000; border-color: #008000; color: #fff; }
+        .ct-search { display: flex; align-items: center; gap: 8px; background: #f5f5f5; border-radius: 24px; padding: 0 16px; }
+        .ct-search i { color: #aaa; }
+        .ct-search input { border: none; outline: none; background: transparent; padding: 10px 0; font-size: 14px; min-width: 200px; }
+        /* Teaching cards grid */
+        .t-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-bottom: 40px; }
+        .t-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.05); transition: transform .3s, box-shadow .3s; display: flex; flex-direction: column; }
+        .t-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+        .t-card img { width: 100%; height: 180px; object-fit: cover; }
+        .tc-body { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
+        .tc-body .tc-meta { font-size: 12px; color: #999; margin-bottom: 8px; }
+        .tc-body h3 { font-size: 18px; color: #333; margin-bottom: 6px; line-height: 1.3; }
+        .tc-body .tc-author { font-size: 13px; color: #008000; margin-bottom: 6px; }
+        .tc-body p { font-size: 14px; color: #666; flex-grow: 1; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .tc-body a.tc-link { display: inline-flex; align-items: center; gap: 6px; color: #008000; font-weight: 700; font-size: 14px; text-decoration: none; }
+        .tc-body a.tc-link:hover { text-decoration: underline; }
+        .empty-msg { padding: 30px; text-align: center; color: #888; font-size: 15px; background: #fff; border-radius: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.05); margin-bottom: 30px; }
+        /* Steps section */
+        .steps-section { margin-top: 10px; margin-bottom: 36px; }
+        .steps-head { text-align: center; margin-bottom: 30px; }
+        .steps-head h2 { font-size: 30px; color: #333; }
+        .steps-head p { color: #777; }
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+        .step-card { background: #fff; border-radius: 14px; padding: 28px 20px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.05); transition: transform .3s; }
+        .step-card:hover { transform: translateY(-4px); }
+        .step-icon { width: 58px; height: 58px; border-radius: 50%; background: #e6f4ea; color: #008000; font-size: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+        .step-card h3 { font-size: 16px; margin-bottom: 6px; }
+        .step-card p { color: #666; font-size: 13px; }
+        /* Newsletter */
+        .newsletter-section { margin-top: 20px; }
+        .newsletter-container { background: linear-gradient(120deg, #005c15, #008000); color: #fff; text-align: center; padding: 56px 24px; border-radius: 16px; }
+        .newsletter-container h2 { font-size: 30px; margin-bottom: 10px; }
+        .newsletter-container p { opacity: .92; margin-bottom: 24px; }
+        .newsletter-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .newsletter-form input { padding: 13px 18px; border: none; border-radius: 30px; min-width: 280px; font-size: 15px; outline: none; }
+        .newsletter-form button { background: #ffd700; color: #005c15; font-weight: 800; border: none; padding: 13px 28px; border-radius: 30px; cursor: pointer; font-size: 15px; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; }
+        .newsletter-form button:hover { transform: translateY(-2px); }
+        /* CTA */
+        .cta-band { background: linear-gradient(120deg, #005c15, #005c15); color: #fff; text-align: center; padding: 56px 24px; border-radius: 16px; margin-top: 20px; margin-bottom: 20px; }
+        .cta-band h2 { font-size: 30px; margin-bottom: 12px; }
+        .cta-band p { opacity: .92; margin-bottom: 24px; max-width: 580px; margin-left: auto; margin-right: auto; }
+        .cta-band .btn-gold { display: inline-block; background: #ffd700; color: #005c15; padding: 13px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; }
+        .cta-band .btn-gold:hover { transform: translateY(-2px); }
+        /* Back to top */
+        .btt { position: fixed; bottom: 20px; right: 20px; background: #008000; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.3); font-size: 18px; z-index: 1000; }
+        .btt:hover { background: #006015; transform: scale(1.1); }
+        /* Footer (home style) */
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) {
+            .featured-teach { grid-template-columns: 1fr; }
+            .featured-teach .ft-img { height: 300px; min-height: auto; }
+            .teach-layout { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr 1fr; }
+            .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .part1, .part2, .part3 { padding-left: 0; }
+            .copyright { flex-direction: column; padding: 20px 0; text-align: center; }
+            .copyright-sub { flex-direction: column; gap: 10px; padding: 0; }
+        }
+        @media (max-width: 576px) {
+            .section-hero h1 { font-size: 30px; }
+            .steps { grid-template-columns: 1fr; }
+            .t-grid { grid-template-columns: 1fr; }
+            .part1-desc { width: auto; }
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="header-img" id="hero">
-        	<img src = "assets/images/pexels-tkirkgoz-15277853.jpg"/>
+            <img src="/assets/images/pexels-pexels-user-1493533273-27021625.jpg" alt="Teachings">
             <div class="hero">
-                <h2> TEACHINGS</h2>
-            </div>
-            <div class="line-container">
-                <hr class="white-line">
-            </div>
-            <div class="header-top">
-                <p class="location">
-                    <i class="fas fa-map-marker-alt"></i> 203 Fake St. Mountain View, San Francisco, California, USA
-                </p>
-                <div class="social-media">
-                    <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span>
-                    </a>
-                    <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-twitter"></i><span class="sr-only">Twitter</span>
-                    </a>
-                    <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-instagram"></i><span class="sr-only">Instagram</span>
-                    </a>
-                </div>
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">TEACHINGS</h1>
+                <p>Read, listen and download the teachings of the Buddha and our guiding monks</p>
             </div>
             <div class="header-main">
-                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <a href="#sermons" class="nav-link">Sermons</a>
-                    <a href="/events" class="nav-link">Events</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown">
+                        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+                        <div class="dropdown-content">
+                            <a href="/upcoming-sermons">Upcoming Sermons</a>
+                            <a href="/teachings">Teachings</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/events" class="nav-link">Events</a>
+                        <div class="dropdown-content">
+                            <a href="/events">Upcoming Events</a>
+                            <a href="/centers">Meditation Centers</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/marketplace" class="nav-link">Explore</a>
+                        <div class="dropdown-content">
+                            <a href="/marketplace">Marketplace</a>
+                            <a href="/gallery">Gallery</a>
+                            <a href="/quiz">Quizzes</a>
+                            <a href="/rewards">Rewards</a>
+                            <a href="/volunteer">Volunteer</a>
+                            <a href="/charity">Charity</a>
+                            <a href="/community">Community</a>
+                            <a href="/discuss">Discuss</a>
+                        </div>
+                    </div>
                     <a href="/blog" class="nav-link">Blog</a>
-                    <a href="/contact" class="nav-link">Contact</a>
-                    <a href="#" class="nav-link">Discuss</a>
-                    <a href="/donate" class="nav-link donate-btn">Donate</a>
-                </nav>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
                 <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
             </div>
         </div>
     </header>
-    <main>
-        <div class="nav-container">
-            <div class="nav-buttons">
-                <button><i class="fas fa-hand-holding-heart"></i> Keep calm! Practice Dhamma Silently like self.</button>
-                <button><i class="fas fa-clock"></i> Latest</button>
-                <button><i class="fas fa-fire"></i> Hot topic</button>
-            </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search by title or author">
-                <i class="fas fa-search search-icon"></i>
-            </div>
+    <main class="teach-main">
+        <div class="section-hero">
+            <h1>Explore the Teachings</h1>
+            <p>Practical guidance on meditation, dhamma study and everyday practice from the Theravada tradition.</p>
+            <hr class="accent-line">
         </div>
-        <div class="content">
-            <div class="left-column">
-                <div class="article-container">
-                    <div class="book-image">
-                        <img src="/assets/images/pexels-ron-lach-10461522.jpg" alt="Leaf">
-                    </div>
-                    <div class="article">
-                        <h2>FIVE AGGREGATES SERIES</h2>
-                        <p>By Ajahn Brahm bikkhu | 09/07/2024</p>
-                        <h3>Synopsis</h3>
-                        <p>LIFE. I’m nobody! Who are you? Are you nobody, too? There’s a pair of us — don’t tell! They’d banish us, you know. How dreary to be somebody! How public, like a frog To tell your name the livelong day To an admiring bog! II. I bring an unaccustomed wine To lips long parching, next to mine, And summon them to drink. Crackling with fever, they essay; I turn my brimming eyes away, And come next hour to look. The hands still hug the tardy glass; The lips would have cooled, alas! Are so superfluous cold, I would as soon to warm The bosoms where the frost has lain Ages beneath the mould.</p>
-                        <p>Additional content to extend the box: The journey of self-discovery is a path filled with introspection and mindfulness. Each step brings new insights into the nature of existence. The teachings of the Five Aggregates help us understand the impermanence of form, sensation, perception, mental formations, and consciousness. By meditating on these, we can achieve a deeper peace. The ancient texts remind us to let go of attachments and embrace the present moment with clarity. Further exploration reveals the interconnectedness of all things, guiding us toward enlightenment with patience and practice.</p>
-                    </div>
-                </div>
-                <div class="button-group">
-                    <button><i class="fas fa-book-open"></i> Read now</button>
-                    <button><i class="fas fa-headphones"></i> Listen audio</button>
-                    <button><i class="fas fa-comments"></i> Discuss</button>
+        <div class="intro-pills">
+            <div class="pill"><i class="fas fa-book-open"></i> <strong>Read</strong>&nbsp;full texts</div>
+            <div class="pill"><i class="fas fa-headphones"></i> <strong>Listen</strong>&nbsp;audio talks</div>
+            <div class="pill"><i class="fas fa-download"></i> <strong>Download</strong>&nbsp;PDFs &amp; files</div>
+            <div class="pill"><i class="fas fa-comments"></i> <strong>Discuss</strong>&nbsp;with community</div>
+        </div>
+        <!-- Featured teaching -->
+        <section class="featured-teach">
+            <img class="ft-img" src="/assets/images/pexels-ron-lach-10461522.jpg" alt="Five Aggregates Series">
+            <div class="ft-body">
+                <span class="chip">Featured teaching</span>
+                <div class="ft-meta"><i class="far fa-calendar-alt"></i> 09 Jul, 2024 &nbsp;&nbsp;|&nbsp;&nbsp; <i class="fas fa-user"></i> Ajahn Brahm Bhikkhu</div>
+                <h2>FIVE AGGREGATES SERIES</h2>
+                <h3 class="sub">Synopsis</h3>
+                <p>LIFE. I'm nobody! Who are you? Are you nobody, too? There's a pair of us - don't tell! They'd banish us, you know. How dreary to be somebody!</p>
+                <p>The journey of self-discovery is a path filled with introspection and mindfulness. Each step brings new insights into the nature of existence. The teachings of the Five Aggregates help us understand the impermanence of form, sensation, perception, mental formations and consciousness.</p>
+                <div class="ft-btns">
+                    <a href="/teachings/detail" class="ft-btn primary"><i class="fas fa-book-open"></i> Read now</a>
+                    <a href="#" class="ft-btn secondary"><i class="fas fa-headphones"></i> Listen audio</a>
+                    <a href="/discuss" class="ft-btn secondary"><i class="fas fa-comments"></i> Discuss</a>
                 </div>
             </div>
-            <div class="right-column">
-                <div class="download-section">
-                    <h3>Free Download</h3>
-                    <div class="download-buttons">
-                        <button><i class="fas fa-file-pdf"></i> PDF</button>
-                        <button><i class="fas fa-file-audio"></i> Audio file</button>
+        </section>
+        <div class="teach-layout">
+            <section>
+                <!-- Category toolbar + search -->
+                <div class="cat-toolbar">
+                    <div class="ct-tabs">
+                        <button class="ct-tab active" data-f="all">All</button>
+                        <button class="ct-tab" data-f="aggregates">Five Aggregates</button>
+                        <button class="ct-tab" data-f="mindfulness">Mindfulness</button>
+                        <button class="ct-tab" data-f="lovingkindness">Loving-Kindness</button>
+                        <button class="ct-tab" data-f="noblepath">Noble Path</button>
+                    </div>
+                    <div class="ct-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="teachSearch" placeholder="Search by title or author...">
                     </div>
                 </div>
-                <div class="download-section">
-                    <h3>How to download ?</h3>
-                    <button class="instruction-button">Instructions</button>
-                </div>
-                <div class="download-section">
-                    <h3>Share</h3>
-                    <div class="share-buttons">
-                        <button>Facebook</button>
-                        <button>Twitter</button>
-                        <button>Email</button>
+                <div class="t-grid" id="teachGrid">
+                    <div class="t-card" data-cat="aggregates">
+                        <img src="/assets/images/pexels-ron-lach-10461522.jpg" alt="The Five Aggregates">
+                        <div class="tc-body">
+                            <span class="chip">Aggregates</span>
+                            <div class="tc-meta">09 Jul, 2024 &nbsp;|&nbsp; 18 min read</div>
+                            <h3>The Five Aggregates</h3>
+                            <div class="tc-author">Ajahn Brahm Bhikkhu</div>
+                            <p>Understanding form, sensation, perception, mental formations and consciousness as the building blocks of experience.</p>
+                            <a href="/teachings/detail" class="tc-link">Read teaching <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="t-card" data-cat="mindfulness">
+                        <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Mindfulness in Daily Life">
+                        <div class="tc-body">
+                            <span class="chip">Mindfulness</span>
+                            <div class="tc-meta">05 May, 2025 &nbsp;|&nbsp; 12 min read</div>
+                            <h3>Mindfulness in Daily Life</h3>
+                            <div class="tc-author">Ajahn Thanissaro</div>
+                            <p>Practical techniques to carry awareness into every moment of the day - from eating to walking to conversation.</p>
+                            <a href="/teachings/detail" class="tc-link">Read teaching <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="t-card" data-cat="lovingkindness">
+                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="The Heart of Metta">
+                        <div class="tc-body">
+                            <span class="chip">Loving-Kindness</span>
+                            <div class="tc-meta">18 Apr, 2025 &nbsp;|&nbsp; 15 min read</div>
+                            <h3>The Heart of Metta</h3>
+                            <div class="tc-author">Ajahn Brahm</div>
+                            <p>How loving-kindness meditation opens the door to genuine compassion and transforms our relationship with suffering.</p>
+                            <a href="/teachings/detail" class="tc-link">Read teaching <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="t-card" data-cat="noblepath">
+                        <img src="/assets/images/pexels-tkirkgoz-13047288.jpg" alt="Walking the Noble Path">
+                        <div class="tc-body">
+                            <span class="chip">Noble Path</span>
+                            <div class="tc-meta">24 Mar, 2025 &nbsp;|&nbsp; 20 min read</div>
+                            <h3>Walking the Noble Path</h3>
+                            <div class="tc-author">Bhikkhu Thanissaro</div>
+                            <p>A clear guide to the Eightfold Path and how each factor supports the others on the journey to liberation.</p>
+                            <a href="/teachings/detail" class="tc-link">Read teaching <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="t-card" data-cat="mindfulness">
+                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="The Breath as Anchor">
+                        <div class="tc-body">
+                            <span class="chip">Mindfulness</span>
+                            <div class="tc-meta">14 Mar, 2025 &nbsp;|&nbsp; 10 min read</div>
+                            <h3>The Breath as Anchor</h3>
+                            <div class="tc-author">Ajahn Brahm</div>
+                            <p>Using the breath as a constant anchor to stabilise the mind and settle into stillness during meditation.</p>
+                            <a href="/teachings/detail" class="tc-link">Read teaching <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="t-card" data-cat="lovingkindness">
+                        <img src="/assets/images/pexels-nishantaneja-2381616.jpg" alt="Compassion Without Burnout">
+                        <div class="tc-body">
+                            <span class="chip">Loving-Kindness</span>
+                            <div class="tc-meta">28 Feb, 2025 &nbsp;|&nbsp; 9 min read</div>
+                            <h3>Compassion Without Burnout</h3>
+                            <div class="tc-author">Ajahn Thanissaro</div>
+                            <p>How to practise genuine compassion while protecting your own wellbeing and energy.</p>
+                            <a href="/teachings/detail" class="tc-link">Read teaching <i class="fas fa-arrow-right"></i></a>
+                        </div>
                     </div>
                 </div>
-                <p>Additional content to extend the box: Ensure you have a stable internet connection for downloads. Follow the instructions carefully to access the files. Sharing options allow you to spread these teachings with others. The process is simple and user-friendly, designed for ease of use. Regular updates ensure the content remains relevant and accessible to all learners.</p>
+                <div class="empty-msg" id="teachEmpty" style="display:none;">No teachings match your search. Try a different keyword or category.</div>
+            </section>
+            <aside class="t-side">
+                <div class="tw">
+                    <h3>Download</h3>
+                    <p>Save teachings for offline study. Available formats:</p>
+                    <div class="dl-btns">
+                        <button class="dl-btn"><i class="fas fa-file-pdf"></i> PDF</button>
+                        <button class="dl-btn"><i class="fas fa-file-audio"></i> Audio</button>
+                    </div>
+                </div>
+                <div class="tw">
+                    <h3>How to download</h3>
+                    <p>Ensure you have a stable internet connection for downloads. Follow the instructions below to access the files.</p>
+                    <button class="dl-btn"><i class="fas fa-info-circle"></i> Instructions</button>
+                </div>
+                <div class="tw">
+                    <h3>Share this teaching</h3>
+                    <div class="share-btns">
+                        <button class="share-btn"><i class="fab fa-facebook-f"></i> Facebook</button>
+                        <button class="share-btn"><i class="fab fa-twitter"></i> Twitter</button>
+                        <button class="share-btn"><i class="fas fa-envelope"></i> Email</button>
+                    </div>
+                </div>
+                <div class="tw">
+                    <h3>Listen to sermons</h3>
+                    <p>Prefer to hear the dhamma spoken aloud? Join a live session or explore the recording archive.</p>
+                    <a href="/upcoming-sermons" class="dl-btn" style="text-decoration:none;"><i class="fas fa-play-circle"></i> View sermons</a>
+                </div>
+            </aside>
+        </div>
+        <!-- How to make a teaching your own -->
+        <section class="steps-section">
+            <div class="steps-head">
+                <h2>How to make a teaching your own</h2>
+                <p>Reading is only the beginning. Here is how to carry the dhamma from the page into practice.</p>
             </div>
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-book-reader"></i></div>
+                    <h3>Listen once</h3>
+                    <p>Read or listen without trying to memorise. Let the words wash over you like a gentle stream.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Reflect</h3>
+                    <p>Return to the passages that stayed with you. What does the teaching ask of you in this moment?</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-om"></i></div>
+                    <h3>Practise</h3>
+                    <p>Choose one practice from the teaching and carry it into your next meditation session or daily task.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-users"></i></div>
+                    <h3>Discuss</h3>
+                    <p>Share what arose in practice with your community. Insight deepens when it is spoken aloud.</p>
+                </div>
+            </div>
+        </section>
+<!-- Newsletter -->
+        <div class="cta-band">
+            <h2>Deepen your practice with a live retreat</h2>
+            <p>Combine study with practice. Join an upcoming event at a meditation centre near you or online.</p>
+            <a href="/events" class="btn-gold">View upcoming events</a>
         </div>
     </main>
     <div class="footer">
@@ -118,34 +381,97 @@
         <div class="part2">
             <h2>QUICK LINKS</h2>
             <div class="part2-desc">
-                <h4><i class="fas fa-home"></i> <a href="/">Home</a></h4>
-                <h4><i class="fas fa-info-circle"></i> <a href="#about">About</a></h4>
-                <h4><i class="fas fa-pray"></i> <a href="#sermons">Sermons</a></h4>
-                <h4><i class="fas fa-calendar"></i> <a href="/events">Events</a></h4>
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="/about">About</a></h4>
+                <h4><a href="/upcoming-sermons">Sermons</a></h4>
+                <h4><a href="/events">Events</a></h4>
+                <h4><a href="/centers">Centers</a></h4>
+                <h4><a href="/marketplace">Marketplace</a></h4>
+                <h4><a href="/gallery">Gallery</a></h4>
+                <h4><a href="/quiz">Quizzes</a></h4>
+                <h4><a href="/rewards">Rewards</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="/blog">Blog</a></h4>
+                <h4><a href="/discuss">Discuss</a></h4>
+                <h4><a href="/contact">Contact</a></h4>
+                <h4><a href="/profile">My Profile</a></h4>
             </div>
         </div>
-        <div class="part3">
-            <h2>HAVE A QUESTION?</h2>
-            <div class="part3-desc">
-                <h4><i class="fas fa-map-marker-alt"></i> 203 Fake St. Mountain View, San Francisco, California, USA</h4>
-                <h4><i class="fas fa-phone"></i> +977 97820099</h4>
-                <h4><i class="fas fa-envelope"></i> info@gmail.com</h4>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
             </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
         </div>
     </div>
-    <div class="footer-sec2">
-        <div class="line">
-            <hr class="white-line-footer">
-        </div>
-        <div class="copyright">
-            <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
-            <div class="copyright-sub">
-                <h4><i class="fas fa-file-alt"></i> <a href="#terms">Terms & Conditions</a></h4>
-                <h4><i class="fas fa-shield-alt"></i> <a href="#privacy">Privacy Policy</a></h4>
-                <h4><i class="fas fa-undo"></i> <a href="#refund">Cancellation & Refund Policy</a></h4>
-            </div>
-        </div>
     </div>
-    <script src="/JS/sermon1.js"></script>
+
+    <button class="btt" id="btt" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+    <script>
+        (function () {
+            // Hamburger
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars', !(open && open.classList.contains('active')));
+                            icon.classList.toggle('fa-times', open && open.classList.contains('active'));
+                        }
+                    }, 0);
+                });
+            }
+            // Category filter + search
+            var tabs = document.querySelectorAll('.ct-tab');
+            var cards = document.querySelectorAll('.t-card');
+            var searchEl = document.getElementById('teachSearch');
+            var emptyEl = document.getElementById('teachEmpty');
+            function applyFilter() {
+                var activeTab = document.querySelector('.ct-tab.active');
+                var f = activeTab ? activeTab.getAttribute('data-f') : 'all';
+                var q = searchEl ? searchEl.value.toLowerCase() : '';
+                var anyVisible = false;
+                cards.forEach(function (c) {
+                    var matchF = f === 'all' || c.getAttribute('data-cat') === f;
+                    var matchQ = !q || c.textContent.toLowerCase().indexOf(q) > -1;
+                    var show = matchF && matchQ;
+                    c.style.display = show ? '' : 'none';
+                    if (show) anyVisible = true;
+                });
+                if (emptyEl) emptyEl.style.display = anyVisible ? 'none' : 'block';
+            }
+            tabs.forEach(function (t) {
+                t.addEventListener('click', function () {
+                    tabs.forEach(function (x) { x.classList.remove('active'); });
+                    t.classList.add('active');
+                    applyFilter();
+                });
+            });
+            if (searchEl) searchEl.addEventListener('input', applyFilter);
+            // Back to top
+            var btt = document.getElementById('btt');
+            window.addEventListener('scroll', function () {
+                btt.style.display = window.pageYOffset > 300 ? 'flex' : 'none';
+            });
+            btt.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        })();
+    </script>
 </body>
 </html>

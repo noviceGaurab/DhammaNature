@@ -5,6 +5,7 @@ import io.virinchi.dhammanature.model.MeditationCenter;
 import io.virinchi.dhammanature.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,5 +37,14 @@ public class EventService {
 
     public List<Event> forCenter(Integer centerId) {
         return eventRepository.findByMeditationCenter_IdOrderByEventDateAsc(centerId);
+    }
+
+    /** Removes the event and its participant bookings (orphanRemoval on Event.bookings). */
+    @Transactional
+    public void delete(Integer id) {
+        if (!eventRepository.existsById(id)) {
+            throw new NoSuchElementException("Event not found");
+        }
+        eventRepository.deleteById(id);
     }
 }

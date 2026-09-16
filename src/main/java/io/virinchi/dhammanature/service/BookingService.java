@@ -54,11 +54,32 @@ public class BookingService {
         return booking;
     }
 
+    public Booking get(Integer id) {
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Booking not found"));
+    }
+
     public List<Booking> forUser(Integer userId) {
         return bookingRepository.findByUser_IdOrderByBookingDateDesc(userId);
     }
 
     public List<Booking> forEvent(Integer eventId) {
         return bookingRepository.findByEvent_Id(eventId);
+    }
+
+    @Transactional
+    public void cancel(User user, Integer bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NoSuchElementException("Booking not found"));
+        if (!booking.getUser().getId().equals(user.getId())) {
+            throw new IllegalStateException("You do not have permission to modify this booking.");
+        }
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            throw new IllegalStateException("This booking has already been cancelled.");
+        }
+        if (booking.getStatus() == BookingStatus.COMPLETED) {
+            throw new IllegalStateException("This booking has already been completed and cannot be cancelled.");
+        }
+        booking.setStatus(BookingStatus.CANCELLED);
     }
 }

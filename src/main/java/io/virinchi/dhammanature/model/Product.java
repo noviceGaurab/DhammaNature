@@ -1,5 +1,7 @@
 package io.virinchi.dhammanature.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.virinchi.dhammanature.model.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "product")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-@ToString(exclude = {"vendor", "reviews"})
+@ToString(exclude = {"vendor", "reviews", "imageData"})
 @EqualsAndHashCode(of = "id")
 public class Product {
 
@@ -25,6 +27,9 @@ public class Product {
     @Column(length = 2000)
     private String description;
 
+    /** Optional genre/topic (e.g. "Guided Meditation", "Sutta Commentary") for books & audio. */
+    private String genre;
+
     @Column(nullable = false)
     private BigDecimal price;
 
@@ -32,6 +37,19 @@ public class Product {
     private int stockQuantity = 0;
 
     private String imageUrl;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    @JsonIgnore
+    private byte[] imageData;
+
+    @JsonIgnore
+    private String imageContentType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private ProductCategory category = ProductCategory.HANDICRAFTS;
 
     /** Marketplace products must belong to verified vendors (Business Rule 6). */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

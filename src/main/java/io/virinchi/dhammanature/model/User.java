@@ -46,6 +46,15 @@ public class User {
     /** Kept as free text, matching the original Signup form's "clarify gender/pronoun" field. */
     private String genderIdentity;
 
+    /** Filename of the user's profile photo, stored under /uploads. */
+    private String profileImage;
+
+    /** Short personal description shown to other participants in the discuss section. */
+    private String bio;
+
+    /** Tracks the last moment the user was active; powers the "AFK / the community misses you" nudges. */
+    private LocalDateTime lastSeenAt;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Role role = Role.USER;

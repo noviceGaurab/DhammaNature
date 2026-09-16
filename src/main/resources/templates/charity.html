@@ -5,31 +5,342 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Dhamma Nature - Charity Campaigns</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
     <style>
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; padding: 60px 8%; }
-        .card { border: 1px solid #eee; border-radius: 10px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
-        .progress-track { background:#eee; border-radius: 8px; height: 10px; overflow:hidden; margin: 10px 0; }
-        .progress-fill { background:#233c9b; height:100%; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; line-height: 1.6; }
+        .charity-main { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .msg-err { color:#7e211d; background:#fdecea; padding:10px 14px; border-radius:6px; margin-bottom:20px; }
+        /* Section helpers */
+        .section-head { text-align:center; margin-bottom: 40px; }
+        .section-head h2 { font-size: 34px; color: #333; margin-bottom: 8px; }
+        .section-head p { color: #777; max-width: 640px; margin: 0 auto; }
+        .accent-line { width: 70px; height: 4px; background: #ffd700; border: none; margin: 16px auto 0; border-radius: 2px; }
+        /* Intro */
+        .intro { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; }
+        .intro h2 { font-size: 38px; color: #006015; margin-bottom: 16px; line-height: 1.2; }
+        .intro p { color: #555; font-size: 17px; margin-bottom: 22px; }
+        .intro .btn { display:inline-block; background:#006015; color:#fff; padding: 13px 30px; border-radius: 30px; text-decoration: none; font-weight: 700; transition: background .3s, transform .3s; }
+        .intro .btn:hover { background:#008000; transform: translateY(-2px); }
+        .intro .btn.outline { background: transparent; color: #006015; border: 2px solid #006015; margin-left: 10px; }
+        .intro .btn.outline:hover { background:#006015; color:#fff; }
+        .stats-card { background: linear-gradient(135deg, #065b0b, #008000); border-radius: 14px; color: #fff; padding: 34px 26px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; text-align: center; box-shadow: 0 8px 24px rgba(0,96,21,.25); }
+        .stats-card .num { font-size: 32px; font-weight: 800; }
+        .stats-card .lbl { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: .9; }
+        .stats-card .pipe { border-left: 1px solid rgba(255,255,255,.35); }
+        /* Campaign cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 26px; }
+        .card { background:#fff; border: 1px solid #eee; border-radius: 14px; padding: 24px; box-shadow: 0 4px 14px rgba(0,0,0,.06); display: flex; flex-direction: column; transition: transform .3s, box-shadow .3s; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.12); }
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .center-name { font-size: 13px; color: #006015; font-weight: 700; }
+        .center-name i { margin-right: 5px; }
+        .days-left { font-size: 12px; background: #e6f4ea; color: #006015; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+        .card h3 { font-size: 21px; color: #333; margin-bottom: 8px; }
+        .card-desc { color: #666; font-size: 14px; flex-grow: 1; margin-bottom: 16px; }
+        .progress { background: #eee; border-radius: 20px; height: 12px; overflow: visible; position: relative; margin-bottom: 8px; }
+        .progress-fill { background: linear-gradient(90deg, #006015, #006015); height: 100%; border-radius: 20px; }
+        .progress-lbl { font-size: 13px; color: #006015; font-weight: 700; }
+        .amounts { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 16px; color: #555; }
+        .amounts .raised { font-weight: 800; color: #006015; }
+        .btn-donate { display: block; text-align: center; background: #006015; color: #fff; padding: 12px; border-radius: 30px; text-decoration: none; font-weight: 700; transition: background .3s; }
+        .btn-donate:hover { background: #008000; }
+        .btn-donate i { margin-left: 6px; }
+        /* Ways to give */
+        .ways-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+        .way-card { background:#fff; border:1px solid #eee; border-radius: 14px; padding: 30px 24px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06); transition: transform .3s; }
+        .way-card:hover { transform: translateY(-4px); }
+        .way-icon { width: 70px; height: 70px; margin: 0 auto 16px; border-radius: 50%; background: #e6f4ea; color: #006015; font-size: 28px; display: flex; align-items: center; justify-content: center; }
+        .way-card h3 { font-size: 20px; color: #333; margin-bottom: 8px; }
+        .way-card p { color: #666; font-size: 14px; }
+        .way-card a { color: #006015; font-weight: 700; text-decoration: none; }
+        .way-card a:hover { text-decoration: underline; }
+        /* How it helps */
+        .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+        .step { background: #fff; border-radius: 14px; border: 1px solid #eee; padding: 26px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        .step .step-num { font-size: 40px; font-weight: 800; color: #ffd700; }
+        .step h3 { margin: 6px 0; font-size: 18px; }
+        .step p { color: #666; font-size: 14px; }
+        /* CTA */
+        .cta { margin-top: 60px; background: linear-gradient(135deg, #065b0b, #008000); color: #fff; text-align: center; padding: 60px 24px; border-radius: 14px; }
+        .cta h2 { font-size: 32px; margin-bottom: 10px; }
+        .cta p { opacity: .9; margin-bottom: 24px; max-width: 560px; margin-left:auto; margin-right:auto; }
+        .cta .btn { display:inline-block; background: #ffd700; color: #333; padding: 13px 32px; border-radius: 30px; font-weight: 700; text-decoration: none; transition: transform .3s, background .3s; }
+        .cta .btn:hover { transform: translateY(-2px); background: #ffd700; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #777; }
+        /* Footer */
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background-color: #000; color: #fff; font-family: 'Lato', Arial, sans-serif; }
+        .footer-sec2 { display: flex; flex-direction: column; background-color: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) {
+            .intro { grid-template-columns: 1fr; }
+            .ways-grid, .how-steps { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .part1, .part2, .part3 { padding-left: 0; }
+            .copyright { flex-direction: column; padding: 20px 0; text-align: center; }
+            .copyright-sub { flex-direction: column; gap: 10px; padding: 0; }
+        }
+        @media (max-width: 576px) {
+            .stats-card { grid-template-columns: 1fr; }
+            .stats-card .pipe { border-left: none; border-top: 1px solid rgba(255,255,255,.35); padding-top: 10px; }
+            .part1-desc { width: auto; }
+        }
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: siteHeader('CHARITY CAMPAIGNS', 'NFR-05: requested directly by the visitors interviewed at Ashok Stupa')}"></div>
-<main>
-    <p style="padding: 30px 8% 0;" th:if="${#lists.isEmpty(campaigns)}">No active campaigns right now.</p>
-    <div class="grid">
-        <div class="card" th:each="c : ${campaigns}">
-            <h3 th:text="${c.title}">Campaign</h3>
-            <p th:text="${c.description}">Description</p>
-            <div class="progress-track">
-                <div class="progress-fill"
-                     th:style="'width:' + ${c.goalAmount.compareTo(T(java.math.BigDecimal).ZERO) > 0 ? (c.raisedAmount.divide(c.goalAmount, 2, T(java.math.RoundingMode).HALF_UP).multiply(T(java.math.BigDecimal).valueOf(100))) : 0} + '%'"></div>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">CHARITY CAMPAIGNS</h1>
+                <p>Give with a generous heart - your kindness reaches those who need it most</p>
             </div>
-            <p><span th:text="${c.raisedAmount}"></span> raised of <span th:text="${c.goalAmount}"></span> goal</p>
-            <p><small th:text="${c.meditationCenter.name}"></small></p>
-            <a th:href="@{/donate(campaignId=${c.id})}" class="btn btn-primary">Donate to this campaign</a>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown">
+                        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+                        <div class="dropdown-content">
+                            <a href="/upcoming-sermons">Upcoming Sermons</a>
+                            <a href="/teachings">Teachings</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/events" class="nav-link">Events</a>
+                        <div class="dropdown-content">
+                            <a href="/events">Upcoming Events</a>
+                            <a href="/centers">Meditation Centers</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/marketplace" class="nav-link">Explore</a>
+                        <div class="dropdown-content">
+                            <a href="/marketplace">Marketplace</a>
+                            <a href="/gallery">Gallery</a>
+                            <a href="/quiz">Quizzes</a>
+                            <a href="/rewards">Rewards</a>
+                            <a href="/volunteer">Volunteer</a>
+                            <a href="/charity">Charity</a>
+                            <a href="/community">Community</a>
+                            <a href="/discuss">Discuss</a>
+                        </div>
+                    </div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+    <main class="charity-main">
+        <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+        <!-- Intro -->
+        <section class="intro">
+            <div>
+                <h2>Giving with a Mind of Kindness</h2>
+                <p>
+                    Every gift, however small, carries the spirit of generosity that
+                    the Buddha praised. Support the sangha, feed a pilgrim, or help a
+                    retreat flourish - together we turn intention into benefit.
+                </p>
+                <a href="#campaigns" class="btn">Support a Campaign</a>
+                <a href="/volunteer" class="btn outline">Volunteer Instead</a>
+            </div>
+            <div class="stats-card">
+                <div>
+                    <div class="num" th:text="${campaignCount}">0</div>
+                    <div class="lbl">Active Campaigns</div>
+                </div>
+                <div class="pipe">
+                    <div class="num" th:text="${raisedTotal}">0</div>
+                    <div class="lbl">Raised</div>
+                </div>
+                <div class="pipe">
+                    <div class="num" th:text="${goalTotal}">0</div>
+                    <div class="lbl">Overall Goal</div>
+                </div>
+            </div>
+        </section>
+        <!-- Active campaigns -->
+        <section id="campaigns">
+            <div class="section-head">
+                <h2>Active Campaigns</h2>
+                <p>Choose a campaign below and make a difference today.</p>
+                <hr class="accent-line">
+            </div>
+            <p class="empty-state" th:if="${#lists.isEmpty(campaigns)}">No active campaigns right now - check back soon.</p>
+            <div class="grid">
+                <div class="card" th:each="c : ${campaigns}">
+                    <div class="card-top">
+                        <span class="center-name"><i class="fas fa-map-marker-alt"></i><span th:text="${c.meditationCenter.name}">Center</span></span>
+                        <span class="days-left" th:if="${c.daysRemaining > 0}"><i class="far fa-clock"></i> <span th:text="${c.daysRemaining}">30</span> days left</span>
+                        <span class="days-left" th:unless="${c.daysRemaining > 0}">Ended</span>
+                    </div>
+                    <h3 th:text="${c.title}">Campaign title</h3>
+                    <p class="card-desc" th:text="${c.description}">Description</p>
+                    <div class="progress">
+                        <div class="progress-fill" th:style="'width:' + ${c.progressPercent} + '%'"></div>
+                    </div>
+                    <div class="amounts">
+                        <span class="progress-lbl" th:text="${c.progressPercent} + '%'">0%</span>
+                        <span><span class="raised" th:text="${c.raisedAmount}">0</span> raised of <span th:text="${c.goalAmount}">0</span></span>
+                    </div>
+                    <a th:href="@{/donate(campaignId=${c.id})}" class="btn-donate">Donate Now <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+        <!-- Ways to give -->
+        <section style="margin-top:60px;">
+            <div class="section-head">
+                <h2>Ways to Give</h2>
+                <p>There are many paths to generosity. Choose the one that fits your sangha best.</p>
+                <hr class="accent-line">
+            </div>
+            <div class="ways-grid">
+                <div class="way-card">
+                    <div class="way-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h3>Donate Online</h3>
+                    <p>Make a one-time donation to any active campaign directly from your account.</p>
+                    <a href="#campaigns">Start donating <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="way-card">
+                    <div class="way-icon"><i class="fas fa-gift"></i></div>
+                    <h3>Sponsor a Cause</h3>
+                    <p>Redeem your reward points as a meal sponsorship or meditation grant.</p>
+                    <a href="/rewards">See rewards <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="way-card">
+                    <div class="way-icon"><i class="fas fa-hands-helping"></i></div>
+                    <h3>Volunteer Your Time</h3>
+                    <p>Time is a gift too. Join a cleaning day, plantation drive, or service event.</p>
+                    <a href="/volunteer">View opportunities <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+        <!-- How your gift helps -->
+        <section style="margin-top:70px;">
+            <div class="section-head">
+                <h2>How Your Gift Helps</h2>
+                <p>A simple giving cycle that keeps the community growing.</p>
+                <hr class="accent-line">
+            </div>
+            <div class="how-steps">
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <h3>You give</h3>
+                    <p>Funds go straight to the campaign you choose - no middlemen, full transparency.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <h3>The sangha receives</h3>
+                    <p>Centers direct support to meals, shelters, teachings, and retreat upkeep.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <h3>Merit grows</h3>
+                    <p>Every donation plants a seed of goodness that keeps giving back to the community.</p>
+                </div>
+            </div>
+        </section>
+        <!-- CTA -->
+        <section class="cta">
+            <h2>Every small gift counts</h2>
+            <p>Join the hundreds of donors already supporting Dhamma Nature's charitable work.</p>
+            <a href="#campaigns" class="btn">Donate Today</a>
+        </section>
+    </main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc">
+                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+            </div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc">
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="/about">About</a></h4>
+                <h4><a href="/upcoming-sermons">Sermons</a></h4>
+                <h4><a href="/events">Events</a></h4>
+                <h4><a href="/centers">Centers</a></h4>
+                <h4><a href="/marketplace">Marketplace</a></h4>
+                <h4><a href="/gallery">Gallery</a></h4>
+                <h4><a href="/quiz">Quizzes</a></h4>
+                <h4><a href="/rewards">Rewards</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="/blog">Blog</a></h4>
+                <h4><a href="/discuss">Discuss</a></h4>
+                <h4><a href="/contact">Contact</a></h4>
+                <h4><a href="/profile">My Profile</a></h4>
+            </div>
+        </div>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
+            </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
         </div>
     </div>
-</main>
-<div th:replace="~{fragments/footer :: siteFooter}"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars', !(open && open.classList.contains('active')));
+                            icon.classList.toggle('fa-times', open && open.classList.contains('active'));
+                        }
+                    }, 0);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

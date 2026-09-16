@@ -6,5 +6,8 @@ public enum NotificationType {
     REWARD,
     VOLUNTEER,
     ORDER,
-    SYSTEM
+    SYSTEM,
+    PRIVATE_MESSAGE,
+    DHAMMA_QUOTE,
+    NUDGE
 }

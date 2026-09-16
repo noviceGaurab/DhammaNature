@@ -474,11 +474,11 @@
         }
 
         .user-avatar {
-            background-image: url('assets/images/pexels-rdne-8710873.jpg');
+            background-image: url('/assets/images/pexels-rdne-8710873.jpg');
         }
 
         .user-avatar-2 {
-            background-image: url('assets/images/pexels-ajaybhargavguduru-939700.jpg');
+            background-image: url('/assets/images/pexels-ajaybhargavguduru-939700.jpg');
         }
 
         .user-info {

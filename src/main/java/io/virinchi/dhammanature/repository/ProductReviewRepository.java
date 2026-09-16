@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ProductReviewRepository extends JpaRepository<ProductReview, Integer> {
     List<ProductReview> findByProduct_IdOrderByCreatedAtDesc(Integer productId);
+
+    long countByProduct_Id(Integer productId);
 }

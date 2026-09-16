@@ -3,30 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dhamma Nature - Events</title>
+    <title>Dhamma Nature - Upcoming Events</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/css/home_events.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
     <style>
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; padding: 60px 8%; }
-        .card { border: 1px solid #eee; border-radius: 10px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
-        .badge { display:inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; background:#eef; color:#233c9b; margin-bottom:8px;}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; line-height: 1.6; background: #f9fafb; }
+        .events-main { max-width: 1200px; margin: 0 auto; padding: 50px 24px 20px; }
+        .section-hero { text-align: center; margin-bottom: 44px; }
+        .section-hero h1 { font-size: 40px; color: #008000; }
+        .section-hero p { color: #666; font-size: 17px; max-width: 640px; margin: 10px auto 0; }
+        .accent-line { width: 70px; height: 4px; background: #008000; border: none; margin: 18px auto 0; border-radius: 2px; }
+        /* Stats strip */
+        .stats-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 34px; }
+        .stat-box { background: #fff; border-radius: 14px; padding: 18px 30px; box-shadow: 0 4px 14px rgba(0,0,0,.06); text-align: center; min-width: 140px; }
+        .stat-box .n { font-size: 32px; font-weight: 800; color: #008000; }
+        .stat-box .l { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: #888; margin-top: 2px; }
+        /* Filter tabs */
+        .ff-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
+        .ff-tab { padding: 9px 20px; border: 2px solid #e8e8e8; background: #fff; border-radius: 24px; cursor: pointer; font-weight: 700; font-size: 13px; color: #555; transition: all .2s; box-shadow: 0 2px 8px rgba(0,0,0,.03); }
+        .ff-tab:hover { border-color: #008000; color: #008000; }
+        .ff-tab.active { background: #008000; border-color: #008000; color: #fff; }
+        .empty-msg { padding: 30px; text-align: center; color: #888; font-size: 16px; background: #fff; border-radius: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.05); margin-bottom: 40px; }
+        /* Event cards */
+        .event-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 26px; margin-bottom: 44px; }
+        .event-card { display: flex; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.06); transition: transform .3s, box-shadow .3s; }
+        .event-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+        .ev-date { background: linear-gradient(135deg, #008000, #008000); color: #fff; min-width: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 12px; }
+        .ev-date .day { font-size: 36px; font-weight: 800; line-height: 1; }
+        .ev-date .mon { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: .9; margin-top: 4px; }
+        .ev-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .ev-badges { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+        .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+        .badge-online { background: #e6f4ea; color: #008000; }
+        .badge-physical { background: #e6f4ea; color: #008000; }
+        .badge-hybrid { background: #e6f4ea; color: #006015; }
+        .badge i { font-size: 9px; }
+        .ev-body h3 { font-size: 19px; color: #333; margin-bottom: 8px; line-height: 1.3; }
+        .ev-meta { font-size: 13px; color: #777; margin-bottom: 4px; }
+        .ev-meta i { width: 16px; text-align: center; margin-right: 4px; color: #999; }
+        .ev-desc { font-size: 14px; color: #666; flex-grow: 1; margin: 10px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .ev-cap { font-size: 12px; color: #aaa; margin-bottom: 12px; }
+        .ev-book { display: inline-block; background: #008000; color: #fff; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 14px; transition: background .3s, transform .2s; align-self: flex-start; }
+        .ev-book:hover { background: #006015; transform: translateY(-2px); }
+        .ev-book i { margin-left: 6px; }
+        /* Why attend */
+        .why-section { margin-top: 20px; margin-bottom: 40px; }
+        .why-head { text-align: center; margin-bottom: 30px; }
+        .why-head h2 { font-size: 30px; color: #333; }
+        .why-head p { color: #777; }
+        .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+        .why-card { background: #fff; border-radius: 14px; padding: 30px 24px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.05); transition: transform .3s; }
+        .why-card:hover { transform: translateY(-4px); }
+        .why-icon { width: 64px; height: 64px; border-radius: 50%; background: #e6f4ea; color: #008000; font-size: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+        .why-card h3 { font-size: 18px; margin-bottom: 8px; }
+        .why-card p { color: #666; font-size: 14px; }
+        /* CTA */
+        .cta-band { background: linear-gradient(120deg, #006015, #008000); color: #fff; text-align: center; padding: 56px 24px; border-radius: 16px; margin-top: 20px; }
+        .cta-band h2 { font-size: 30px; margin-bottom: 12px; }
+        .cta-band p { opacity: .92; margin-bottom: 24px; max-width: 580px; margin-left: auto; margin-right: auto; }
+        .cta-band .btn-gold { display: inline-block; background: #ffd700; color: #006015; padding: 13px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; }
+        .cta-band .btn-gold:hover { transform: translateY(-2px); }
+        /* Footer (home style) */
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) {
+            .event-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .part1, .part2, .part3 { padding-left: 0; }
+            .copyright { flex-direction: column; padding: 20px 0; text-align: center; }
+            .copyright-sub { flex-direction: column; gap: 10px; padding: 0; }
+        }
+        @media (max-width: 576px) {
+            .event-card { flex-direction: column; }
+            .ev-date { flex-direction: row; gap: 12px; min-width: 0; padding: 14px; }
+            .ev-date .day { font-size: 28px; }
+            .section-hero h1 { font-size: 30px; }
+            .stat-box { min-width: 120px; padding: 14px 18px; }
+            .stat-box .n { font-size: 26px; }
+            .part1-desc { width: auto; }
+        }
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: siteHeader('UPCOMING EVENTS', 'FR-04: Event Management, validated by every organization interviewed')}"></div>
-<main>
-    <p style="padding: 30px 8% 0; color:#666;" th:if="${#lists.isEmpty(events)}">No upcoming events yet - check back soon.</p>
-    <div class="grid">
-        <div class="card" th:each="e : ${events}">
-            <span class="badge" th:text="${e.mode}">MODE</span>
-            <h3 th:text="${e.title}">Event title</h3>
-            <p th:text="${#temporals.format(e.eventDate, 'dd MMM yyyy, HH:mm')}">Date</p>
-            <p th:text="${e.venue}">Venue</p>
-            <p><small th:text="${e.meditationCenter.name}">Center</small></p>
-            <a th:href="@{'/events/' + ${e.id}}" class="btn btn-primary">View &amp; book</a>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Events">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">UPCOMING EVENTS</h1>
+                <p>Retreats, dhamma talks, meditation workshops and community gatherings across the globe</p>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown">
+                        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+                        <div class="dropdown-content">
+                            <a href="/upcoming-sermons">Upcoming Sermons</a>
+                            <a href="/teachings">Teachings</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/events" class="nav-link">Events</a>
+                        <div class="dropdown-content">
+                            <a href="/events">Upcoming Events</a>
+                            <a href="/centers">Meditation Centers</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/marketplace" class="nav-link">Explore</a>
+                        <div class="dropdown-content">
+                            <a href="/marketplace">Marketplace</a>
+                            <a href="/gallery">Gallery</a>
+                            <a href="/quiz">Quizzes</a>
+                            <a href="/rewards">Rewards</a>
+                            <a href="/volunteer">Volunteer</a>
+                            <a href="/charity">Charity</a>
+                            <a href="/community">Community</a>
+                            <a href="/discuss">Discuss</a>
+                        </div>
+                    </div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+    <main class="events-main">
+        <p class="msg-ok" th:if="${success}" th:text="${success}" style="max-width:1100px; margin:24px auto 0; padding:12px 16px; background:#e6f4ea; color:#006015; border-radius:8px;"></p>
+        <p class="msg-err" th:if="${error}" th:text="${error}" style="max-width:1100px; margin:20px auto 0; padding:12px 16px; background:#fdecea; color:#7e211d; border-radius:8px;"></p>
+        <div class="section-hero">
+            <h1>Join an Event</h1>
+            <p>Reserve your place at an upcoming retreat, workshop or live dhamma talk near you or online.</p>
+            <hr class="accent-line">
+        </div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="n" th:text="${eventCount}">0</div>
+                <div class="l">Upcoming</div>
+            </div>
+            <div class="stat-box">
+                <div class="n" th:text="${onlineCount}">0</div>
+                <div class="l">Online</div>
+            </div>
+            <div class="stat-box">
+                <div class="n" th:text="${physicalCount}">0</div>
+                <div class="l">In-person</div>
+            </div>
+        </div>
+        <div class="ff-tabs">
+            <button class="ff-tab active" data-f="all">All events</button>
+            <button class="ff-tab" data-f="online">Online only</button>
+            <button class="ff-tab" data-f="physical">In-person</button>
+        </div>
+        <p class="empty-msg" th:if="${#lists.isEmpty(events)}">No upcoming events yet - check back soon.</p>
+        <div class="event-grid" th:if="${!#lists.isEmpty(events)}">
+            <div class="event-card" th:each="e : ${events}"
+                 th:attr="data-mode=${e.mode != null ? #strings.toLowerCase(e.mode) : 'physical'}">
+                <div class="ev-date">
+                    <span class="day" th:text="${#temporals.format(e.eventDate,'dd')}">01</span>
+                    <span class="mon" th:text="${#temporals.format(e.eventDate,'MMM')}">Jan</span>
+                </div>
+                <div class="ev-body">
+                    <div class="ev-badges">
+                        <span class="badge badge-online" th:if="${e.mode != null and #strings.toLowerCase(e.mode) == 'online'}"><i class="fas fa-wifi"></i> Online</span>
+                        <span class="badge badge-physical" th:if="${e.mode != null and #strings.toLowerCase(e.mode) == 'physical'}"><i class="fas fa-map-pin"></i> In person</span>
+                        <span class="badge badge-hybrid" th:if="${e.mode != null and #strings.toLowerCase(e.mode) == 'hybrid'}"><i class="fas fa-check-double"></i> Hybrid</span>
+                    </div>
+                    <h3 th:text="${e.title}">Event title</h3>
+                    <div class="ev-meta"><i class="far fa-clock"></i> <span th:text="${#temporals.format(e.eventDate,'EEEE dd MMM yyyy, HH:mm')}">Date &amp; time</span></div>
+                    <div class="ev-meta"><i class="fas fa-map-marker-alt"></i> <span th:text="${e.venue}">Venue</span></div>
+                    <div class="ev-meta"><i class="fas fa-building"></i> <span th:text="${e.meditationCenter != null ? e.meditationCenter.name : ''}">Centre</span></div>
+                    <p class="ev-desc" th:if="${e.description}" th:text="${e.description}"></p>
+                    <p class="ev-cap" th:if="${e.capacity}"><i class="fas fa-users"></i> Capacity: <span th:text="${e.capacity}">0</span> places</p>
+                    <a class="ev-book" th:href="@{'/events/' + ${e.id}}">View &amp; book <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+</div>
+        <div th:replace="~{fragments/pagination :: pagination(${pageBase}, ${page}, ${totalPages})}"></div>
+        <section class="why-section">
+            <div class="why-head">
+                <h2>Why attend?</h2>
+                <p>Events are the doorway from reading about practice to actually living it.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h3>Live guidance</h3>
+                    <p>Ask questions, receive feedback and practise alongside experienced teachers in real time.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-users"></i></div>
+                    <h3>Community</h3>
+                    <p>Sangha deepens every practice. Meet fellow travellers on the path and form lasting connections.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-award"></i></div>
+                    <h3>Earn rewards</h3>
+                    <p>Each booking earns reward points that unlock discounts, resources and exclusive content.</p>
+                </div>
+            </div>
+        </section>
+        <div class="cta-band">
+            <h2>Find a meditation centre near you</h2>
+            <p>Explore our directory of partner centres and discover the programmes, retreats and communities they host.</p>
+            <a href="/centers" class="btn-gold">Browse centres</a>
+        </div>
+    </main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc">
+                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+            </div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc">
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="/about">About</a></h4>
+                <h4><a href="/upcoming-sermons">Sermons</a></h4>
+                <h4><a href="/events">Events</a></h4>
+                <h4><a href="/centers">Centers</a></h4>
+                <h4><a href="/marketplace">Marketplace</a></h4>
+                <h4><a href="/gallery">Gallery</a></h4>
+                <h4><a href="/quiz">Quizzes</a></h4>
+                <h4><a href="/rewards">Rewards</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="/blog">Blog</a></h4>
+                <h4><a href="/discuss">Discuss</a></h4>
+                <h4><a href="/contact">Contact</a></h4>
+                <h4><a href="/profile">My Profile</a></h4>
+            </div>
+        </div>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
+            </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
         </div>
     </div>
-</main>
-<div th:replace="~{fragments/footer :: siteFooter}"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars', !(open && open.classList.contains('active')));
+                            icon.classList.toggle('fa-times', open && open.classList.contains('active'));
+                        }
+                    }, 0);
+                });
+            }
+            var tabs = document.querySelectorAll('.ff-tab');
+            var cards = document.querySelectorAll('.event-card');
+            tabs.forEach(function (t) {
+                t.addEventListener('click', function () {
+                    tabs.forEach(function (x) { x.classList.remove('active'); });
+                    t.classList.add('active');
+                    var f = t.getAttribute('data-f');
+                    cards.forEach(function (c) {
+                        var mode = c.getAttribute('data-mode');
+                        c.style.display = (f === 'all' || mode === f || (f === 'physical' && mode === 'hybrid')) ? '' : 'none';
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

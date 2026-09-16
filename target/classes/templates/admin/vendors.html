@@ -1,40 +1,98 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Admin - Vendors</title>
-    <link th:replace="~{fragments/admin-nav :: bootstrapCss}" />
-    <style>
-        body { padding: 0 24px 40px; font-family: 'Roboto', sans-serif; }
-        table { border-collapse: collapse; width: 100%; }
-        td, th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
-        th { background: #f4f4f4; }
-        .badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; }
-        .badge.yes { background: #d4edda; color: #155724; }
-        .badge.no { background: #f8d7da; color: #721c24; }
-    </style>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
 </head>
-<body>
-<nav th:replace="~{fragments/admin-nav :: adminNav}"></nav>
-<h1>Marketplace Vendors</h1>
-<p>Administrators verify vendors before their products become publicly available (Business Rule 3).</p>
-<hr>
-<table>
-<tr><th>ID</th><th>Vendor</th><th>Contact</th><th>Address</th><th>Products</th><th>Verified</th><th></th></tr>
-<tr th:each="v : ${vendors}">
-    <td th:text="${v.id}"></td>
-    <td th:text="${v.vendorName}"></td>
-    <td th:text="${v.contactDetails}"></td>
-    <td th:text="${v.address}"></td>
-    <td th:text="${#lists.size(v.products)}"></td>
-    <td><span class="badge" th:classappend="${v.verified} ? 'yes' : 'no'" th:text="${v.verified} ? 'Verified' : 'Pending'"></span></td>
-    <td>
-        <form th:unless="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/verify'}">
-            <button type="submit">Approve</button>
-        </form>
-    </td>
-</tr>
-</table>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('vendors')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('Marketplace Vendors', 'Verify vendors before their products are publicly available.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Vendors</h2>
+                    <p>Review marketplace vendors and approve verified sellers.</p>
+                </div>
+            </div>
+
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h3>
+                        <i class="fa-solid fa-store"></i>
+                        Vendor Records
+                    </h3>
+                    <span class="admin-badge info" th:text="${#lists.size(vendors)} + ' vendors'">0 vendors</span>
+                </div>
+
+                <div class="admin-card-body">
+                    <div class="admin-empty" th:if="${#lists.isEmpty(vendors)}">
+                        <i class="fa-solid fa-store-slash"></i>
+                        <p>No vendors available.</p>
+                    </div>
+
+                    <div class="admin-table-wrap" th:unless="${#lists.isEmpty(vendors)}">
+                        <table class="admin-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Vendor</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Products</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="v : ${vendors}">
+                                <td th:text="${v.id}">1</td>
+                                <td>
+                                    <strong th:text="${v.vendorName}">Vendor Name</strong>
+                                </td>
+                                <td th:text="${v.contactDetails}">Contact</td>
+                                <td th:text="${v.address}">Address</td>
+                                <td>
+                                    <span class="admin-badge info" th:text="${#lists.size(v.products)} + ' products'">0 products</span>
+                                </td>
+                                <td>
+                                    <span class="admin-badge success" th:if="${v.verified}">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Verified
+                                    </span>
+                                    <span class="admin-badge warning" th:unless="${v.verified}">
+                                        <i class="fa-solid fa-clock"></i>
+                                        Pending
+                                    </span>
+                                </td>
+                                <td>
+                                    <form th:unless="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/verify'}">
+                                        <button type="submit" class="admin-btn success">
+                                            <i class="fa-solid fa-check"></i>
+                                            Approve
+                                        </button>
+                                    </form>
+
+                                    <span class="admin-badge success" th:if="${v.verified}">
+                                        Approved
+                                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
 <div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
 </body>
 </html>

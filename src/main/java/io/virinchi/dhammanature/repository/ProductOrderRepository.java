@@ -2,10 +2,15 @@ package io.virinchi.dhammanature.repository;
 
 import io.virinchi.dhammanature.model.ProductOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Integer> {
-    List<ProductOrder> findByUser_IdOrderByOrderDateDesc(Integer userId);
+
+    @Query("SELECT o FROM ProductOrder o JOIN FETCH o.product WHERE o.user.id = :userId ORDER BY o.orderDate DESC")
+    List<ProductOrder> findByUser_IdOrderByOrderDateDesc(@Param("userId") Integer userId);
+
+    long countByProduct_Id(Integer productId);
 }

@@ -5,60 +5,287 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="${product.productName}">Product</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
     <style>
-        .wrap { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
-        .msg-ok { color:#155724; background:#d4edda; padding:10px 14px; border-radius:6px; }
-        .msg-err { color:#721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; }
-        img.hero { width:100%; max-height: 320px; object-fit:cover; border-radius:10px; }
-        .price { font-size: 22px; font-weight:700; color:#233c9b; }
-        .review { border-top:1px solid #eee; padding: 10px 0; }
-        form.inline { display:inline-block; margin-right:8px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; }
+        .pd-main { max-width: 1120px; margin: 0 auto; padding: 50px 24px 20px; }
+        .pd-breadcrumbs { font-size: 13px; color: #888; margin-bottom: 18px; }
+        .pd-breadcrumbs a { color: #006015; text-decoration: none; }
+        .msg-ok { color:#006015; background:#e6f4ea; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+        .msg-err { color:#7e211d; background:#fdecea; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+        .pd-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 36px; align-items: start; margin-bottom: 40px; }
+        .pd-gallery { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+        .pd-gallery img { width: 100%; height: 420px; object-fit: cover; display: block; }
+        .pd-info { background: #fff; border-radius: 16px; padding: 30px 30px 26px; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+        .pd-cat-tag { display: inline-block; background: #e6f4ea; color: #005c15; font-size: 11px; font-weight: 800; padding: 3px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; margin-right: 6px; }
+        .pd-info h1 { font-family: 'Gentium Plus', serif; font-size: 28px; color: #333; line-height: 1.3; margin-bottom: 8px; }
+        .pd-stars { color: #f5b301; font-size: 14px; margin-bottom: 8px; }
+        .pd-stars .count { color: #888; margin-left: 6px; font-size: 13px; }
+        .pd-price { font-size: 26px; font-weight: 800; color: #006015; margin: 4px 0 14px; }
+        .pd-desc { font-size: 15px; line-height: 1.8; color: #555; margin-bottom: 16px; }
+        .pd-features { list-style: none; margin-bottom: 20px; }
+        .pd-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #444; padding: 7px 0; border-bottom: 1px dashed #eee; }
+        .pd-features li i { color: #006015; width: 18px; }
+        .pd-stock { margin-bottom: 18px; font-size: 14px; }
+        .stock-in { color: #008000; font-weight: 700; }
+        .stock-low { color: #704223; font-weight: 700; }
+        .stock-out { color: #9e2b25; font-weight: 700; }
+        .pd-form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 4px 0 12px; }
+        .pd-form input[type=number] { width: 72px; padding: 11px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; }
+        .btn { display: inline-block; padding: 12px 26px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s, background .2s; border: none; cursor: pointer; font-size: 13px; }
+        .btn-primary { background: #006015; color: #fff; box-shadow: 0 4px 14px rgba(0,96,21,.3); }
+        .btn-primary:disabled { background: #aaa; cursor: not-allowed; box-shadow: none; }
+        .btn-outline-secondary { border: 2px solid #006015; color: #006015; background: #fff; }
+        .btn:hover { transform: translateY(-2px); }
+        .pd-login { margin-top: 12px; font-size: 14px; }
+        .pd-login a { color: #006015; font-weight: 700; }
+        .pd-vendor { display: flex; gap: 14px; align-items: center; background: #fbf8f0; border: 1px solid #eee8d8; border-radius: 14px; padding: 14px 16px; margin-top: 18px; }
+        .pd-vendor .avatar { width: 46px; height: 46px; border-radius: 50%; background: #006015; color: #ffd700; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; flex-shrink: 0; }
+        .pd-vendor .v-name { font-weight: 800; font-size: 14px; color: #333; }
+        .pd-vendor .v-sub { font-size: 12px; color: #888; }
+        .pd-section { margin-top: 36px; }
+        .pd-section h2 { font-family: 'Gentium Plus', serif; font-size: 26px; color: #333; margin-bottom: 4px; }
+        .pd-underline { width: 50px; height: 3px; background: #006015; border: none; margin: 10px 0 22px; border-radius: 2px; }
+        .pd-reviews-grid { display: grid; grid-template-columns: 240px 1fr; gap: 30px; align-items: start; }
+        .pd-rating-summary { background: #fff; border-radius: 14px; padding: 24px; text-align: center; box-shadow: 0 3px 12px rgba(0,0,0,.06); }
+        .pd-rating-summary .big { font-size: 42px; font-weight: 800; color: #333; }
+        .pd-rating-summary .stars { color: #f5b301; font-size: 16px; margin: 6px 0; }
+        .pd-rating-summary .small { font-size: 13px; color: #888; }
+        .pd-review-list { display: flex; flex-direction: column; gap: 12px; }
+        .pd-review { background: #fff; border-radius: 12px; padding: 16px 18px; box-shadow: 0 3px 10px rgba(0,0,0,.05); }
+        .pd-review .top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+        .pd-review .who { font-weight: 800; font-size: 14px; color: #333; }
+        .pd-review .stars { color: #f5b301; font-size: 12px; }
+        .pd-review p { font-size: 14px; color: #555; line-height: 1.7; }
+        .pd-review-empty { color: #888; font-size: 14px; background: #fff; border-radius: 12px; padding: 22px; text-align: center; }
+        .pd-write-review { background: #fff; border-radius: 14px; padding: 20px 22px; margin-top: 18px; box-shadow: 0 3px 12px rgba(0,0,0,.06); }
+        .pd-write-review h3 { font-size: 16px; color: #333; margin-bottom: 10px; }
+        .pd-write-review form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .pd-write-review select, .pd-write-review input { padding: 10px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
+        .pd-write-review input { flex: 1; min-width: 200px; }
+        .pd-related { margin-top: 40px; }
+        .pd-related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        .pd-related-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,.06); transition: transform .25s; display: block; text-decoration: none; color: inherit; }
+        .pd-related-card:hover { transform: translateY(-3px); }
+        .pd-related-card img { width: 100%; height: 150px; object-fit: cover; }
+        .pd-related-card .body { padding: 14px 16px 16px; }
+        .pd-related-card .cat { color: #006015; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+        .pd-related-card h4 { font-size: 15px; color: #333; margin: 4px 0 6px; line-height: 1.35; }
+        .pd-related-card .price { font-weight: 800; color: #006015; font-size: 15px; }
+        .pd-login-note { margin-top: 12px; }
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } .pd-gallery img { height: 320px; } .pd-reviews-grid { grid-template-columns: 1fr; } .pd-related-grid { grid-template-columns: 1fr 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
+        @media (max-width: 576px) { .pd-related-grid { grid-template-columns: 1fr; } .part1-desc { width: auto; } }
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
-<main class="wrap">
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Product">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">PRODUCT DETAILS</h1>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+<main class="pd-main">
     <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
     <p class="msg-err" th:if="${error}" th:text="${error}"></p>
-
-    <img class="hero" th:if="${product.imageUrl}" th:src="@{'/assets/images/' + ${product.imageUrl}}" alt="product"/>
-    <h1 th:text="${product.productName}">Product</h1>
-    <p class="price" th:text="${product.price}">$0</p>
-    <p th:text="${product.description}">Description</p>
-    <p>Sold by <strong th:text="${product.vendor.vendorName}"></strong> &middot; <span th:text="${product.stockQuantity}"></span> in stock</p>
-
-    <div th:if="${currentUser != null}">
-        <form class="inline" method="post" th:action="@{'/marketplace/' + ${product.id} + '/buy'}">
-            <input type="number" name="quantity" min="1" value="1" style="width:70px;">
-            <button type="submit" class="btn btn-primary">Buy now</button>
-        </form>
-        <form class="inline" method="post" th:action="@{'/marketplace/' + ${product.id} + '/wishlist'}">
-            <button type="submit" class="btn btn-outline-secondary">
-                <span th:if="${currentUser.wishlist.contains(product)}">Remove from wishlist</span>
-                <span th:unless="${currentUser.wishlist.contains(product)}">Save to wishlist</span>
-            </button>
-        </form>
-    </div>
-    <p th:if="${currentUser == null}"><a href="/login">Log in</a> to buy or save this item.</p>
-
-    <h2 style="margin-top:30px;">Reviews</h2>
-    <form th:if="${currentUser != null}" method="post" th:action="@{'/marketplace/' + ${product.id} + '/review'}">
-        <select name="rating">
-            <option value="5">5 - Excellent</option>
-            <option value="4">4 - Good</option>
-            <option value="3">3 - Okay</option>
-            <option value="2">2 - Poor</option>
-            <option value="1">1 - Bad</option>
-        </select>
-        <input type="text" name="reviewText" placeholder="Write a short review..." style="width:60%;">
-        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
-    </form>
-    <p th:if="${#lists.isEmpty(reviews)}">No reviews yet.</p>
-    <div class="review" th:each="r : ${reviews}">
-        <strong th:text="${r.rating} + '/5'">5/5</strong> - <span th:text="${r.user.fullName}">Name</span>
-        <p th:text="${r.reviewText}">Review text</p>
-    </div>
+    <div class="pd-breadcrumbs"><a href="/marketplace">Marketplace</a> &rarr; <span th:text="${product.category}"></span> &rarr; <strong th:text="${product.productName}"></strong></div>
+    <section class="pd-grid">
+        <div class="pd-gallery">
+            <img th:if="${product.imageData != null}" th:src="@{/products/{id}/image(id=${product.id})}" th:alt="${product.productName}"/>
+            <img th:unless="${product.imageData != null}" src="/assets/images/pexels-pixabay-236302.jpg" alt="product"/>
+        </div>
+        <div class="pd-info">
+            <div>
+                <span class="pd-cat-tag" th:text="${product.category}"></span>
+                <span class="pd-cat-tag" th:if="${product.genre}" th:text="${product.genre}"></span>
+            </div>
+            <h1 th:text="${product.productName}">Product</h1>
+            <div class="pd-stars">
+                <i class="fas fa-star" th:if="${averageRating >= 1}"></i><i class="far fa-star" th:unless="${averageRating >= 1}"></i>
+                <i class="fas fa-star" th:if="${averageRating >= 2}"></i><i class="far fa-star" th:unless="${averageRating >= 2}"></i>
+                <i class="fas fa-star" th:if="${averageRating >= 3}"></i><i class="far fa-star" th:unless="${averageRating >= 3}"></i>
+                <i class="fas fa-star" th:if="${averageRating >= 4}"></i><i class="far fa-star" th:unless="${averageRating >= 4}"></i>
+                <i class="fas fa-star" th:if="${averageRating >= 4.5}"></i><i class="far fa-star" th:unless="${averageRating >= 4.5}"></i>
+                <span class="count" th:text="${#numbers.formatDecimal(averageRating, 1, 1)} + ' (' + ${#lists.size(reviews)} + ' reviews)'"></span>
+            </div>
+            <p class="pd-price" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$0</p>
+            <p class="pd-desc" th:text="${product.description}">Description</p>
+            <ul class="pd-features">
+                <li><i class="fas fa-check-circle"></i> Handmade by verified community vendors</li>
+                <li><i class="fas fa-check-circle"></i> Every purchase supports the Dhamma community</li>
+                <li><i class="fas fa-check-circle"></i> Earn reward points with each order</li>
+                <li><i class="fas fa-truck"></i> Track your order anytime from your profile</li>
+            </ul>
+            <p class="pd-stock">
+                <span class="stock-in" th:if="${product.stockQuantity > 0}" th:text="${product.stockQuantity} + ' in stock'"></span>
+                <span class="stock-out" th:if="${product.stockQuantity <= 0}">Out of stock</span>
+            </p>
+            <div th:if="${currentUser != null}">
+                <form class="pd-form" method="post" th:action="@{'/marketplace/' + ${product.id} + '/buy'}">
+                    <input type="number" name="quantity" min="1" value="1">
+                    <button type="submit" class="btn btn-primary" th:disabled="${product.stockQuantity <= 0}"><i class="fas fa-shopping-bag"></i> Buy now</button>
+                </form>
+                <form class="pd-form" method="post" th:action="@{'/marketplace/' + ${product.id} + '/wishlist'}">
+                    <button type="submit" class="btn btn-outline-secondary">
+                        <span th:if="${inWishlist}"><i class="fas fa-heart"></i> Remove from wishlist</span>
+                        <span th:unless="${inWishlist}"><i class="far fa-heart"></i> Save to wishlist</span>
+                    </button>
+                </form>
+            </div>
+            <p class="pd-login" th:if="${currentUser == null}"><i class="fas fa-lock"></i> <a href="/login">Log in</a> to buy or save this item.</p>
+            <div class="pd-vendor">
+                <div class="avatar">V</div>
+                <div>
+                    <p class="v-name" th:text="${product.vendor.vendorName}">Vendor</p>
+                    <p class="v-sub">Verified community vendor &middot; Handcrafted with care</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pd-section">
+        <h2>Customer Reviews</h2>
+        <hr class="pd-underline">
+        <div class="pd-reviews-grid">
+            <div class="pd-rating-summary">
+                <div class="big" th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">0</div>
+                <div class="stars">
+                    <i class="fas fa-star" th:if="${averageRating >= 1}"></i><i class="far fa-star" th:unless="${averageRating >= 1}"></i>
+                    <i class="fas fa-star" th:if="${averageRating >= 2}"></i><i class="far fa-star" th:unless="${averageRating >= 2}"></i>
+                    <i class="fas fa-star" th:if="${averageRating >= 3}"></i><i class="far fa-star" th:unless="${averageRating >= 3}"></i>
+                    <i class="fas fa-star" th:if="${averageRating >= 4}"></i><i class="far fa-star" th:unless="${averageRating >= 4}"></i>
+                    <i class="fas fa-star" th:if="${averageRating >= 4.5}"></i><i class="far fa-star" th:unless="${averageRating >= 4.5}"></i>
+                </div>
+                <div class="small" th:text="${#lists.size(reviews)} + ' review(s)'">0 reviews</div>
+            </div>
+            <div>
+                <div class="pd-review-list">
+                    <p class="pd-review-empty" th:if="${#lists.isEmpty(reviews)}">No reviews yet - be the first to share your experience.</p>
+                    <div class="pd-review" th:each="r : ${reviews}">
+                        <div class="top">
+                            <span class="who" th:text="${r.user.fullName}">Name</span>
+                            <span class="stars"><i class="fas fa-star" th:if="${r.rating >= 1}"></i><i class="far fa-star" th:unless="${r.rating >= 1}"></i><i class="fas fa-star" th:if="${r.rating >= 2}"></i><i class="far fa-star" th:unless="${r.rating >= 2}"></i><i class="fas fa-star" th:if="${r.rating >= 3}"></i><i class="far fa-star" th:unless="${r.rating >= 3}"></i><i class="fas fa-star" th:if="${r.rating >= 4}"></i><i class="far fa-star" th:unless="${r.rating >= 4}"></i><i class="fas fa-star" th:if="${r.rating >= 5}"></i><i class="far fa-star" th:unless="${r.rating >= 5}"></i></span>
+                        </div>
+                        <p th:text="${r.reviewText}">Review text</p>
+                    </div>
+                </div>
+                <div class="pd-write-review" th:if="${currentUser != null}">
+                    <h3><i class="fas fa-pen"></i> Write a review</h3>
+                    <form method="post" th:action="@{'/marketplace/' + ${product.id} + '/review'}">
+                        <select name="rating">
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Good</option>
+                            <option value="3">3 - Okay</option>
+                            <option value="2">2 - Poor</option>
+                            <option value="1">1 - Bad</option>
+                        </select>
+                        <input type="text" name="reviewText" placeholder="Write a short review...">
+                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                    </form>
+                </div>
+                <p class="pd-login-note" th:if="${currentUser == null}"><a href="/login">Log in</a> to write a review.</p>
+            </div>
+        </div>
+    </section>
+    <section class="pd-related" th:if="${!relatedProducts.isEmpty()}">
+        <h2>You may also like</h2>
+        <hr class="pd-underline">
+        <div class="pd-related-grid">
+            <a class="pd-related-card" th:each="rp : ${relatedProducts}" th:href="@{'/marketplace/' + ${rp.id}}">
+                <img th:if="${rp.imageData != null}" th:src="@{/products/{id}/image(id=${rp.id})}" th:alt="${rp.productName}"/>
+                <img th:unless="${rp.imageData != null}" src="/assets/images/pexels-pixabay-236302.jpg" th:alt="${rp.productName}"/>
+                <div class="body">
+                    <span class="cat" th:text="${rp.category}"></span>
+                    <h4 th:text="${rp.productName}">Product</h4>
+                    <span class="price" th:text="'$' + ${#numbers.formatDecimal(rp.price, 1, 2)}">$0</span>
+                </div>
+            </a>
+        </div>
+    </section>
 </main>
-<div th:replace="~{fragments/footer :: siteFooter}"></div>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+        <div class="part3">
+            <h2>HELP &amp; SUPPORT</h2>
+            <div class="part3-desc">
+                <h4><a href="/contact">Contact Us</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+            </div>
+        </div>
+    </div>
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+                    }, 0);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

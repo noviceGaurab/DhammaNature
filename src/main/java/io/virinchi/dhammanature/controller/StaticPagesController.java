@@ -18,26 +18,6 @@ public class StaticPagesController {
         return "about";
     }
 
-    @GetMapping("/blog")
-    public String blog() {
-        return "blog";
-    }
-
-    @GetMapping("/blog/detail")
-    public String blogDetail() {
-        return "blog-detail";
-    }
-
-    @GetMapping("/contact")
-    public String contact() {
-        return "contact";
-    }
-
-    @GetMapping("/community")
-    public String community() {
-        return "community";
-    }
-
     @GetMapping("/teachings")
     public String teachings() {
         return "teachings";

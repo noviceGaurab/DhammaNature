@@ -67,7 +67,7 @@
         button.addEventListener('click', () => {
             const action = button.textContent.toLowerCase();
             if (action.includes('back')) {
-                window.location.href = 'sermon1.jsp'; // Redirect to index1_final.html
+                window.location.href = '/teachings';
             } else if (action.includes('read more')) {
                 alert('Loading more content...');
             }

@@ -29,6 +29,7 @@ public class RewardService {
     private final RewardCatalogItemRepository rewardCatalogItemRepository;
     private final UserRepository userRepository;
     private final NotificationService notificationService;
+    private final EmailService emailService;
 
     @Transactional
     public void awardPoints(User user, int points, String reason) {
@@ -64,6 +65,14 @@ public class RewardService {
         notificationService.notifyUser(user, "Reward redeemed: " + item.getName(),
                 "You spent " + item.getPointsCost() + " points. Show this in your account at the meditation center to claim it.",
                 NotificationType.REWARD);
+        emailService.sendToUser(user, "Reward redeemed: " + item.getName(),
+                "Hi " + user.getFullName() + ",\n\n"
+                        + "You redeemed \"" + item.getName() + "\" for " + item.getPointsCost() + " reward points.\n"
+                        + "You now have " + user.getRewardPoints() + " points remaining in your account.\n\n"
+                        + "With metta,\nThe Dhamma Nature team");
+        emailService.sendSiteAlert("Reward redeemed",
+                user.getFullName() + " (" + user.getEmail() + ") redeemed \""
+                        + item.getName() + "\" for " + item.getPointsCost() + " points.");
         return tx;
     }
 

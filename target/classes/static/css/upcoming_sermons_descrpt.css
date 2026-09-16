@@ -10,7 +10,7 @@
         body {
             line-height: 1.6;
             color: #333;
-            background-color: #f5f7fa;
+            background-color: #f8f9fa;
             overflow-x: hidden;
         }
 
@@ -23,7 +23,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: url('assets/images/pexels-2152214764-32117889.jpg') no-repeat center;
+            background: url('/assets/images/pexels-2152214764-32117889.jpg') no-repeat center;
             background-size: cover;
         }
 
@@ -200,7 +200,7 @@
 
         .header h1 {
             font-size: 2em;
-            color: #1a252f;
+            color: #1d1a16;
             font-weight: 600;
             font-family: "Gentium Basic", Helvetica;
         }
@@ -231,7 +231,7 @@
 
         .sermon-details .date {
             font-size: 1em;
-            color: #4a6572;
+            color: #555;
             margin-bottom: 10px;
             font-weight: 500;
             font-family: "Gentium Basic", Helvetica;
@@ -239,14 +239,14 @@
 
         .sermon-details .time {
             font-size: 0.9em;
-            color: #4a6572;
+            color: #555;
             margin-bottom: 10px;
             font-family: "Gentium Basic", Helvetica;
         }
 
         .sermon-details .speaker {
             font-size: 0.9em;
-            color: #4a6572;
+            color: #555;
             margin-bottom: 10px;
             font-family: "Gentium Basic", Helvetica;
         }
@@ -278,7 +278,7 @@
         }
 
         .actions button:hover {
-            background-color: #004d13;
+            background-color: #005c15;
             transform: translateY(-2px);
         }
 

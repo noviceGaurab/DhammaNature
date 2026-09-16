@@ -12,4 +12,5 @@ public interface VolunteerOpportunityRepository extends JpaRepository<VolunteerO
             "WHERE o.opportunityDate >= :date ORDER BY o.opportunityDate ASC")
     List<VolunteerOpportunity> findByOpportunityDateGreaterThanEqualOrderByOpportunityDateAsc(java.time.LocalDate date);
     List<VolunteerOpportunity> findAllByOrderByOpportunityDateAsc();
+    List<VolunteerOpportunity> findByMeditationCenter_Id(Integer centerId);
 }

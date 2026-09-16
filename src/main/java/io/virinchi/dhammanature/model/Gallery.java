@@ -1,5 +1,6 @@
 package io.virinchi.dhammanature.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "gallery")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-@ToString(exclude = "meditationCenter")
+@ToString(exclude = {"meditationCenter", "imageData"})
 @EqualsAndHashCode(of = "id")
 public class Gallery {
 
@@ -19,6 +20,14 @@ public class Gallery {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    @JsonIgnore
+    private byte[] imageData;
+
+    @JsonIgnore
+    private String imageContentType;
 
     @Column(length = 2000)
     private String description;

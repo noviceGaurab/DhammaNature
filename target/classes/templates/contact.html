@@ -3,138 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dharma Club</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Dhamma Nature - Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-	<link rel = "stylesheet" href = "/css/home_contact.css">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; line-height: 1.6; background: #f9fafb; }
+        .contact-main { max-width: 1200px; margin: 0 auto; padding: 50px 24px 20px; }
+        .section-hero { text-align: center; margin-bottom: 44px; }
+        .section-hero h1 { font-size: 40px; color: #006015; }
+        .section-hero p { color: #666; font-size: 17px; max-width: 640px; margin: 10px auto 0; }
+        .accent-line { width: 70px; height: 4px; background: #006015; border: none; margin: 18px auto 0; border-radius: 2px; }
+        .msg { padding: 14px 18px; border-radius: 8px; margin-bottom: 24px; font-size: 15px; font-weight: 700; }
+        .msg-success { background: #e6f4ea; color: #006015; border: 1px solid #e6f4ea; }
+        .msg-error { background: #fdecea; color: #9e2b25; border: 1px solid #fdecea; }
+        /* Info cards */
+        .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-bottom: 44px; }
+        .info-card { background: #fff; border-radius: 14px; padding: 26px 20px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06); transition: transform .3s; }
+        .info-card:hover { transform: translateY(-4px); }
+        .info-icon { width: 58px; height: 58px; border-radius: 50%; background: #e6f4ea; color: #006015; font-size: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+        .info-card h3 { font-size: 16px; margin-bottom: 6px; }
+        .info-card span, .info-card a { font-size: 14px; color: #666; text-decoration: none; display: block; }
+        .info-card a:hover { color: #006015; }
+        /* Contact layout */
+        .contact-layout { display: grid; grid-template-columns: 1.25fr 1fr; gap: 34px; align-items: start; }
+        .contact-form-box { background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 32px; box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+        .contact-form-box h2 { font-size: 24px; color: #333; margin-bottom: 8px; }
+        .contact-form-box .sub { font-size: 14px; color: #888; margin-bottom: 24px; }
+        .form-row { margin-bottom: 18px; }
+        .form-row label { display: block; font-size: 14px; font-weight: 700; color: #444; margin-bottom: 8px; }
+        .form-row input, .form-row textarea { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; font-family: inherit; transition: border-color .3s, box-shadow .3s; }
+        .form-row textarea { resize: vertical; min-height: 140px; }
+        .form-row input:focus, .form-row textarea:focus { outline: none; border-color: #006015; box-shadow: 0 0 0 3px rgba(35,60,155,.12); }
+        .name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .send-btn { width: 100%; background: #006015; color: #fff; padding: 14px; border: none; border-radius: 30px; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; cursor: pointer; transition: background .3s, transform .2s; box-shadow: 0 4px 14px rgba(35,60,155,.3); }
+        .send-btn:hover { background: #005c15; transform: translateY(-2px); }
+        .send-btn i { margin-left: 8px; }
+        /* Right column */
+        .c-side { display: flex; flex-direction: column; gap: 22px; }
+        .sw { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        .sw h3 { font-size: 17px; color: #333; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #006015; }
+        .sw p { font-size: 14px; color: #666; margin-bottom: 10px; }
+        .sw a { color: #006015; font-weight: 700; text-decoration: none; }
+        .sw a:hover { text-decoration: underline; }
+        .sw img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 12px; }
+        .faq { margin-top: 46px; }
+        .faq-head { text-align: center; margin-bottom: 26px; }
+        .faq-head h2 { font-size: 30px; color: #333; }
+        .faq-list { max-width: 760px; margin: 0 auto; }
+        .faq-item { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+        .faq-item h4 { font-size: 16px; color: #006015; margin-bottom: 4px; }
+        .faq-item p { font-size: 14px; color: #666; }
+        /* CTA */
+        .cta-band { background: linear-gradient(120deg, #005c15, #006015); color: #fff; text-align: center; padding: 56px 24px; border-radius: 16px; margin-top: 44px; }
+        .cta-band h2 { font-size: 30px; margin-bottom: 12px; }
+        .cta-band p { opacity: .92; margin-bottom: 24px; max-width: 580px; margin-left: auto; margin-right: auto; }
+        .cta-band .btn-gold { display: inline-block; background: #ffd700; color: #005c15; padding: 13px 30px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; }
+        .cta-band .btn-gold:hover { transform: translateY(-2px); }
+        /* Footer (home style) */
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) {
+            .info-grid { grid-template-columns: 1fr 1fr; }
+            .contact-layout { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .part1, .part2, .part3 { padding-left: 0; }
+            .copyright { flex-direction: column; padding: 20px 0; text-align: center; }
+            .copyright-sub { flex-direction: column; gap: 10px; padding: 0; }
+        }
+        @media (max-width: 576px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .name-grid { grid-template-columns: 1fr; }
+            .section-hero h1 { font-size: 30px; }
+            .part1-desc { width: auto; }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="header-img">
-            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
-            <div class = "line-container">
-                <hr class = "white-line">
-            </div>
-            <div class="underline-img">
-                <div class="header-top">
-                    <p class="location">
-                        203 Fake St. Mountain View, San Francisco, California, USA
-                    </p>
-                    <div class = "social-media">
-                        <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
-                            <i class="fab fa-facebook-f"></i>
-                            <span class="sr-only">Facebook</span>
-                        </a>
-                        <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
-                            <i class="fab fa-twitter"></i>
-                            <span class="sr-only">Twitter</span>
-                        </a>
-                        <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
-                            <i class="fab fa-instagram"></i>
-                            <span class="sr-only">Instagram</span>
-                        </a>
-                    </div>
-                </div>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Contact Dhamma Nature">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">CONTACT US</h1>
+                <p>We would love to hear from you - questions, suggestions or just a kind greeting</p>
             </div>
             <div class="header-main">
-                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
-                <nav>  <!--nav afai div ko kaam gari raxa jasto xah -->
-                    <a href="#">Home</a>
-                    <a href="#">About</a>
-                    <a href="#">Sermons</a>
-                    <a href="#">Events</a>
-                    <a href="#">Blog</a>
-                    <a href="#">Contact</a>
-                    <a href="#" class="donate-btn">Donate</a>
-                </nav>
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown">
+                        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+                        <div class="dropdown-content">
+                            <a href="/upcoming-sermons">Upcoming Sermons</a>
+                            <a href="/teachings">Teachings</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/events" class="nav-link">Events</a>
+                        <div class="dropdown-content">
+                            <a href="/events">Upcoming Events</a>
+                            <a href="/centers">Meditation Centers</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/marketplace" class="nav-link">Explore</a>
+                        <div class="dropdown-content">
+                            <a href="/marketplace">Marketplace</a>
+                            <a href="/gallery">Gallery</a>
+                            <a href="/quiz">Quizzes</a>
+                            <a href="/rewards">Rewards</a>
+                            <a href="/volunteer">Volunteer</a>
+                            <a href="/charity">Charity</a>
+                            <a href="/community">Community</a>
+                            <a href="/discuss">Discuss</a>
+                        </div>
+                    </div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
             </div>
         </div>
     </header>
-    <!--end of nav bar-->
-    <main>
-        </section>
-        <section class = "hero">
-            <div class = "container">
-                <h2>HOME   >>   CONTACT US   >></h2>
-                <h1 class = "mb-3">CONTACT US</h1>                
+    <main class="contact-main">
+        <div class="section-hero">
+            <h1>Get in Touch</h1>
+            <p>Send us a message and our volunteers will get back to you within 24 hours.</p>
+            <hr class="accent-line">
+        </div>
+        <p class="msg msg-success" th:if="${success}" th:text="${success}"></p>
+        <p class="msg msg-error" th:if="${error}" th:text="${error}"></p>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <h3>Address</h3>
+                <span>203 Fake St. Mountain View, San Francisco, California, USA</span>
             </div>
-        </section>
-        <section class="contact-section">
-            <div class="contact-form">
-                <form>
-                    <input type="text" id = "Name"placeholder="Your Name" required>
-                    <div id = "NameError" style: color:green> </div>
-                    <input type="email" id = "Email" placeholder="Your Email" required>
-                    <div id = "EmailError" style: color:green> </div>
-                    <input type="text" id = "Subject" placeholder="Subject" required>
-                    <div id = "SubjectError" style: color:green> </div>
-                    <textarea placeholder="Message" id = "Message" required></textarea>
-                    <div id = "MessageError" style: color:green> </div>
-                    <button type="submit" onclick= "onClickSubmit ()">Send Message</button>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+                <h3>Phone</h3>
+                <a href="tel:+97797820099">+977 97820099</a>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                <h3>Email</h3>
+                <a href="mailto:info@gmail.com">info@gmail.com</a>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="far fa-clock"></i></div>
+                <h3>Office Hours</h3>
+                <span>Mon - Fri, 9 AM - 5 PM</span>
+            </div>
+        </div>
+        <div class="contact-layout">
+            <!-- Form -->
+            <section class="contact-form-box">
+                <h2>Send us a message</h2>
+                <p class="sub">Fill in the form below and we will respond as soon as possible.</p>
+                <form th:action="@{/contact}" method="post">
+                    <div class="name-grid">
+                        <div class="form-row">
+                            <label for="contactName">Your name</label>
+                            <input type="text" id="contactName" name="name" required th:value="${contactName}">
+                        </div>
+                        <div class="form-row">
+                            <label for="contactEmail">Your email</label>
+                            <input type="email" id="contactEmail" name="email" required th:value="${contactEmail}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label for="contactSubject">Subject</label>
+                        <input type="text" id="contactSubject" name="subject" required th:value="${contactSubject}">
+                    </div>
+                    <div class="form-row">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" name="message" required placeholder="Write your message here..." th:text="${contactMessage}"></textarea>
+                    </div>
+                    <button type="submit" class="send-btn">Send message <i class="fas fa-paper-plane"></i></button>
                 </form>
+            </section>
+            <!-- Right column -->
+            <aside class="c-side">
+                <div class="sw">
+                    <img src="/assets/images/pexels-koithyr-1360255.jpg" alt="Dhamma Nature community">
+                    <h3>Visit us</h3>
+                    <p>Drop by one of our partner meditation centres for a cup of tea and a good conversation.</p>
+                    <a href="/centers">Find a centre near you <i class="fas fa-arrow-right"></i></a>
+                </div>
+<div class="sw">
+                    <h3>Prayer requests</h3>
+                    <p>Our monks accept prayer and dedication requests for those you love. Send us the details and we will include them in our daily chanting.</p>
+                </div>
+                <div class="sw">
+                    <h3>Follow us</h3>
+                    <p>Connect with the community on social media for daily reflections and announcements.</p>
+                    <a href="https://www.facebook.com" target="_blank">Facebook</a> &nbsp;·&nbsp;
+                    <a href="https://www.twitter.com" target="_blank">Twitter</a> &nbsp;·&nbsp;
+                    <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                </div>
+            </aside>
+        </div>
+        <!-- FAQ -->
+        <section class="faq">
+            <div class="faq-head">
+                <h2>Frequently Asked Questions</h2>
             </div>
-            <div class="contact-image">
-                <img src="/assets/images/pexels-koithyr-1360255.jpg" alt="Group Image">
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h4>How quickly will you reply to my message?</h4>
+                    <p>We aim to respond to every message within 24 hours during the working week.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Can I request a free dhamma book or recording?</h4>
+                    <p>Yes - most of our teachings are available free of charge. Browse the Teachings page to read or download.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>How can I organise a group retreat?</h4>
+                    <p>Contact us with proposed dates and group size and our volunteers will arrange everything with a partner centre.</p>
+                </div>
             </div>
         </section>
-    </main>
- 
-        </section>
-            <div class = "newsletter-container">
-            <div class = "newsletter">
-                <h2>Sign Up And Subscribe to our Newsletter</h2>
-            </div>
-            <div class = "form-container">
-                <!-- Replace the action attribute with your form handling URL -->
-                <form action="#" method="post">
-                    <input type="email" placeholder="Enter your email" required class = "email-input">
-                    <button type="submit" class = "button-last">Subscribe</button>
-                </form>
-            </div>
-        </div>
-        <div class = "footer">
-            <div class = "part1">
-                <img src = "assets/images/transparent_logo.png" alt = "logo" width = "260px" height = "190px">
-                <div class = "part1-desc">
-                    <h4>Two similes are useful to keep in mind when we look at the Two similes
-                    are useful to keep in mind when we look at..</h2>
-                </div>
-            </div>
-            <div class = "part2">
-                <h2>QUICK LINKS</h2>
-                <div class = "part2-desc">
-                    <h4>Home</h4>
-                    <h4>About</h4>
-                    <h4>Sermons</h4>
-                    <h4>Events</h4>
-                </div>
-            </div>
-            <div class = "part3">
-                <h2>HAVE A QUESTION?</h2>
-                <div class = "part3-desc">
-                    <h4>203 Fake St. Mountain View, San Francisco, California, USA</h4>
-                    <h4>+977 97820099</h4>
-                    <h4>info@gmail.com</h4>
-                </div>
-            </div>
-        </div>
-        <div class = "footer-sec2">
-            <div class = "line">
-                <hr class = "white-line-footer">
-            </div>
-            <div class = "copyright">
-                <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
-                <div class = "copyright-sub">
-                    <h4>Terms & Conditions</h4>
-                    <h4>Privacy Policy</h4>
-                    <h4>Cancellation & Refund Policy</h4>
-                </div>
-            </div>
+        <div class="cta-band">
+            <h2>Prefer to talk in person?</h2>
+            <p>Join us at any of our partner meditation centres - everyone is welcome, and no experience is needed to start.</p>
+            <a href="/upcoming-sermons" class="btn-gold">See what's happening</a>
         </div>
     </main>
-    <script src="/JS/home_contact.js"></script>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc">
+                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+            </div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc">
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="/about">About</a></h4>
+                <h4><a href="/upcoming-sermons">Sermons</a></h4>
+                <h4><a href="/events">Events</a></h4>
+                <h4><a href="/centers">Centers</a></h4>
+                <h4><a href="/marketplace">Marketplace</a></h4>
+                <h4><a href="/gallery">Gallery</a></h4>
+                <h4><a href="/quiz">Quizzes</a></h4>
+                <h4><a href="/rewards">Rewards</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="/blog">Blog</a></h4>
+                <h4><a href="/discuss">Discuss</a></h4>
+                <h4><a href="/contact">Contact</a></h4>
+                <h4><a href="/profile">My Profile</a></h4>
+            </div>
+        </div>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
+            </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars', !(open && open.classList.contains('active')));
+                            icon.classList.toggle('fa-times', open && open.classList.contains('active'));
+                        }
+                    }, 0);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
-

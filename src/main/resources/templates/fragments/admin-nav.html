@@ -1,31 +1,118 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<nav th:fragment="adminNav" class="navbar navbar-expand-lg bg-body-tertiary border-bottom mb-4">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/admin">Dhamma Nature Admin</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="/admin">Users</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/centers">Centers</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/vendors">Vendors</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/gallery">Gallery</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/comments">Comments</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/donations">Donations</a></li>
-        <li class="nav-item"><a class="nav-link" href="/admin/interactions">Page Interactions</a></li>
-        <li class="nav-item"><a class="nav-link" href="/" target="_blank">View Site</a></li>
-        <li class="nav-item"><a class="nav-link" href="/logout" style="color:red">Logout</a></li>
-      </ul>
+
+<link th:fragment="bootstrapCss" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"/>
+
+<th:block th:fragment="adminAssets">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+  <link rel="stylesheet" href="/css/admin.css"/>
+</th:block>
+
+<aside th:fragment="adminSidebar(activePage)" class="admin-sidebar">
+  <div class="admin-brand">
+    <img src="/assets/images/transparent_logo.png" alt="Dhamma Nature Admin">
+    <div>
+      <span class="admin-brand-title">Dhamma Nature</span>
+      <span class="admin-brand-subtitle">Admin Panel</span>
     </div>
   </div>
-</nav>
-<link th:fragment="bootstrapCss" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"/>
+
+  <div class="admin-nav-label">Management</div>
+
+  <div class="admin-nav-list">
+    <a href="/admin" class="admin-nav-link" th:classappend="${activePage == 'users'} ? ' active'">
+      <i class="fa-solid fa-users"></i>
+      <span>Users</span>
+    </a>
+
+    <a href="/admin/centers" class="admin-nav-link" th:classappend="${activePage == 'centers'} ? ' active'">
+      <i class="fa-solid fa-place-of-worship"></i>
+      <span>Centers</span>
+    </a>
+
+    <a href="/admin/vendors" class="admin-nav-link" th:classappend="${activePage == 'vendors'} ? ' active'">
+      <i class="fa-solid fa-store"></i>
+      <span>Vendors</span>
+    </a>
+
+    <a href="/admin/events" class="admin-nav-link" th:classappend="${activePage == 'events'} ? ' active'">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span>Events</span>
+    </a>
+
+    <a href="/admin/gallery" class="admin-nav-link" th:classappend="${activePage == 'gallery'} ? ' active'">
+      <i class="fa-solid fa-images"></i>
+      <span>Gallery</span>
+    </a>
+
+    <a href="/admin/quizzes" class="admin-nav-link" th:classappend="${activePage == 'quizzes'} ? ' active'">
+      <i class="fa-solid fa-brain"></i>
+      <span>Quizzes</span>
+    </a>
+
+    <a href="/admin/comments" class="admin-nav-link" th:classappend="${activePage == 'comments'} ? ' active'">
+      <i class="fa-solid fa-comments"></i>
+      <span>Comments</span>
+    </a>
+
+    <a href="/admin/blog" class="admin-nav-link" th:classappend="${activePage == 'blog'} ? ' active'">
+      <i class="fa-solid fa-pen-nib"></i>
+      <span>Blog Posts</span>
+    </a>
+
+    <a href="/admin/donations" class="admin-nav-link" th:classappend="${activePage == 'donations'} ? ' active'">
+      <i class="fa-solid fa-hand-holding-heart"></i>
+      <span>Donations</span>
+    </a>
+
+    <a href="/admin/interactions" class="admin-nav-link" th:classappend="${activePage == 'interactions'} ? ' active'">
+      <i class="fa-solid fa-chart-line"></i>
+      <span>Page Interactions</span>
+    </a>
+  </div>
+
+  <div class="admin-nav-label">Account</div>
+
+  <div class="admin-nav-list">
+    <a href="/" target="_blank" class="admin-nav-link">
+      <i class="fa-solid fa-arrow-up-right-from-square"></i>
+      <span>View Site</span>
+    </a>
+
+    <a href="/logout" class="admin-nav-link logout">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span>Logout</span>
+    </a>
+  </div>
+</aside>
+
+<header th:fragment="adminTopbar(pageTitle, pageSubtitle)" class="admin-topbar">
+  <div class="admin-topbar-title">
+    <h1 th:text="${pageTitle}">Dashboard</h1>
+    <p th:text="${pageSubtitle}">Manage your Dhamma Nature platform.</p>
+  </div>
+
+  <div class="admin-topbar-actions">
+    <a href="/" target="_blank" class="admin-btn secondary">
+      <i class="fa-solid fa-globe"></i>
+      View Site
+    </a>
+
+    <div class="admin-user-pill">
+      <i class="fa-solid fa-user-shield"></i>
+      <span th:text="${currentUser != null ? currentUser.fullName : 'Admin'}">Admin</span>
+    </div>
+  </div>
+</header>
+
 <th:block th:fragment="bootstrapJs">
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
 </th:block>
+
 </body>
 </html>

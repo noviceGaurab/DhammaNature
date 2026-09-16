@@ -22,7 +22,7 @@ public class CharityCampaignService {
     private final MeditationCenterRepository meditationCenterRepository;
 
     public List<CharityCampaign> active() {
-        return charityCampaignRepository.findByStatus(CampaignStatus.ACTIVE);
+        return charityCampaignRepository.findByStatusWithMeditationCenter(CampaignStatus.ACTIVE);
     }
 
     public List<CharityCampaign> all() {
@@ -32,6 +32,10 @@ public class CharityCampaignService {
     public CharityCampaign get(Integer id) {
         return charityCampaignRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Charity campaign not found"));
+    }
+
+    public List<CharityCampaign> forCenter(Integer centerId) {
+        return charityCampaignRepository.findByMeditationCenter_Id(centerId);
     }
 
     public CharityCampaign create(Integer centerId, String title, String description,

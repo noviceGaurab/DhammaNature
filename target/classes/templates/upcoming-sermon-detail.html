@@ -3,108 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dharma Club - Sermon Detail</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Dhamma Nature - Sermon Detail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gentium+Basic:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-	<link rel = "stylesheet" href = "/css/upcoming_sermons_descrpt.css">
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gentium+Basic:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; }
+        .sd-main { max-width: 980px; margin: 0 auto; padding: 50px 24px 20px; }
+        .sd-crumbs { font-size: 13px; color: #888; margin-bottom: 18px; }
+        .sd-crumbs a { color: #006015; text-decoration: none; }
+        .sd-head { margin-bottom: 26px; }
+        .sd-badge { display: inline-flex; align-items: center; gap: 6px; background: #f5efe3; color: #006015; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
+        .sd-head h1 { font-family: 'Gentium Plus', serif; font-size: 32px; line-height: 1.25; color: #2e2e2e; }
+        .sd-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+        .sd-meta span { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid #eee; border-radius: 24px; padding: 7px 16px; font-size: 13px; color: #555; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+        .sd-meta i { color: #006015; }
+        .sd-cover { border-radius: 16px; overflow: hidden; margin-bottom: 28px; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+        .sd-cover img { width: 100%; height: 360px; object-fit: cover; display: block; }
+        .sd-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 26px; align-items: start; margin-bottom: 30px; }
+        .sd-card { background: #fff; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,.06); overflow: hidden; }
+        .sd-card .hd { padding: 18px 24px; border-bottom: 1px solid #f0f1f3; }
+        .sd-card .hd h2 { font-family: 'Gentium Plus', serif; font-size: 20px; color: #006015; }
+        .sd-card .bd { padding: 20px 24px; }
+        .sd-info-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f6f6f6; flex-wrap: wrap; }
+        .sd-info-row:last-child { border-bottom: none; }
+        .sd-info-row .k { color: #888; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+        .sd-info-row .v { font-weight: 600; color: #333; font-size: 15px; text-align: right; }
+        .sd-desc { margin-top: 16px; }
+        .sd-desc p { font-size: 16px; line-height: 1.9; color: #454545; }
+        .sd-speaker { display: flex; gap: 16px; align-items: center; background: #fbf8f0; border: 1px solid #efe8d8; border-radius: 14px; padding: 16px 18px; margin-top: 18px; }
+        .sd-speaker .avatar { width: 52px; height: 52px; border-radius: 50%; background: #006015; color: #ffd700; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; flex-shrink: 0; }
+        .sd-speaker .who { font-weight: 800; font-size: 15px; color: #333; }
+        .sd-speaker .bio { font-size: 13px; color: #777; margin-top: 2px; line-height: 1.6; }
+        .sd-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+        .btn { display: inline-block; padding: 11px 26px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s, background .2s; font-size: 12px; border: none; cursor: pointer; }
+        .btn-primary { background: #006015; color: #fff; box-shadow: 0 4px 14px rgba(0,96,21,.25); }
+        .btn-outline { border: 2px solid #006015; color: #006015; background: #fff; }
+        .btn:hover { transform: translateY(-2px); }
+        .sd-side .side-card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,.06); margin-bottom: 18px; }
+        .side-card h3 { font-size: 15px; color: #006015; text-transform: uppercase; letter-spacing: .5px; padding-bottom: 10px; border-bottom: 2px solid #006015; margin-bottom: 12px; }
+        .side-card ul { list-style: none; }
+        .side-card li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; font-size: 14px; color: #555; border-bottom: 1px dashed #f3f3f3; }
+        .side-card li i { color: #006015; width: 16px; text-align: center; margin-top: 2px; }
+        .side-card li:last-child { border-bottom: none; }
+        .side-card a.link { display: block; margin-top: 6px; color: #006015; font-weight: 700; font-size: 14px; text-decoration: none; }
+        .side-card a.link:hover { text-decoration: underline; }
+        .side-cta { background: linear-gradient(130deg, #006015, #008000); border-radius: 16px; padding: 24px 22px; color: #fff; margin-bottom: 18px; box-shadow: 0 4px 18px rgba(0,96,21,.25); }
+        .side-cta h3 { font-family: 'Gentium Plus', serif; font-size: 20px; margin-bottom: 8px; }
+        .side-cta p { font-size: 14px; opacity: .92; line-height: 1.6; margin-bottom: 14px; }
+        .side-cta a { display: inline-block; background: #ffd700; color: #006015; padding: 10px 22px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; font-size: 12px; letter-spacing: .5px; }
+        .sd-faqs { margin-top: 26px; }
+        .sd-faqs h2 { font-family: 'Gentium Plus', serif; font-size: 24px; color: #333; }
+        .sd-underline { width: 50px; height: 3px; background: #006015; border: none; margin: 10px 0 20px; border-radius: 2px; }
+        .faq-item { background: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 3px 12px rgba(0,0,0,.05); cursor: pointer; transition: transform .2s; }
+        .faq-item:hover { transform: translateY(-2px); }
+        .faq-item h4 { font-size: 15px; color: #333; display: flex; justify-content: space-between; align-items: center; }
+        .faq-item h4 i { color: #006015; transition: transform .3s; }
+        .faq-item.open h4 i { transform: rotate(180deg); }
+        .faq-item .answer { font-size: 14px; color: #666; line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+        .faq-item.open .answer { max-height: 220px; margin-top: 12px; }
+        .sd-cta { background: linear-gradient(120deg, #006015, #008000); color: #fff; text-align: center; padding: 44px 24px; border-radius: 16px; margin-top: 30px; }
+        .sd-cta h2 { font-family: 'Gentium Plus', serif; font-size: 26px; margin-bottom: 10px; }
+        .sd-cta p { opacity: .92; margin-bottom: 18px; max-width: 560px; margin-left: auto; margin-right: auto; }
+        .btn-gold { display: inline-block; background: #ffd700; color: #006015; padding: 12px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; margin: 4px; }
+        .btn-gold:hover { transform: translateY(-2px); }
+        .btn-outline-w { display: inline-block; border: 2px solid #fff; color: #fff; padding: 12px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: background .2s, transform .2s; margin: 4px; }
+        .btn-outline-w:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
+        @media (max-width: 900px) { .sd-grid { grid-template-columns: 1fr; } .sd-cover img { height: 280px; } }
+        @media (max-width: 576px) { .sd-head h1 { font-size: 26px; } .sd-cover img { height: 220px; } }
+    </style>
 </head>
 <body>
-
     <header>
-        <div class="header-img">
-            <div class="line-container">
-                <hr class="white-line">
-            </div>
-            <div class="header-top">
-                <p class="location">
-                    203 Fake St. Mountain View, San Francisco, California, USA
-                </p>
-                <div class="social-media">
-                    <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span>
-                    </a>
-                    <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-twitter"></i><span class="sr-only">Twitter</span>
-                    </a>
-                    <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-instagram"></i><span class="sr-only">Instagram</span>
-                    </a>
-                </div>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Sermons">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">SERMON DETAILS</h1>
             </div>
             <div class="header-main">
-                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <a href="#sermons" class="nav-link">Sermons</a>
-                    <a href="/events" class="nav-link">Events</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
                     <a href="/blog" class="nav-link">Blog</a>
-                    <a href="/contact" class="nav-link">Contact</a>
-                    <a href="/upcoming-sermons/detail" class="nav-link">Discuss</a>
-                    <a href="/donate" class="nav-link donate-btn">Donate</a>
-                </nav>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
                 <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
             </div>
         </div>
     </header>
-    <main>
-        <div class="container">
-            <div class="header">
-                <h1 id="sermonTitle"></h1>
-            </div>
-            <div class="sermon-image" id="sermonImage"></div>
-            <div class="sermon-details">
-                <div class="date" id="sermonDate"></div>
-                <div class="time" id="sermonTime"></div>
-                <div class="speaker" id="sermonSpeaker"></div>
-                <div class="description" id="sermonDescription"></div>
-            </div>
-            <div class="actions">
-                <button class="back-btn" onclick="goBack()">Back</button>
-                <button onclick="addToCalendar()">Add to Calendar</button>
+<main class="sd-main">
+    <div class="sd-crumbs">
+        <a href="/">Home</a> &rarr; <a href="/upcoming-sermons">Sermons</a> &rarr; <strong id="breadcrumb-title">Sermon Detail</strong>
+    </div>
+    <div class="sd-head">
+        <span class="sd-badge"><i class="fas fa-headphones"></i> Dhamma Talk</span>
+        <h1 id="sermonTitle">Sermon Title</h1>
+        <div class="sd-meta">
+            <span><i class="far fa-calendar"></i> <span id="sermonDate">Date</span></span>
+            <span><i class="far fa-clock"></i> <span id="sermonTime">Time</span></span>
+            <span><i class="fas fa-user"></i> <span id="sermonSpeaker">Speaker</span></span>
+            <span><i class="fas fa-signal"></i> Live talk with Q&amp;A</span>
+        </div>
+    </div>
+    <div class="sd-cover">
+        <img id="sermonImage" src="/assets/images/pexels-pixabay-45178.jpg" alt="Sermon">
+    </div>
+    <div class="sd-grid">
+        <div class="sd-card">
+            <div class="hd"><h2><i class="fas fa-info-circle"></i> About this sermon</h2></div>
+            <div class="bd">
+                <div class="sd-info-row"><span class="k"><i class="far fa-calendar"></i> Date</span><span class="v" id="sermonDateInline">N/A</span></div>
+                <div class="sd-info-row"><span class="k"><i class="far fa-clock"></i> Time</span><span class="v" id="sermonTimeInline">N/A</span></div>
+                <div class="sd-info-row"><span class="k"><i class="fas fa-user"></i> Speaker</span><span class="v" id="sermonSpeakerInline">N/A</span></div>
+                <div class="sd-info-row"><span class="k"><i class="fas fa-language"></i> Language</span><span class="v">English</span></div>
+                <div class="sd-info-row"><span class="k"><i class="fas fa-signal"></i> Format</span><span class="v">Live talk with Q&amp;A</span></div>
+                <div class="sd-desc">
+                    <p id="sermonDescription">No description available.</p>
+                </div>
+                <div class="sd-speaker" id="speakerBlock">
+                    <div class="avatar" id="speakerAvatar">S</div>
+                    <div>
+                        <div class="who" id="speakerName">Speaker</div>
+                        <div class="bio" id="speakerBio">A Dhamma teacher offering guidance through talks, retreats and community service.</div>
+                    </div>
+                </div>
+                <div class="sd-actions">
+                    <button class="btn btn-primary" onclick="addToCalendar()"><i class="far fa-calendar-plus"></i> Add to Calendar</button>
+                    <a href="/teachings" class="btn btn-outline"><i class="fas fa-book-open"></i> Read related teachings</a>
+                </div>
             </div>
         </div>
-    </main>
+        <div class="sd-side">
+            <div class="side-cta">
+                <h3>Deepen your practice</h3>
+                <p>Revisit past talks, join teachings live, and test your understanding with quizzes.</p>
+                <a href="/upcoming-sermons">All sermons</a>
+            </div>
+            <div class="side-card">
+                <h3>What to expect</h3>
+                <ul>
+                    <li><i class="far fa-clock"></i> 45 to 60 minute talk</li>
+                    <li><i class="fas fa-comments"></i> Interactive Q&amp;A after the talk</li>
+                    <li><i class="fas fa-video"></i> Live streaming for online attendees</li>
+                    <li><i class="fas fa-star"></i> No experience required - open to all</li>
+                </ul>
+            </div>
+            <div class="side-card">
+                <h3>Explore more</h3>
+                <ul>
+                    <li><i class="fas fa-book-open"></i> Read &amp; study the Dhamma</li>
+                    <li><i class="fas fa-graduation-cap"></i> Take quizzes &amp; earn points</li>
+                    <li><i class="fas fa-calendar"></i> Join community events</li>
+                </ul>
+                <a class="link" href="/teachings">Browse teachings &rarr;</a>
+                <a class="link" href="/quiz">Browse quizzes &rarr;</a>
+            </div>
+        </div>
+    </div>
+    <section class="sd-faqs">
+        <h2>Frequently Asked Questions</h2>
+        <hr class="sd-underline">
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <h4>How do I join a live sermon? <i class="fas fa-chevron-down"></i></h4>
+            <div class="answer">For online sermons, a streaming link will be emailed to registered attendees 1 hour before the session. For in-person events, arrive at the listed venue at least 15 minutes early.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <h4>Can I ask questions during the talk? <i class="fas fa-chevron-down"></i></h4>
+            <div class="answer">Yes. Most sessions include a 15-minute Q&A segment at the end. Online attendees can type questions in the chat; in-person attendees will have a chance to raise their hand.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <h4>Are recordings available after the session? <i class="fas fa-chevron-down"></i></h4>
+            <div class="answer">Past sermons are recorded and made available on the upcoming sermons page. Check back after the session date for the recording link.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <h4>Do I earn reward points for attending? <i class="fas fa-chevron-down"></i></h4>
+            <div class="answer">Yes! Registered members earn 5 reward points for each attended session. Points are added automatically after the session is marked complete.</div>
+        </div>
+    </section>
+    <div class="sd-cta">
+        <h2>Explore more sermons</h2>
+        <p>Discover upcoming talks, revisit past recordings, and deepen your understanding of the Dhamma.</p>
+        <a href="/upcoming-sermons" class="btn-gold"><i class="fas fa-headphones"></i> All sermons</a>
+        <a href="/teachings" class="btn-outline-w"><i class="fas fa-book-open"></i> Read teachings</a>
+        <a href="/quiz" class="btn-gold"><i class="fas fa-graduation-cap"></i> Test your knowledge</a>
+    </div>
+</main>
     <div class="footer">
         <div class="part1">
             <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
-            <div class="part1-desc">
-                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
-            </div>
+            <div class="part1-desc"><h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4></div>
         </div>
         <div class="part2">
             <h2>QUICK LINKS</h2>
-            <div class="part2-desc">
-                <h4><a href="/">Home</a></h4>
-                <h4><a href="#about">About</a></h4>
-                <h4><a href="#sermons">Sermons</a></h4>
-                <h4><a href="/events">Events</a></h4>
-            </div>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
         </div>
         <div class="part3">
-            <h2>HAVE A QUESTION?</h2>
+            <h2>HELP &amp; SUPPORT</h2>
             <div class="part3-desc">
-                <h4>203 Fake St. Mountain View, San Francisco, California, USA</h4>
-                <h4>+977 97820099</h4>
-                <h4>info@gmail.com</h4>
-            </div>
-        </div>
-    </div>
-    <div class="footer-sec2">
-        <div class="line">
-            <hr class="white-line-footer">
-        </div>
-        <div class="copyright">
-            <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
-            <div class="copyright-sub">
-                <h4><a href="#terms">Terms & Conditions</a></h4>
+                <h4><a href="/contact">Contact Us</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="#terms">Terms &amp; Conditions</a></h4>
                 <h4><a href="#privacy">Privacy Policy</a></h4>
-                <h4><a href="#refund">Cancellation & Refund Policy</a></h4>
             </div>
         </div>
     </div>
-    <script src="/JS/upcoming_sermons_descrpt.js"></script>
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var urlParams = new URLSearchParams(window.location.search);
+    var title = urlParams.get('title') || 'Sermon Title';
+    var dateStr = urlParams.get('date') || '';
+    var time = urlParams.get('time') || 'N/A';
+    var speaker = urlParams.get('speaker') || 'N/A';
+    var image = urlParams.get('image') || '/assets/images/pexels-pixabay-45178.jpg';
+    var description = urlParams.get('description') || 'No description available.';
+
+    var formattedDate = dateStr ? new Date(dateStr).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
+
+    document.title = title + ' - Dhamma Nature';
+    document.getElementById('sermonTitle').textContent = title;
+    document.getElementById('breadcrumb-title').textContent = title;
+    document.getElementById('sermonImage').src = image;
+    document.getElementById('sermonImage').alt = title;
+    document.getElementById('sermonDate').textContent = formattedDate;
+    document.getElementById('sermonDateInline').textContent = formattedDate;
+    document.getElementById('sermonTime').textContent = time;
+    document.getElementById('sermonTimeInline').textContent = time;
+    document.getElementById('sermonSpeaker').textContent = speaker;
+    document.getElementById('sermonSpeakerInline').textContent = speaker;
+    document.getElementById('sermonDescription').textContent = description;
+    document.getElementById('speakerName').textContent = speaker;
+    document.getElementById('speakerAvatar').textContent = speaker.charAt(0);
+
+    var hamburger = document.querySelector('.hamburger');
+    if (hamburger) {
+        hamburger.addEventListener('click', function () {
+            setTimeout(function () {
+                var icon = hamburger.querySelector('i');
+                var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+            }, 0);
+        });
+    }
+});
+
+function addToCalendar() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var title = urlParams.get('title') || 'Sermon';
+    var date = urlParams.get('date') || 'N/A';
+    alert('Added "' + title + '" on ' + date + ' to your calendar!');
+}
+</script>
 </body>
 </html>

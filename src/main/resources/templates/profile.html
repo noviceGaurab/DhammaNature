@@ -4,117 +4,312 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>My Account - Dhamma Nature</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <link rel="stylesheet" href="/css/profile.css">
     <style>
-        .wrap { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
-        section { margin-bottom: 34px; }
-        table { width:100%; border-collapse: collapse; }
-        td, th { padding: 8px; border-bottom: 1px solid #eee; text-align:left; font-size: 14px; }
-        .msg-ok { color:#155724; background:#d4edda; padding:10px 14px; border-radius:6px; }
-        .msg-err { color:#721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; }
-        .vendor-form input { padding:8px; margin-right:6px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; }
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="My Account">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">MY ACCOUNT</h1>
+                <p>Your bookings, orders, rewards, and community activity in one place</p>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
 <main class="wrap">
     <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
     <p class="msg-err" th:if="${error}" th:text="${error}"></p>
-
-    <h1>Hello, <span th:text="${currentUser.fullName}"></span></h1>
-    <p>Reward points: <strong th:text="${currentUser.rewardPoints}"></strong> &middot; Role: <span th:text="${currentUser.role}"></span></p>
-
-    <section>
-        <h2>My bookings</h2>
-        <p th:if="${#lists.isEmpty(bookings)}">No bookings yet.</p>
-        <table th:unless="${#lists.isEmpty(bookings)}">
-            <tr><th>Event</th><th>Mode</th><th>Status</th><th>Booked on</th></tr>
-            <tr th:each="b : ${bookings}">
-                <td th:text="${b.event.title}"></td>
-                <td th:text="${b.attendanceMode}"></td>
-                <td th:text="${b.status}"></td>
-                <td th:text="${#temporals.format(b.bookingDate, 'dd MMM yyyy')}"></td>
-            </tr>
-        </table>
+    <section class="profile-hero">
+        <div class="profile-identity">
+            <div class="avatar avatar-wrap">
+                <img th:if="${currentUser.profileImage}" th:src="@{'/uploads/' + ${currentUser.profileImage}}" alt="Profile photo"/>
+                <span th:unless="${currentUser.profileImage}" th:text="${#strings.isEmpty(currentUser.fullName) ? 'U' : #strings.substring(currentUser.fullName,0,1)}">U</span>
+            </div>
+            <div>
+                <p class="eyebrow">Welcome back</p>
+                <h1 th:text="${currentUser.fullName}">User</h1>
+                <p class="meta">
+                    <span th:text="${currentUser.email}">email</span>
+                    <span class="dot">·</span>
+                    <span class="role-pill" th:text="${currentUser.role}">USER</span>
+                </p>
+            </div>
+        </div>
+<div class="profile-side">
+            <div class="points-card">
+                <div class="label">Reward points</div>
+                <div class="points" th:text="${currentUser.rewardPoints}">0</div>
+                <a href="/rewards" class="btn btn-sm">Redeem rewards</a>
+            </div>
+            <a href="/logout" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
     </section>
-
-    <section>
-        <h2>My donations</h2>
-        <p th:if="${#lists.isEmpty(donations)}">No donations yet.</p>
-        <table th:unless="${#lists.isEmpty(donations)}">
-            <tr><th>Amount</th><th>Campaign</th><th>Receipt</th><th>Date</th></tr>
-            <tr th:each="d : ${donations}">
-                <td th:text="${d.amount}"></td>
-                <td th:text="${d.campaign != null ? d.campaign.title : 'General'}"></td>
-                <td th:text="${d.receiptNumber}"></td>
-                <td th:text="${#temporals.format(d.donationDate, 'dd MMM yyyy')}"></td>
-            </tr>
-        </table>
+    <section class="panel profile-edit">
+        <div class="panel-head"><h2 class="section-heading">Edit profile</h2></div>
+        <hr class="section-underline">
+        <div class="profile-edit-grid">
+            <div class="profile-edit-card">
+                <h3><i class="fa-solid fa-camera"></i> Profile photo</h3>
+                <p class="empty-note">Choose a photo so the community can recognise you in the discuss section.</p>
+                <form method="post" action="/profile/image" enctype="multipart/form-data" class="profile-upload">
+                    <label class="upload-btn">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Choose image...</span>
+                        <input type="file" name="image" accept="image/*" required/>
+                    </label>
+                    <span class="upload-filename" id="uploadFilename">No file selected</span>
+                    <button type="submit" class="btn btn-primary btn-sm">Upload profile image</button>
+                </form>
+            </div>
+            <div class="profile-edit-card">
+                <h3><i class="fa-solid fa-quote-left"></i> About me</h3>
+                <p class="empty-note">A short line shown to other participants when they view the discuss page.</p>
+                <form method="post" action="/profile/bio" class="bio-form">
+                    <textarea name="bio" rows="3" maxlength="160" placeholder="Tell the sangha a little about yourself..." th:text="${currentUser.bio}"></textarea>
+                <button type="submit" class="btn btn-primary btn-sm">Save description</button>
+                </form>
+            </div>
+        </div>
     </section>
-
-    <section>
-        <h2>My marketplace orders</h2>
-        <p th:if="${#lists.isEmpty(orders)}">No orders yet.</p>
-        <table th:unless="${#lists.isEmpty(orders)}">
-            <tr><th>Product</th><th>Qty</th><th>Total</th><th>Status</th><th>Date</th></tr>
-            <tr th:each="o : ${orders}">
-                <td th:text="${o.product.productName}"></td>
-                <td th:text="${o.quantity}"></td>
-                <td th:text="${o.totalPrice}"></td>
-                <td th:text="${o.status}"></td>
-                <td th:text="${#temporals.format(o.orderDate, 'dd MMM yyyy')}"></td>
-            </tr>
-        </table>
+    <section class="stats-grid">
+        <div class="stat-card"><i class="fa-solid fa-calendar-check"></i><div><strong th:text="${bookingCount}">0</strong><span>Bookings</span></div></div>
+        <div class="stat-card"><i class="fa-solid fa-hand-holding-heart"></i><div><strong th:text="${donationCount}">0</strong><span>Donations</span></div></div>
+        <div class="stat-card"><i class="fa-solid fa-bag-shopping"></i><div><strong th:text="${orderCount}">0</strong><span>Orders</span></div></div>
+        <div class="stat-card"><i class="fa-solid fa-heart"></i><div><strong th:text="${wishlistCount}">0</strong><span>Wishlist</span></div></div>
     </section>
-
-    <section>
-        <h2>Volunteer registrations</h2>
-        <p th:if="${#lists.isEmpty(volunteerRegistrations)}">You haven't signed up for anything yet.</p>
-        <table th:unless="${#lists.isEmpty(volunteerRegistrations)}">
-            <tr><th>Opportunity</th><th>Status</th><th>Registered on</th></tr>
-            <tr th:each="v : ${volunteerRegistrations}">
-                <td th:text="${v.opportunity.title}"></td>
-                <td th:text="${v.status}"></td>
-                <td th:text="${#temporals.format(v.registeredAt, 'dd MMM yyyy')}"></td>
-            </tr>
-        </table>
+    <section class="quick-actions">
+        <h2 class="section-heading">Quick actions</h2>
+        <hr class="section-underline">
+        <div class="action-grid">
+            <a href="/events" class="action-card"><i class="fa-solid fa-calendar"></i><span>Browse events</span></a>
+            <a href="/marketplace" class="action-card"><i class="fa-solid fa-store"></i><span>Shop marketplace</span></a>
+            <a href="/quiz" class="action-card"><i class="fa-solid fa-graduation-cap"></i><span>Take a quiz</span></a>
+            <a href="/rewards" class="action-card"><i class="fa-solid fa-gift"></i><span>View rewards</span></a>
+            <a href="/volunteer" class="action-card"><i class="fa-solid fa-hands-helping"></i><span>Volunteer</span></a>
+            <a href="/vendor/studio" class="action-card"><i class="fa-solid fa-store"></i><span th:text="${currentUser.role.name() == 'VENDOR' ? 'Vendor studio' : 'Become a vendor'}">Become a vendor</span></a>
+            <a href="/donate" class="action-card"><i class="fa-solid fa-donate"></i><span>Donate</span></a>
+<a href="/discuss" class="action-card"><i class="fa-solid fa-comments"></i><span>Join discuss</span></a>
+            <a href="/blog#write" class="action-card"><i class="fa-solid fa-pen-nib"></i><span>Write an article</span></a>
+            <a href="/centers" class="action-card"><i class="fa-solid fa-place-of-worship"></i><span>Find centers</span></a>
+        </div>
     </section>
-
-    <section>
-        <h2>Reward point history</h2>
-        <p th:if="${#lists.isEmpty(rewardHistory)}">No reward activity yet.</p>
-        <table th:unless="${#lists.isEmpty(rewardHistory)}">
-            <tr><th>Date</th><th>Type</th><th>Points</th><th>Reason</th></tr>
-            <tr th:each="tx : ${rewardHistory}">
-                <td th:text="${#temporals.format(tx.createdAt, 'dd MMM yyyy')}"></td>
-                <td th:text="${tx.type}"></td>
-                <td th:text="${tx.points}"></td>
-                <td th:text="${tx.reason}"></td>
-            </tr>
-        </table>
+    <section class="panel">
+        <div class="panel-head"><h2 class="section-heading">Wishlist</h2><a href="/marketplace" class="panel-link">Browse more</a></div>
+        <hr class="section-underline">
+        <p class="empty-note" th:if="${#sets.isEmpty(wishlist)}">No saved items yet. Tap "Save to wishlist" on any product.</p>
+        <div class="wish-grid" th:unless="${#sets.isEmpty(wishlist)}">
+            <article class="wish-card" th:each="p : ${wishlist}">
+                <img th:if="${p.imageUrl}" th:src="@{'/assets/images/' + ${p.imageUrl}}" th:alt="${p.productName}"/>
+                <img th:unless="${p.imageUrl}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="product"/>
+                <div><h3 th:text="${p.productName}">Product</h3><p th:text="'$' + ${#numbers.formatDecimal(p.price, 1, 2)}">$0</p><a th:href="@{'/marketplace/' + ${p.id}}" class="btn btn-sm">View</a></div>
+            </article>
+        </div>
     </section>
-
-    <section>
-        <h2>Notifications</h2>
-        <p th:if="${#lists.isEmpty(notifications)}">No notifications yet.</p>
-        <ul>
-            <li th:each="n : ${notifications}">
-                <strong th:text="${n.title}"></strong> - <span th:text="${n.message}"></span>
-                <small th:text="${#temporals.format(n.createdAt, 'dd MMM yyyy HH:mm')}"></small>
-            </li>
-        </ul>
+    <section class="panel">
+        <div class="panel-head"><h2 class="section-heading">Followed centers</h2><a href="/centers" class="panel-link">Find centers</a></div>
+        <hr class="section-underline">
+        <p class="empty-note" th:if="${#sets.isEmpty(followedCenters)}">You are not following any meditation centers yet.</p>
+        <div class="center-list" th:unless="${#sets.isEmpty(followedCenters)}">
+            <a class="center-row" th:each="c : ${followedCenters}" th:href="@{'/centers/' + ${c.id}}"><strong th:text="${c.name}">Center</strong><span th:text="${c.location}">Location</span></a>
+        </div>
     </section>
-
-    <section th:if="${currentUser.role.name() == 'USER'}">
-        <h2>Become a vendor</h2>
-        <p>List authentic Dhamma products (prayer beads, incense, statues, handicrafts) on the marketplace - pending admin verification.</p>
-        <form class="vendor-form" method="post" action="/vendor/apply">
-            <input type="text" name="vendorName" placeholder="Vendor / shop name" required>
-            <input type="text" name="contactDetails" placeholder="Contact details">
-            <input type="text" name="address" placeholder="Address">
-            <button type="submit" class="btn btn-primary">Apply</button>
-        </form>
+    <section class="panel">
+        <h2 class="section-heading">My bookings</h2><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(bookings)}">No bookings yet.</p>
+<div class="table-wrap" th:unless="${#lists.isEmpty(bookings)}">
+            <table><tr><th>Event</th><th>Mode</th><th>Status</th><th>Booked on</th><th>Action</th></tr>
+            <tr th:each="b : ${bookings}"><td th:text="${b.event.title}"></td><td th:text="${b.attendanceMode}"></td><td><span class="status" th:text="${b.status}"></span></td><td th:text="${#temporals.format(b.bookingDate, 'dd MMM yyyy')}"></td>
+            <td>
+                <span th:if="${b.status.name() != 'CONFIRMED'}">—</span>
+                <form th:if="${b.status.name() == 'CONFIRMED'}" method="post" th:action="@{'/booking/' + ${b.id} + '/cancel'}" style="display:inline;" onsubmit="return confirm('Cancel this booking?');">
+                    <button type="submit" style="padding:6px 14px; border-radius:20px; border:1px solid #8f2a23; background:#fdecea; color:#8f2a23; font-size:12px; font-weight:700; cursor:pointer;">Cancel</button>
+                </form>
+            </td></tr></table>
+        </div>
+    </section>
+    <section class="panel">
+        <h2 class="section-heading">My donations</h2><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(donations)}">No donations yet.</p>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(donations)}">
+            <table><tr><th>Amount</th><th>Campaign</th><th>Receipt</th><th>Date</th></tr>
+            <tr th:each="d : ${donations}"><td th:text="'$' + ${#numbers.formatDecimal(d.amount, 1, 2)}"></td><td th:text="${d.campaign != null ? d.campaign.title : 'General'}"></td><td th:text="${d.receiptNumber}"></td><td th:text="${#temporals.format(d.donationDate, 'dd MMM yyyy')}"></td></tr></table>
+        </div>
+    </section>
+    <section class="panel">
+        <h2 class="section-heading">Marketplace orders</h2><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(orders)}">No orders yet.</p>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(orders)}">
+<table><tr><th>Product</th><th>Qty</th><th>Total</th><th>Status</th><th>Date</th><th>Action</th></tr>
+            <tr th:each="o : ${orders}"><td th:text="${o.product.productName}"></td><td th:text="${o.quantity}"></td><td th:text="'$' + ${#numbers.formatDecimal(o.totalPrice, 1, 2)}"></td><td><span class="status" th:text="${o.status}"></span></td><td th:text="${#temporals.format(o.orderDate, 'dd MMM yyyy')}"></td>
+            <td><a th:href="@{'/marketplace/order-confirmed?orderId=' + ${o.id}}" style="padding:6px 14px; border-radius:20px; background:#e6f4ea; color:#006015; font-size:12px; font-weight:700; text-decoration:none;">View</a></td></tr></table>
+        </div>
+    </section>
+    <section class="panel">
+        <h2 class="section-heading">Volunteer registrations</h2><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(volunteerRegistrations)}">You haven't signed up for volunteer work yet.</p>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(volunteerRegistrations)}">
+            <table><tr><th>Opportunity</th><th>Status</th><th>Registered on</th></tr>
+            <tr th:each="v : ${volunteerRegistrations}"><td th:text="${v.opportunity.title}"></td><td><span class="status" th:text="${v.status}"></span></td><td th:text="${#temporals.format(v.registeredAt, 'dd MMM yyyy')}"></td></tr></table>
+        </div>
+    </section>
+    <section class="panel">
+        <h2 class="section-heading">Quiz history</h2><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(quizHistory)}">No quiz attempts yet. <a href="/quiz">Try a quiz</a> to earn points.</p>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(quizHistory)}">
+            <table><tr><th>Quiz</th><th>Score</th><th>Date</th></tr>
+<tr th:each="q : ${quizHistory}"><td th:text="${q.quiz.title}"></td><td th:text="${q.score} + ' / ' + ${q.totalQuestions}"></td><td th:text="${#temporals.format(q.attemptedAt, 'dd MMM yyyy')}"></td></tr></table>
+        </div>
+    </section>
+    <section class="panel">
+        <h2 class="section-heading">My articles</h2><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(blogPosts)}">You haven't written any articles yet. <a href="/blog#write">Write your first article</a> to share your reflections - it will be published after admin approval.</p>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(blogPosts)}">
+            <table><tr><th>Title</th><th>Category</th><th>Status</th><th>Submitted on</th></tr>
+            <tr th:each="bp : ${blogPosts}"><td th:text="${bp.title}"></td><td th:text="${#strings.capitalize(bp.category)}"></td><td>
+                <span class="status st-ok" th:if="${bp.status.name() == 'APPROVED'}">APPROVED</span>
+                <span class="status st-wait" th:if="${bp.status.name() == 'PENDING'}">PENDING</span>
+                <span class="status st-no" th:if="${bp.status.name() == 'REJECTED'}">REJECTED</span>
+            </td><td th:text="${#temporals.format(bp.createdAt, 'dd MMM yyyy')}"></td></tr></table>
+        </div>
+    </section>
+    <section class="panel">
+        <h2 class="section-heading">Reward point history</h2><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(rewardHistory)}">No reward activity yet.</p>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(rewardHistory)}">
+            <table><tr><th>Date</th><th>Type</th><th>Points</th><th>Reason</th></tr>
+            <tr th:each="tx : ${rewardHistory}"><td th:text="${#temporals.format(tx.createdAt, 'dd MMM yyyy')}"></td><td th:text="${tx.type}"></td><td th:text="${tx.points}"></td><td th:text="${tx.reason}"></td></tr></table>
+        </div>
+    </section>
+<section class="panel">
+        <div class="panel-head"><h2 class="section-heading">Notifications</h2></div><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(notifications)}">No notifications yet.</p>
+        <div class="notify-block" th:unless="${#lists.isEmpty(notifications)}">
+            <div class="notify-list" id="notifyList" th:classappend="${#lists.size(notifications) > 4} ? 'collapsed' : ''">
+                <article class="notify-item" th:each="n : ${notifications}"><span class="notify-dot"></span><div class="notify-body"><strong th:text="${n.title}">Title</strong><p th:text="${n.message}">Message</p></div><small th:text="${#temporals.format(n.createdAt, 'dd MMM yyyy HH:mm')}"></small></article>
+            </div>
+            <button type="button" class="notify-toggle" id="notifyToggle" th:if="${#lists.size(notifications) > 4}"><span class="nt-label">Show all</span> <span class="nt-count" th:text="${#lists.size(notifications)}"></span><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+    </section>
+<section class="panel vendor-panel" th:if="${currentUser.role.name() == 'USER'}">
+        <h2 class="section-heading">Become a vendor</h2><hr class="section-underline">
+        <p class="vendor-copy">List authentic Dhamma products (prayer beads, incense, statues, handicrafts) on the marketplace. Applications are reviewed by an administrator.</p>
+        <a href="/vendor/studio" class="btn btn-primary"><i class="fa-solid fa-store"></i> Become a vendor</a>
+    </section>
+    <section class="panel vendor-panel" th:if="${currentUser.role.name() == 'VENDOR'}">
+        <h2 class="section-heading">Vendor account</h2><hr class="section-underline">
+        <p class="vendor-copy">You are registered as a vendor. Open the vendor studio to add products with photos and descriptions, and manage your catalogue.</p>
+        <a href="/vendor/studio" class="btn btn-primary"><i class="fa-solid fa-store"></i> Open vendor studio</a>
     </section>
 </main>
-<div th:replace="~{fragments/footer :: siteFooter}"></div>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
+            </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+            var fileInput = document.querySelector('.upload-btn input[type="file"]');
+            var fileName = document.getElementById('uploadFilename');
+            if (fileInput && fileName) {
+                fileInput.addEventListener('change', function () {
+                    fileName.textContent = fileInput.files.length ? fileInput.files[0].name : 'No file selected';
+                });
+            }
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+                    }, 0);
+                });
+            }
+            var notifyToggle = document.getElementById('notifyToggle');
+            var notifyList = document.getElementById('notifyList');
+            if (notifyToggle && notifyList) {
+                notifyToggle.addEventListener('click', function () {
+                    var collapsed = notifyList.classList.toggle('collapsed');
+                    notifyToggle.classList.toggle('open', !collapsed);
+                    var label = notifyToggle.querySelector('.nt-label');
+                    if (label) { label.textContent = collapsed ? 'Show all' : 'Show less'; }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

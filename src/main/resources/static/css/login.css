@@ -1,384 +1,360 @@
+/* ============================================================
+   Dhamma Nature - Authentication pages (login / signup / forgot
+   / reset). Shared stylesheet for the whole auth flow.
+   ============================================================ */
 
-    /* Global Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #0000;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-      color: #333;
-    }
+body.auth-page {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, #eef2e6 0%, #f7f4ec 55%, #e8efe4 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
 
-    /* Main Sanctuary */
-    .sanctuary {
-      display: flex;
-      width: 95%;
-      max-width: 1400px;
-      height: 800px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 7px solid #d4a373;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-      position: relative;
-    }
+/* ---- Card shell ---- */
+.auth-wrap {
+  width: 100%;
+  max-width: 1080px;
+}
 
-    /* Meditation Image */
-    .meditation-image {
-      flex: 1.2;
-      background-color: #0000;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 33px;
-    }
+.auth-card {
+  display: flex;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(46, 61, 38, 0.16);
+  overflow: hidden;
+  min-height: 640px;
+  border: 1px solid rgba(212, 163, 115, 0.35);
+}
 
-    .meditation-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
+/* ---- Cover panel ---- */
+.auth-cover {
+  flex: 1.15;
+  position: relative;
+  min-height: 640px;
+  display: flex;
+  align-items: flex-end;
+}
 
-    /* Dharma Form */
-    .dharma-form {
-      flex: 0.8;
-      padding: 43px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 30px;
-      background: #ffffff;
-    }
+.auth-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
-    /* Logo Display */
-    .logo-display {
-      text-align: center;
-    }
+.auth-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(24, 38, 22, 0.05) 0%,
+    rgba(24, 38, 22, 0.25) 55%,
+    rgba(24, 38, 22, 0.78) 100%);
+}
 
-    .logo-display img {
-      max-width: 180px;
-      height: auto;
-      margin-top: 20px;
-    }
+.cover-quote {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  padding: 40px;
+}
 
-    /* Welcome Message */
-    .welcome-message {
-      font-size: 1.5em;
-      color: #555;
-      text-align: center;
-      font-weight: bold;
-    }
+.cover-quote p {
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.5;
+  max-width: 360px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
 
-    /* Input Fields */
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-      position: relative;
-    }
+.cover-quote span {
+  display: block;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
 
-    .input-group label {
-      font-size: 1em;
-      color: #999;
-      font-weight: 500;
-    }
+/* ---- Form panel ---- */
+.auth-panel {
+  flex: 1;
+  padding: 48px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
+.auth-back {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.85rem;
+  color: #8a947f;
+  text-decoration: none;
+  padding: 6px 10px;
+}
 
-    .input-group input {
-      padding: 15px 15px 15px 40px;
-      font-size: 1em;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-      width: 100%;
-    }
+.auth-logo {
+  text-align: center;
+  margin-bottom: 18px;
+}
 
-    .input-group .input-icon {
-      position: absolute;
-      left: 12px;
-      font-size: 18px;
-      color: #666;
-      transition: color 0.3s;
-    }
+.auth-logo img {
+  max-height: 64px;
+  width: auto;
+}
 
-    .input-group input:focus {
-      border-color: #277946;
-      box-shadow: 0 0 5px rgba(39, 121, 70, 0.5);
-    }
+.auth-title {
+  text-align: center;
+  font-size: 1.7rem;
+  color: #2b3a26;
+  letter-spacing: -0.3px;
+}
 
-    .input-group input:focus + .input-icon {
-      color: #277946;
-    }
+.auth-subtitle {
+  text-align: center;
+  color: #7c8873;
+  margin: 8px 0 26px;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
 
-    /* Forgot Password */
-    .forgot-password {
-      text-align: right;
-      margin-top: -10px;
-    }
+/* ---- Flash / error messages ---- */
+.msg {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+  line-height: 1.45;
+}
 
-    .forgot-password a {
-      color: #277946;
-      text-decoration: none;
-      font-size: 0.9em;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      transition: color 0.3s;
-    }
+.msg-success {
+  background: #e9f5ea;
+  color: #1f6b2e;
+  border: 1px solid #c4e3c8;
+}
 
-    .forgot-password a i {
-      font-size: 16px;
-      transition: color 0.3s;
-    }
+.msg-error {
+  background: #fdecea;
+  color: #a1272c;
+  border: 1px solid #f3c6c4;
+}
 
-    .forgot-password a:hover, .forgot-password a:hover i {
-      color: #1e6b39;
-      text-decoration: underline;
-    }
+/* ---- Form fields ---- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-    /* Login Button */
-    .login-btn {
-      background-color: #d32f2f;
-      color: #fff;
-      padding: 15px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.2em;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4f5c48;
+  margin-bottom: 7px;
+}
 
-    .login-btn i {
-      font-size: 18px;
-    }
+.input-wrapper {
+  position: relative;
+}
 
-    .login-btn:hover {
-      background-color: #b71c1c;
-    }
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9aa591;
+  font-size: 16px;
+  pointer-events: none;
+}
 
-    .login-btn:hover i {
-      color: #fff;
-    }
+.input-wrapper input {
+  width: 100%;
+  padding: 15px 46px;
+  font-size: 0.98rem;
+  color: #2f3a2b;
+  background: #fbfcf9;
+  border: 1.5px solid #dfe4d8;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-    /* Signup Section */
-    .signup-section {
-      text-align: center;
-      padding-top: 20px;
-      border-top: 1px solid #ccc;
-    }
+.input-wrapper input::placeholder {
+  color: #b0b9a8;
+}
 
-    .signup-section span {
-      color: #555;
-      font-size: 0.9em;
-    }
+.input-wrapper input:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.12);
+  background: #fff;
+}
 
-    .signup-section a {
-      color: #2e7d32;
-      text-decoration: none;
-      font-weight: bold;
-      margin-left: 5px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.3s;
-    }
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9aa591;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 6px;
+}
 
-    .signup-section a i {
-      font-size: 16px;
-      transition: color 0.3s;
-    }
+.password-toggle:hover {
+  color: #2e7d32;
+}
 
-    .signup-section a:hover, .signup-section a:hover i {
-      color: #1e6b39;
-      text-decoration: underline;
-    }
+/* ---- Forgot password link (always visible) ---- */
+.forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+}
 
-    /* Divider and Google Login */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
+.forgot-password {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: color 0.2s;
+}
 
-    .divider hr {
-      flex: 1;
-      border: 0;
-      height: 1px;
-      background: #ccc;
-    }
+.forgot-password i {
+  font-size: 0.85rem;
+}
 
-    .divider span {
-      color: #555;
-      font-size: 0.9em;
-    }
+.forgot-password:hover {
+  color: #1c5a20;
+  text-decoration: underline;
+}
 
-    .google-btn {
-      background-color: #d8d6d6;
-      color: #333;
-      padding: 12px;
-      border: 2px solid #fff;
-      border-radius: 5px;
-      font-size: 1em;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-      transform: translateY(-20px);
-    }
+/* ---- Primary button ---- */
+.login-btn {
+  margin-top: 6px;
+  background: linear-gradient(135deg, #2e7d32, #1f6b2e);
+  color: #fff;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  box-shadow: 0 10px 20px rgba(31, 107, 46, 0.25);
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+}
 
-    .google-btn i {
-      font-size: 20px;
-      color: #333;
-      transition: color 0.3s;
-    }
+.login-btn:hover {
+  background: linear-gradient(135deg, #266a2b, #1a5a24);
+  box-shadow: 0 12px 24px rgba(31, 107, 46, 0.32);
+  transform: translateY(-1px);
+}
 
-    .google-btn:hover {
-      background-color: #c8c6c6;
-    }
+.login-btn:active {
+  transform: translateY(0);
+}
 
-    .google-btn:hover i {
-      color: #277946;
-    }
+/* ---- Checkbox row (signup) ---- */
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 2px;
+}
 
-    /* New Password Modal */
-    .new-password-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+.checkbox-row input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+  accent-color: #2e7d32;
+  flex-shrink: 0;
+  cursor: pointer;
+}
 
-    .new-password-form {
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      position: relative;
-    }
+.checkbox-row label {
+  font-size: 0.92rem;
+  color: #55614f;
+  line-height: 1.5;
+  cursor: pointer;
+}
 
-    .new-password-form h2 {
-      font-size: 1.5em;
-      margin-bottom: 20px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+/* ---- Switch row (signup <-> login) ---- */
+.auth-switch {
+  text-align: center;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid #ecefe7;
+  color: #7c8873;
+  font-size: 0.94rem;
+}
 
-    .new-password-form h2 i {
-      font-size: 20px;
-      color: #277946;
-    }
+.auth-switch a {
+  color: #2e7d32;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 4px;
+}
 
-    .new-password-form .input-group {
-      margin-bottom: 20px;
-    }
+.auth-switch a:hover {
+  text-decoration: underline;
+}
 
-    .new-password-form .input-group input {
-      width: 100%;
-      padding: 15px 15px 15px 40px;
-    }
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .auth-card {
+    flex-direction: column;
+    min-height: 0;
+  }
 
-    .new-password-form button {
-      background-color: #277946;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+  .auth-cover {
+    min-height: 220px;
+    flex: none;
+  }
 
-    .new-password-form button i {
-      font-size: 18px;
-    }
+  .cover-quote {
+    padding: 20px 28px;
+  }
 
-    .new-password-form button:hover {
-      background-color: #1e6b39;
-    }
+  .cover-quote p {
+    font-size: 1.15rem;
+    max-width: none;
+  }
 
-    .new-password-form button:hover i {
-      color: #fff;
-    }
+  .auth-panel {
+    padding: 36px 28px;
+  }
+}
 
-    .close-modal {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 24px;
-      color: #666;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
+@media (max-width: 480px) {
+  body.auth-page {
+    padding: 14px;
+  }
 
-    .close-modal:hover {
-      color: #000;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .sanctuary {
-        flex-direction: column;
-        height: auto;
-      }
-
-      .meditation-image {
-        height: 300px;
-        padding: 20px;
-      }
-
-      .dharma-form {
-        padding: 20px;
-      }
-
-      .new-password-form {
-        padding: 20px;
-      }
-    }
+  .auth-panel {
+    padding: 28px 20px;
+  }
+}

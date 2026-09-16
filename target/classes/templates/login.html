@@ -3,44 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dhamma Nature - Login</title>
+    <title>Login - Dhamma Nature</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/login.css">
 </head>
-<body>
-    <div class="sanctuary">
-        <div class="meditation-image">
-            <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Meditation Image" />
-        </div>
-        <div class="dharma-form">
-            <div class="logo-display">
-                <img src="/assets/images/logo.png" alt="Dhamma Nature Logo" />
-            </div>
-            <div class="welcome-message"><i class="fas fa-door-open"></i> Welcome back! Please enter your details.</div>
-            <p style="color:green" th:if="${signupsuccessful}" th:text="${signupsuccessful}"></p>
-            <p style="color:red" th:if="${error}" th:text="${error}"></p>
-            <form method="post" action="/login">
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                    </div>
+<body class="auth-page">
+    <div class="auth-wrap">
+        <div class="auth-card">
+            <aside class="auth-cover">
+                <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Meditation" />
+                <div class="cover-quote">
+                    <p>"Peace comes from within. Do not seek it without."</p>
+                    <span>Dhamma Nature</span>
                 </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="password" name="password" placeholder="Password" required>
-                    </div>
+            </aside>
+            <section class="auth-panel">
+                <a class="auth-back" href="/"><i class="fas fa-home"></i> Home</a>
+                <div class="auth-logo">
+                    <img src="/assets/images/logo.png" alt="Dhamma Nature Logo" />
                 </div>
-                <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> Log in</button>
-            </form>
-            <div class="signup-section">
-                <span>Don't have an account?</span> <a href="/signup"><i class="fas fa-user-plus"></i> Sign up</a>
-            </div>
+                <h1 class="auth-title">Welcome back</h1>
+                <p class="auth-subtitle">Please enter your details to continue your journey.</p>
+
+                <p class="msg msg-success" th:if="${signupsuccessful}" th:text="${signupsuccessful}"></p>
+                <p class="msg msg-success" th:if="${resetSuccess}" th:text="${resetSuccess}"></p>
+                <p class="msg msg-error" th:if="${error}" th:text="${error}"></p>
+
+                <form class="auth-form" method="post" action="/login">
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="password-toggle" data-toggle-for="password" aria-label="Show password"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="forgot-row">
+                        <a class="forgot-password" href="/forgot-password"><i class="fas fa-key"></i> Forgot password?</a>
+                    </div>
+                    <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> Log in</button>
+                </form>
+
+                <div class="auth-switch">
+                    Don't have an account? <a href="/signup"><i class="fas fa-user-plus"></i> Sign up</a>
+                </div>
+            </section>
         </div>
     </div>
-    <script src="/JS/login.js"></script>
+    <script>
+        document.querySelectorAll('.password-toggle').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var input = document.getElementById(btn.dataset.toggleFor);
+                var show = input.type === 'password';
+                input.type = show ? 'text' : 'password';
+                btn.querySelector('i').className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+            });
+        });
+    </script>
 </body>
 </html>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /** FR-07 stakeholder onboarding: a user applies to become a Vendor, pending admin verification. */
 @Service
@@ -18,6 +19,10 @@ public class VendorService {
 
     private final VendorRepository vendorRepository;
     private final UserRepository userRepository;
+
+    public Optional<Vendor> findByUser(Integer userId) {
+        return vendorRepository.findByUser_Id(userId);
+    }
 
     @Transactional
     public Vendor applyAsVendor(User user, String vendorName, String contactDetails, String address) {

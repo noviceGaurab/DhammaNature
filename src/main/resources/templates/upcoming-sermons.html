@@ -3,133 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dharma Club - Upcoming Sermons</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Dhamma Nature - Upcoming Sermons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gentium+Basic:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-	<link rel = "stylesheet" href = "/css/upcoming_sermons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; line-height: 1.6; background: #f9fafb; }
+        .sermons-main { max-width: 1200px; margin: 0 auto; padding: 50px 24px 20px; }
+        .section-hero { text-align: center; margin-bottom: 36px; }
+        .section-hero h1 { font-size: 40px; color: #704223; }
+        .section-hero p { color: #666; font-size: 17px; max-width: 640px; margin: 10px auto 0; }
+        .accent-line { width: 70px; height: 4px; background: #b8860b; border: none; margin: 18px auto 0; border-radius: 2px; }
+        /* Intro pills + stats */
+        .intro-pills { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
+        .pill { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #eee; border-radius: 30px; padding: 10px 20px; box-shadow: 0 2px 8px rgba(0,0,0,.04); font-size: 14px; color: #555; }
+        .pill i { color: #b8860b; font-size: 18px; }
+        .pill strong { color: #333; }
+        .stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 34px; }
+        .stat-box { background: #fff; border-radius: 14px; padding: 22px 16px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+        .stat-box .num { font-size: 30px; font-weight: 800; color: #b8860b; }
+        .stat-box .lbl { font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+        /* Layout: list + sidebar */
+        .sermons-layout { display: grid; grid-template-columns: 2.2fr 1fr; gap: 34px; align-items: start; }
+        /* Featured spotlight */
+        .featured-spotlight { display: flex; gap: 22px; align-items: center; background: linear-gradient(120deg, #f5efe3, #fff); border: 1px solid #f5efe3; border-radius: 16px; padding: 22px 26px; margin-bottom: 22px; box-shadow: 0 6px 20px rgba(184,134,11,.12); flex-wrap: wrap; }
+        .sp-badge { min-width: 78px; text-align: center; background: linear-gradient(135deg, #b8860b, #ffd700); color: #fff; border-radius: 14px; padding: 14px 10px; }
+        .sp-badge .sp-mon { font-size: 11px; text-transform: uppercase; opacity: .9; }
+        .sp-badge .sp-day { font-size: 34px; font-weight: 800; line-height: 1.05; }
+        .sp-body { flex: 1; min-width: 220px; }
+        .sp-eyebrow { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #b8860b; margin-bottom: 4px; }
+        .sp-title { font-size: 21px; font-weight: 800; color: #333; margin-bottom: 4px; }
+        .sp-speaker { font-size: 14px; color: #704223; margin-bottom: 4px; }
+        .sp-desc { font-size: 13px; color: #666; }
+        .sp-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .sp-btn { background: #b8860b; color: #fff; border: none; padding: 11px 20px; border-radius: 30px; font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer; transition: transform .2s; display: inline-block; }
+        .sp-btn.sp-link { background: transparent; border: 2px solid #b8860b; color: #b8860b; }
+        .sp-btn:hover { transform: translateY(-2px); }
+        /* Toolbar */
+        .s-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+        .s-search { flex: 1; min-width: 200px; display: flex; gap: 8px; }
+        .s-search input { flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; }
+        .s-search input:focus { border-color: #b8860b; }
+        .s-search button { background: #b8860b; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-weight: 700; cursor: pointer; }
+        .s-tabs { display: flex; gap: 6px; }
+        .s-tab { padding: 9px 20px; border: 2px solid #e8e8e8; background: #fff; border-radius: 24px; cursor: pointer; font-weight: 700; font-size: 13px; color: #555; transition: all .2s; }
+        .s-tab:hover { border-color: #b8860b; color: #b8860b; }
+        .s-tab.active { background: #b8860b; border-color: #b8860b; color: #fff; }
+        /* Date nav */
+        .date-nav { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 12px 18px; }
+        .date-nav .date-btns { display: flex; gap: 8px; }
+        .date-btn { padding: 8px 14px; border: 1px solid #ddd; background: #fff; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; color: #555; transition: all .2s; }
+        .date-btn:hover { border-color: #b8860b; color: #b8860b; }
+        .date-display { font-size: 14px; color: #777; font-weight: 700; }
+        .cal-btn { padding: 8px 14px; background: #b8860b; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; }
+        .cal-btn:hover { background: #b8860b; }
+        /* Sermon list */
+        .sermon-list { display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; }
+        .month-label { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #b8860b; margin-top: 12px; }
+        .sermon-item { display: flex; gap: 20px; align-items: center; background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 4px 14px rgba(0,0,0,.06); transition: transform .3s, box-shadow .3s; cursor: pointer; }
+        .sermon-item:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+        .s-date-badge { min-width: 68px; text-align: center; background: linear-gradient(135deg, #b8860b, #ffd700); color: #fff; border-radius: 12px; padding: 12px 8px; }
+        .s-date-badge .s-day { font-size: 28px; font-weight: 800; line-height: 1; }
+        .s-date-badge .s-wd { font-size: 11px; text-transform: uppercase; opacity: .9; letter-spacing: .5px; margin-top: 2px; }
+        .s-details { flex: 1; }
+        .s-details .s-time { font-size: 13px; color: #999; margin-bottom: 2px; }
+        .s-details .s-title { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 4px; }
+        .s-details .s-speaker { font-size: 14px; color: #b8860b; }
+        .s-details .s-desc { font-size: 13px; color: #666; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .sermon-item img { width: 120px; height: 80px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+        .s-recording-badge { display: inline-block; background: #f5efe3; color: #9e2b25; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+        .empty-msg { padding: 30px; text-align: center; color: #888; font-size: 15px; background: #fff; border-radius: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        /* Sidebar widgets */
+        .s-side { display: flex; flex-direction: column; gap: 22px; }
+        .sw { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        .sw h3 { font-size: 17px; color: #333; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #b8860b; }
+        .sw p { font-size: 14px; color: #666; margin-bottom: 12px; }
+        .sw ul { list-style: none; }
+        .sw ul li { padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 14px; color: #555; display: flex; align-items: center; gap: 8px; }
+        .sw ul li:last-child { border-bottom: none; }
+        .sw ul li i { color: #b8860b; font-size: 12px; }
+        .sw .mini-btn { display: inline-block; background: #b8860b; color: #fff; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 13px; transition: transform .2s; }
+        .sw .mini-btn:hover { transform: translateY(-2px); }
+        .sw .mini-row { display: flex; justify-content: space-between; align-items: center; }
+        .sw .mini-row span { font-size: 14px; color: #555; }
+        .reflection { font-style: italic; color: #704223; background: #f5efe3; border-left: 4px solid #b8860b; padding: 12px 14px; border-radius: 0 10px 10px 0; font-size: 14px; }
+        /* CTA */
+        .cta-band { background: linear-gradient(120deg, #704223, #b8860b); color: #fff; text-align: center; padding: 56px 24px; border-radius: 16px; margin-top: 20px; }
+        .cta-band h2 { font-size: 30px; margin-bottom: 12px; }
+        .cta-band p { opacity: .92; margin-bottom: 24px; max-width: 580px; margin-left: auto; margin-right: auto; }
+        .cta-band .btn-gold { display: inline-block; background: #fff; color: #704223; padding: 13px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; }
+        .cta-band .btn-gold:hover { transform: translateY(-2px); }
+        /* Newsletter */
+        .newsletter-section { margin-top: 40px; }
+        .newsletter-container { background: linear-gradient(120deg, #704223, #704223); color: #fff; text-align: center; padding: 50px 24px; border-radius: 16px; }
+        .newsletter-container h2 { font-size: 28px; margin-bottom: 10px; }
+        .newsletter-container p { opacity: .92; margin-bottom: 24px; }
+        .newsletter-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .newsletter-form input { padding: 13px 18px; border: none; border-radius: 30px; min-width: 280px; font-size: 15px; outline: none; }
+        .newsletter-form button { background: #ffd700; color: #704223; font-weight: 800; border: none; padding: 13px 28px; border-radius: 30px; cursor: pointer; font-size: 15px; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; }
+        .newsletter-form button:hover { transform: translateY(-2px); }
+        /* Back to top */
+        .btt { position: fixed; bottom: 20px; right: 20px; background: #b8860b; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.3); font-size: 18px; z-index: 1000; }
+        .btt:hover { background: #b8860b; transform: scale(1.1); }
+        /* Footer (home style) */
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) {
+            .sermons-layout { grid-template-columns: 1fr; }
+            .stats-strip { grid-template-columns: 1fr 1fr; }
+            .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .part1, .part2, .part3 { padding-left: 0; }
+            .copyright { flex-direction: column; padding: 20px 0; text-align: center; }
+            .copyright-sub { flex-direction: column; gap: 10px; padding: 0; }
+        }
+        @media (max-width: 576px) {
+            .stats-strip { grid-template-columns: 1fr 1fr; }
+            .sermon-item { flex-direction: column; align-items: flex-start; }
+            .sermon-item img { width: 100%; height: 180px; }
+            .date-nav { flex-direction: column; align-items: flex-start; }
+            .section-hero h1 { font-size: 30px; }
+            .part1-desc { width: auto; }
+            .featured-spotlight { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
 </head>
-<style>
-    .header-img {
-        position: relative;
-        height: 720px;
-        width: 100%;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: url('/assets/images/pexels-2152214764-32117889.jpg') no-repeat center;
-        background-size: cover;
-        background-color: #233c9b; /* Fallback color (dark blue-ish) if image fails */
-    }
-    .header-img h2 {
-        position: absolute;
-        top: 20px;
-        left: 50%; /* Centered horizontally */
-        transform: translateX(-50%) translateY(320px); /* Adjust vertical as needed */
-        font-size: 36px;
-        color: #fff;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        z-index: 10;
-        font-family: "Gentium Basic-Bold", Helvetica, sans-serif;
-        text-align: center;
-        white-space: nowrap; /* Keeps text from wrapping oddly */
-    }
-    /* If .line-container or .white-line need dynamic tweaks, add them here too—but they're static, so external CSS is fine */
-
-	
-</style>
 <body>
-
     <header>
-        <div class="header-img">
-          <h2>Upcoming Sermons</h2>
-            <div class="line-container">
-                <hr class="white-line">
-            </div>
-            <div class="header-top">
-                <p class="location">
-                    203 Fake St. Mountain View, San Francisco, California, USA
-                </p>
-                <div class="social-media">
-                    <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span>
-                    </a>
-                    <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-twitter"></i><span class="sr-only">Twitter</span>
-                    </a>
-                    <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-instagram"></i><span class="sr-only">Instagram</span>
-                    </a>
-                </div>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Sermons">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">UPCOMING SERMONS</h1>
+                <p>Join live dhamma talks or explore recordings from past sessions at your own pace</p>
             </div>
             <div class="header-main">
-                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <a href="#sermons" class="nav-link">Sermons</a>
-                    <a href="/events" class="nav-link">Events</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown">
+                        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+                        <div class="dropdown-content">
+                            <a href="/upcoming-sermons">Upcoming Sermons</a>
+                            <a href="/teachings">Teachings</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/events" class="nav-link">Events</a>
+                        <div class="dropdown-content">
+                            <a href="/events">Upcoming Events</a>
+                            <a href="/centers">Meditation Centers</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/marketplace" class="nav-link">Explore</a>
+                        <div class="dropdown-content">
+                            <a href="/marketplace">Marketplace</a>
+                            <a href="/gallery">Gallery</a>
+                            <a href="/quiz">Quizzes</a>
+                            <a href="/rewards">Rewards</a>
+                            <a href="/volunteer">Volunteer</a>
+                            <a href="/charity">Charity</a>
+                            <a href="/community">Community</a>
+                            <a href="/discuss">Discuss</a>
+                        </div>
+                    </div>
                     <a href="/blog" class="nav-link">Blog</a>
-                    <a href="/contact" class="nav-link">Contact</a>
-                    <a href = "#" class="nav-link">Discuss</a>
-                    <a href="/donate" class="nav-link donate-btn">Donate</a>
-                </nav>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
                 <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
             </div>
         </div>
     </header>
-    <main>
-        <section class="sermons-container">
-            <div class="search-nav">
-                <div class="search-bar">
-                    <input type="text" id="sermonSearch" placeholder="Search sermons...">
-                    <button onclick="searchSermons()">Search</button>
+    <main class="sermons-main">
+        <div class="section-hero">
+            <h1>Sermons &amp; Dhamma Talks</h1>
+            <p>Listen live, add to your calendar or revisit recordings from any session on the platform.</p>
+            <hr class="accent-line">
+        </div>
+        <div class="intro-pills">
+            <div class="pill"><i class="fas fa-video"></i> <strong>Live streamed</strong>&nbsp;every session</div>
+            <div class="pill"><i class="fas fa-home"></i> <strong>In person</strong>&nbsp;at partner centres</div>
+            <div class="pill"><i class="fas fa-headphones"></i> <strong>Recordings</strong>&nbsp;available after the talk</div>
+            <div class="pill"><i class="far fa-clock"></i> <strong>Weekly</strong>&nbsp;Sunday sittings</div>
+        </div>
+        <div class="stats-strip">
+            <div class="stat-box"><div class="num" id="statUpcoming">0</div><div class="lbl">Upcoming Talks</div></div>
+            <div class="stat-box"><div class="num" id="statRecorded">0</div><div class="lbl">Recordings</div></div>
+            <div class="stat-box"><div class="num" id="statSpeakers">0</div><div class="lbl">Speakers</div></div>
+            <div class="stat-box"><div class="num"><i class="fas fa-infinity" style="font-size:26px;"></i></div><div class="lbl">Free Forever</div></div>
+        </div>
+        <div class="sermons-layout">
+            <section>
+                <div class="featured-spotlight" id="featuredSpotlight"></div>
+                <div class="s-toolbar">
+                    <div class="s-search">
+                        <input type="text" id="sermonSearch" placeholder="Search by title or speaker...">
+                        <button onclick="doSearch()"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="s-tabs">
+                        <button class="s-tab active" data-v="upcoming">Upcoming</button>
+                        <button class="s-tab" data-v="recorded">Recorded</button>
+                    </div>
                 </div>
-                <div class="nav-tabs">
-                    <button class="active" onclick="setView('upcoming')">Upcoming</button>
-                    <button onclick="setView('recorded')">Recorded</button>
-                </div>
-            </div>
-            <div class="nav-controls">
                 <div class="date-nav">
-                    <button onclick="navigate('prev')">&larr; Previous</button>
-                    <button onclick="navigate('today')">Today</button>
-                    <button onclick="navigate('next')">Next &rarr;</button>
-                </div>
-                <div class="date-display" id="dateDisplay">Now - Aug 31, 2025</div>
-            </div>
-            <div class="sermon-list" id="sermonList">
-                <div class="sermon-date">September 2025</div>
-                <div class="sermon-item">
-                    <div class="sermon-details">
-                        <div class="date">Sun 31</div>
-                        <div class="time">Aug 31, 2025 @ 10:00 AM - 12:00 PM</div>
-                        <div class="title">The Path to Enlightenment</div>
-                        <div class="speaker">Ajahn Brahm</div>
+                    <div class="date-btns">
+                        <button class="date-btn" onclick="navigate('prev')">&larr; Prev</button>
+                        <button class="date-btn" onclick="navigate('today')">Today</button>
+                        <button class="date-btn" onclick="navigate('next')">Next &rarr;</button>
                     </div>
-                    <div class="sermon-image"><img src="/assets/images/pexels-2152214764-32117889.jpg" alt="The Path to Enlightenment"></div>
+                    <div class="date-display" id="dateDisplay"></div>
+                    <button class="cal-btn" onclick="addToCalendar()"><i class="far fa-calendar-plus"></i> Add to Calendar</button>
                 </div>
-                <div class="sermon-item">
-                    <div class="sermon-details">
-                        <div class="date">Mon 1</div>
-                        <div class="time">Sep 1, 2025 @ 07:00 PM - 09:00 PM</div>
-                        <div class="title">Mindfulness in Daily Life</div>
-                        <div class="speaker">Ajahn Thanissaro</div>
+                <div class="sermon-list" id="sermonList"></div>
+                <div class="empty-msg" id="emptyMsg" style="display:none;">No sermons found for this view. Try switching tabs or changing the month.</div>
+            </section>
+            <aside class="s-side">
+                <div class="sw">
+                    <h3>About Live Sermons</h3>
+                    <p>Our sermons are streamed live from partner monasteries and retreat centres every week.</p>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Q&amp;A after each live talk</li>
+                        <li><i class="fas fa-circle"></i> Both online and in-person attendance</li>
+                        <li><i class="fas fa-circle"></i> Recordings available within 24 hours</li>
+                    </ul>
+                </div>
+                <div class="sw">
+                    <h3>Coming soon</h3>
+                    <div id="highlightList"></div>
+                    <div style="margin-top:14px;">
+                        <a href="/upcoming-sermons" class="mini-btn">See full schedule</a>
                     </div>
-                    <div class="sermon-image"><img src="/assets/images/pexels-pixabay-220650.jpg" alt="Mindfulness in Daily Life"></div>
                 </div>
-            </div>
-            <div class="pagination-controls">
-                <a href="#" onclick="loadPreviousSermons()">Previous Sermons</a>
-                <div class="nav-buttons">
-                    <button onclick="loadNextSermons()">Next</button>
-                    <button onclick="addToCalendar()">Add to Calendar</button>
+                <div class="sw">
+                    <h3>A short reflection</h3>
+                    <p class="reflection">"Dwelling in the Dhamma, composed, content and joyful, the wise one knows the happiness of the calm mind."</p>
                 </div>
-            </div>
-        </section>
+<div class="sw">
+                    <h3>Need guidance?</h3>
+                    <p>Not sure where to start? Our volunteers can help you pick a talk suited to your practice level.</p>
+                    <a href="/contact" class="mini-btn">Get in touch</a>
+                </div>
+            </aside>
+        </div>
+<div class="cta-band">
+            <h2>Deepen your practice with live teaching</h2>
+            <p>Whether you attend online or in person, every talk is an opportunity to sit, listen and reflect together.</p>
+            <a href="/teachings" class="btn-gold">Browse written teachings</a>
+        </div>
     </main>
     <div class="footer">
         <div class="part1">
@@ -142,33 +287,223 @@
             <h2>QUICK LINKS</h2>
             <div class="part2-desc">
                 <h4><a href="/">Home</a></h4>
-                <h4><a href="#about">About</a></h4>
-                <h4><a href="#sermons">Sermons</a></h4>
+                <h4><a href="/about">About</a></h4>
+                <h4><a href="/upcoming-sermons">Sermons</a></h4>
                 <h4><a href="/events">Events</a></h4>
+                <h4><a href="/centers">Centers</a></h4>
+                <h4><a href="/marketplace">Marketplace</a></h4>
+                <h4><a href="/gallery">Gallery</a></h4>
+                <h4><a href="/quiz">Quizzes</a></h4>
+                <h4><a href="/rewards">Rewards</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="/blog">Blog</a></h4>
+                <h4><a href="/discuss">Discuss</a></h4>
+                <h4><a href="/contact">Contact</a></h4>
+                <h4><a href="/profile">My Profile</a></h4>
             </div>
         </div>
-        <div class="part3">
-            <h2>HAVE A QUESTION?</h2>
-            <div class="part3-desc">
-                <h4>203 Fake St. Mountain View, San Francisco, California, USA</h4>
-                <h4>+977 97820099</h4>
-                <h4>info@gmail.com</h4>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
             </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
         </div>
     </div>
-    <div class="footer-sec2">
-        <div class="line">
-            <hr class="white-line-footer">
-        </div>
-        <div class="copyright">
-            <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
-            <div class="copyright-sub">
-                <h4><a href="#terms">Terms & Conditions</a></h4>
-                <h4><a href="#privacy">Privacy Policy</a></h4>
-                <h4><a href="#refund">Cancellation & Refund Policy</a></h4>
-            </div>
-        </div>
     </div>
-    <script src="/JS/upcoming_sermons.js"></script>
+
+    <button class="btt" id="btt" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+    <script>
+        (function () {
+            var sermons = [
+                { date: '2025-08-24', time: 'Aug 24, 2025 @ 10:00 AM - 12:00 PM', title: 'The Five Hindrances', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-pixabay-236302.jpg', description: 'Recognising the five hindrances - and how to release them with patient awareness.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-08-31', time: 'Aug 31, 2025 @ 10:00 AM - 12:00 PM', title: 'The Path to Enlightenment', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-koithyr-1360255.jpg', description: 'A profound exploration of spiritual growth and inner peace led by renowned monk Ajahn Brahm.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-07', time: 'Sep 7, 2025 @ 10:00 AM - 11:30 AM', title: 'Mindfulness in Daily Life', speaker: 'Ajahn Thanissaro', image: '/assets/images/pexels-ron-lach-10461522.jpg', description: 'Practical mindfulness techniques to weave into your everyday routines, with Ajahn Thanissaro.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-14', time: 'Sep 14, 2025 @ 07:00 PM - 08:30 PM', title: 'Wise Speech & Right Intention', speaker: 'Bhikkhu Buddharakkhita', image: '/assets/images/pexels-tkirkgoz-13047288.jpg', description: 'How the path factors of speech and intention shape the quality of our entire day.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-21', time: 'Sep 21, 2025 @ 10:00 AM - 12:00 PM', title: 'Gratitude as a Practice', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-rdne-8710873.jpg', description: 'Turning a thankful heart into a disciplined, joyful daily practice.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-28', time: 'Sep 28, 2025 @ 07:00 PM - 09:00 PM', title: 'Letting Go of Worry', speaker: 'Venerable Sudhamma', image: '/assets/images/pexels-pixabay-50709.jpg', description: 'A gentle talk on releasing anxiety through contemplation and steady meditation.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-10-05', time: 'Oct 5, 2025 @ 10:00 AM - 12:00 PM', title: 'The Power of Intention', speaker: 'Ajahn Thanissaro', image: '/assets/images/pexels-pexels-user-1493533273-27021625.jpg', description: 'The Buddha\u2019s teaching that the heart shapes its whole world - beginning with intention.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-10-12', time: 'Oct 12, 2025 @ 10:00 AM - 11:30 AM', title: 'Anapanasati - Breath Meditation', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-nishantaneja-2381616.jpg', description: 'A guided session on the breath as a refuge for the wandering mind.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-10-19', time: 'Oct 19, 2025 @ 07:00 PM - 08:30 PM', title: 'Metta in Relationships', speaker: 'Bhikkhu Buddharakkhita', image: '/assets/images/pexels-cryschanxanhy-29547000.jpg', description: 'Extending loving-kindness to those closest to us - and to those we find hardest.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-11-02', time: 'Nov 2, 2025 @ 10:00 AM - 12:00 PM', title: 'Walking the Eightfold Path', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-rgsk97-1027821.jpg', description: 'A complete overview of the noble path, held in a single morning sitting.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-11-09', time: 'Nov 9, 2025 @ 07:00 PM - 09:00 PM', title: 'The Real Refuge', speaker: 'Venerable Sudhamma', image: '/assets/images/pexels-caleboquendo-3030090.jpg', description: 'Taking refuge in the Buddha, Dhamma and Sangha as a daily act of trust.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-05-05', time: 'May 5, 2025 @ 10:00 AM - 12:00 PM', title: 'Dhamma Will Uplift Your Mentality', speaker: 'Bhikkhu Thanissaro', image: '/assets/images/pexels-tkirkgoz-13047288.jpg', description: 'How the dhamma can transform the way we think about suffering, joy and daily practice.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-04-18', time: 'Apr 18, 2025 @ 06:30 PM - 08:30 PM', title: 'The Heart of Loving-Kindness', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-pixabay-45178.jpg', description: 'Exploring metta meditation as a path to genuine compassion for ourselves and others.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-03-14', time: 'Mar 14, 2025 @ 10:00 AM - 12:00 PM', title: 'The Bliss of Stillness', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-pixabay-220650.jpg', description: 'Jhana and the profound joy of a settled, unified mind.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-02-08', time: 'Feb 8, 2025 @ 07:00 PM - 09:00 PM', title: 'Death, A Friend on the Path', speaker: 'Ajahn Thanissaro', image: '/assets/images/pexels-nishantaneja-2385606.jpg', description: 'Contemplating mortality for the urgency and gratitude it brings to practice.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-01-12', time: 'Jan 12, 2025 @ 10:00 AM - 11:30 AM', title: 'Right View & Right Intent', speaker: 'Bhikkhu Buddharakkhita', image: '/assets/images/pexels-rgsk97-1027821.jpg', description: 'The first two factors of the eightfold path, explored in depth.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2024-12-21', time: 'Dec 21, 2024 @ 07:00 PM - 08:30 PM', title: 'Upekkha - Equanimity', speaker: 'Venerable Sudhamma', image: '/assets/images/pexels-sibi-ar-3290250-4940194.jpg', description: 'Balance of mind amidst the world\u2019s ups and downs, a closing talk for the year.', recorded: true, detail: '/upcoming-sermons/detail' }
+            ];
+            var currentView = 'upcoming';
+            var currentDate = new Date(2025, 8, 1); // Sep 1 2025
+            var listEl = document.getElementById('sermonList');
+            var emptyEl = document.getElementById('emptyMsg');
+            var dateDispEl = document.getElementById('dateDisplay');
+            var featuredEl = document.getElementById('featuredSpotlight');
+            var highlightEl = document.getElementById('highlightList');
+            function monthYear(d) { return d.toLocaleString('en-US', { month: 'long', year: 'numeric' }); }
+            function shortDate(d) { return d.toLocaleString('en-US', { weekday: 'short', day: 'numeric' }); }
+            function detailUrl(s) {
+                return '/upcoming-sermons/detail?date=' + encodeURIComponent(s.date) +
+                    '&time=' + encodeURIComponent(s.time) +
+                    '&title=' + encodeURIComponent(s.title) +
+                    '&speaker=' + encodeURIComponent(s.speaker) +
+                    '&image=' + encodeURIComponent(s.image) +
+                    '&description=' + encodeURIComponent(s.description);
+            }
+            function isSameMonth(dateStr, ref) {
+                var d = new Date(dateStr);
+                return d.getMonth() === ref.getMonth() && d.getFullYear() === ref.getFullYear();
+            }
+            function updateDateDisplay() {
+                dateDispEl.textContent = 'Now - ' + currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+            function renderStats() {
+                document.getElementById('statUpcoming').textContent = sermons.filter(function (s) { return !s.recorded; }).length;
+                document.getElementById('statRecorded').textContent = sermons.filter(function (s) { return s.recorded; }).length;
+                var speakers = {};
+                sermons.forEach(function (s) { speakers[s.speaker] = true; });
+                document.getElementById('statSpeakers').textContent = Object.keys(speakers).length;
+            }
+            function renderFeatured() {
+                var upcoming = sermons.filter(function (s) { return !s.recorded; })
+                    .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
+                if (upcoming.length === 0) return;
+                var next = upcoming[0];
+                var d = new Date(next.date);
+                featuredEl.innerHTML =
+                    '<div class="sp-badge"><div class="sp-mon">' + monthYear(d) + '</div><div class="sp-day">' + d.getDate() + '</div></div>' +
+                    '<div class="sp-body">' +
+                        '<div class="sp-eyebrow">Next upcoming sermon</div>' +
+                        '<div class="sp-title">' + next.title + '</div>' +
+                        '<div class="sp-speaker"><i class="fas fa-user"></i> ' + next.speaker + '</div>' +
+                        '<div class="sp-desc">' + next.description + '</div>' +
+                    '</div>' +
+                    '<div class="sp-actions">' +
+                        '<button class="sp-btn" onclick="addToCalendar()"><i class="far fa-calendar-plus"></i> Remind me</button>' +
+                        '<a class="sp-btn sp-link" href="' + detailUrl(next) + '">Details <i class="fas fa-arrow-right"></i></a>' +
+                    '</div>';
+            }
+            function renderHighlights() {
+                var upcoming = sermons.filter(function (s) { return !s.recorded; })
+                    .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
+                var html = '';
+                upcoming.slice(0, 3).forEach(function (s) {
+                    var d = new Date(s.date);
+                    html += '<div class="mini-row"><span>' + s.title + '</span><span style="font-size:12px; color:#999;">' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + '</span></div><div style="height:8px;"></div>';
+                });
+                highlightEl.innerHTML = html || '<span style="font-size:13px; color:#999;">New talks are announced weekly.</span>';
+            }
+            function render() {
+                listEl.innerHTML = '';
+                renderFeatured();
+                renderHighlights();
+                var q = (document.getElementById('sermonSearch') || {}).value ? document.getElementById('sermonSearch').value.toLowerCase() : '';
+                var pool = sermons.filter(function (s) { return s.recorded === (currentView === 'recorded'); });
+                if (currentView === 'upcoming') {
+                    pool = pool.filter(function (s) { return isSameMonth(s.date, currentDate); });
+                }
+                if (q) {
+                    pool = pool.filter(function (s) { return (s.title + ' ' + s.speaker).toLowerCase().indexOf(q) > -1; });
+                }
+                if (pool.length === 0) { emptyEl.style.display = 'block'; return; }
+                emptyEl.style.display = 'none';
+                var lastMY = '';
+                pool.forEach(function (s) {
+                    var d = new Date(s.date);
+                    var my = monthYear(d);
+                    if (my !== lastMY) { lastMY = my; listEl.insertAdjacentHTML('beforeend', '<div class="month-label">' + my + '</div>'); }
+                    listEl.insertAdjacentHTML('beforeend',
+                        '<div class="sermon-item" data-detail="' + detailUrl(s) + '">' +
+                            '<div class="s-date-badge"><div class="s-day">' + d.getDate() + '</div><div class="s-wd">' + shortDate(d).split(' ')[0] + '</div></div>' +
+                            '<div class="s-details">' +
+                                '<div class="s-time">' + s.time + '</div>' +
+                                '<div class="s-title">' + s.title + (s.recorded ? '<span class="s-recording-badge">Recorded</span>' : '') + '</div>' +
+                                '<div class="s-speaker">' + s.speaker + '</div>' +
+                                '<div class="s-desc">' + s.description + '</div>' +
+                            '</div>' +
+                            '<img src="' + s.image + '" alt="' + s.title + '">' +
+                        '</div>'
+                    );
+                });
+                listEl.querySelectorAll('.sermon-item').forEach(function (item) {
+                    item.addEventListener('click', function () {
+                        var det = item.getAttribute('data-detail');
+                        if (det) window.location.href = det;
+                    });
+                });
+            }
+            // Hamburger
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars', !(open && open.classList.contains('active')));
+                            icon.classList.toggle('fa-times', open && open.classList.contains('active'));
+                        }
+                    }, 0);
+                });
+            }
+            // Tabs
+            document.querySelectorAll('.s-tab').forEach(function (t) {
+                t.addEventListener('click', function () {
+                    document.querySelectorAll('.s-tab').forEach(function (x) { x.classList.remove('active'); });
+                    t.classList.add('active');
+                    currentView = t.getAttribute('data-v');
+                    render();
+                });
+            });
+            // Search
+            window.doSearch = function () { render(); };
+            var searchEl = document.getElementById('sermonSearch');
+            if (searchEl) searchEl.addEventListener('keyup', function (e) { if (e.key === 'Enter') render(); });
+            if (searchEl) searchEl.addEventListener('input', function () { render(); });
+            // Date navigation
+            window.navigate = function (dir) {
+                if (dir === 'prev') currentDate.setMonth(currentDate.getMonth() - 1);
+                else if (dir === 'next') currentDate.setMonth(currentDate.getMonth() + 1);
+                else currentDate = new Date(2025, 8, 1);
+                updateDateDisplay();
+                render();
+            };
+            // Add to calendar
+            window.addToCalendar = function () {
+                var upcoming = sermons.filter(function (s) { return !s.recorded; })
+                    .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
+                if (upcoming.length > 0) {
+                    alert('Added "' + upcoming[0].title + '" (' + upcoming[0].time + ') to your calendar.');
+                } else {
+                    alert('No sermon available to add.');
+                }
+            };
+            // Back to top
+            var btt = document.getElementById('btt');
+            window.addEventListener('scroll', function () {
+                btt.style.display = window.pageYOffset > 300 ? 'flex' : 'none';
+            });
+            btt.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            // Init
+            renderStats();
+            updateDateDisplay();
+            render();
+        })();
+    </script>
 </body>
 </html>

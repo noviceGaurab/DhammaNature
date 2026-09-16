@@ -87,7 +87,7 @@
         };
 
         document.getElementById('eventTitle').textContent = event.title || 'Event Title';
-        document.getElementById('eventImage').innerHTML = `<img src="${event.image || 'assets/images/pexels-2152214764-32117889.jpg'}" alt="${event.title || 'Event Image'}">`;
+        document.getElementById('eventImage').innerHTML = `<img src="${event.image || '/assets/images/pexels-2152214764-32117889.jpg'}" alt="${event.title || 'Event Image'}">`;
         document.getElementById('eventDate').textContent = `Date: ${event.date ? new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'TBD'}`;
         document.getElementById('eventTime').textContent = `Time: ${event.time || 'TBD'}`;
         document.getElementById('eventLocation').textContent = `Location: ${event.location || 'TBD'}`;

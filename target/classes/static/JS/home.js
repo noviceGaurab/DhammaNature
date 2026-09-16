@@ -39,6 +39,10 @@
                 const dropdownContent = dropdown.querySelector('.dropdown-content');
 
                 dropdownToggle.addEventListener('click', (e) => {
+                    // Desktop uses hover menus; only toggle on smaller screens.
+                    if (window.innerWidth > 1200) {
+                        return;
+                    }
                     e.preventDefault();
                     // Toggle the clicked dropdown
                     dropdownContent.classList.toggle('active');

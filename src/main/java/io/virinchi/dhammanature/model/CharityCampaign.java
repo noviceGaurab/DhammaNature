@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,5 +61,27 @@ public class CharityCampaign {
 
     public void addRaisedAmount(BigDecimal amount) {
         this.raisedAmount = this.raisedAmount.add(amount);
+    }
+
+    @Transient
+    public int getProgressPercent() {
+        BigDecimal goal = this.goalAmount;
+        BigDecimal raised = this.raisedAmount == null ? BigDecimal.ZERO : this.raisedAmount;
+        if (goal == null || goal.signum() <= 0) {
+            return 0;
+        }
+        int percent = raised.multiply(BigDecimal.valueOf(100))
+                .divide(goal, 0, RoundingMode.HALF_UP)
+                .intValue();
+        return Math.max(0, Math.min(100, percent));
+    }
+
+    @Transient
+    public long getDaysRemaining() {
+        LocalDate end = this.endDate;
+        if (end == null) {
+            return 0;
+        }
+        return Math.max(0, ChronoUnit.DAYS.between(LocalDate.now(), end));
     }
 }

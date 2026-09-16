@@ -2,48 +2,320 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="${center.name}">Center Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/css/home_events_descrpt.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
     <style>
-        .profile-wrap { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
-        .profile-header { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
-        .socials a { margin-right: 10px; font-size: 20px; color:#233c9b; }
-        .event-row { border-bottom: 1px solid #eee; padding: 14px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; }
+        .ct-main { max-width: 1080px; margin: 0 auto; padding: 50px 24px 10px; }
+        .ct-crumbs { font-size: 13px; color: #888; margin-bottom: 18px; }
+        .ct-crumbs a { color: #006015; text-decoration: none; }
+        .ct-head { margin-bottom: 26px; }
+        .ct-badge { display: inline-flex; align-items: center; gap: 6px; background: #e6f4ea; color: #006015; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
+        .ct-head h1 { font-family: 'Gentium Plus', serif; font-size: 32px; line-height: 1.25; color: #2e2e2e; }
+        .ct-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+        .ct-meta span { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid #eee; border-radius: 24px; padding: 7px 16px; font-size: 13px; color: #555; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+        .ct-meta i { color: #006015; }
+        .ct-cover { border-radius: 16px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+        .ct-cover img { width: 100%; height: 320px; object-fit: cover; display: block; }
+        .msg-err { color:#7e211d; background:#fdecea; padding:12px 16px; border-radius:10px; margin-bottom:16px; font-weight:600; }
+        .stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px; }
+        .stat-card { background: #fff; border-radius: 14px; padding: 20px; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+        .stat-card .num { font-family: 'Gentium Plus', serif; font-size: 32px; font-weight: 700; color: #006015; }
+        .stat-card .label { font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; font-weight: 600; }
+        .ct-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 26px; align-items: start; margin-bottom: 10px; }
+        .ct-card { background: #fff; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,.06); overflow: hidden; margin-bottom: 22px; }
+        .ct-card .hd { padding: 18px 24px; border-bottom: 1px solid #f0f1f3; }
+        .ct-card .hd h2 { font-family: 'Gentium Plus', serif; font-size: 20px; color: #006015; }
+        .ct-card .bd { padding: 20px 24px; }
+        .ct-card .bd p { font-size: 16px; line-height: 1.85; color: #454545; }
+        .ct-badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+        .tag { background: #e6f4ea; color: #006015; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 30px; }
+        .event-row { border-bottom: 1px solid #f0f1f3; padding: 14px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .event-row:last-child { border-bottom: none; }
+        .event-row .t { font-weight: 700; color: #333; font-size: 15px; }
+        .event-row .d { font-size: 13px; color: #888; margin-top: 2px; }
+        .btn { display: inline-block; padding: 9px 20px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s, background .2s; border: none; cursor: pointer; font-size: 12px; }
+        .btn-outline-primary { border: 2px solid #006015; color: #006015; background: #fff; }
+        .btn-outline-primary:hover { background: #006015; color: #fff; transform: translateY(-2px); }
+        .expect ul { list-style: none; }
+        .expect li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px dashed #f0f1f3; font-size: 15px; color: #555; align-items: flex-start; }
+        .expect li:last-child { border-bottom: none; }
+        .expect i { color: #008000; width: 18px; text-align: center; margin-top: 3px; }
+        .ct-side .side-card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,.06); margin-bottom: 18px; }
+        .side-card h3 { font-size: 15px; color: #006015; text-transform: uppercase; letter-spacing: .5px; padding-bottom: 10px; border-bottom: 2px solid #006015; margin-bottom: 12px; }
+        .side-card ul.list { list-style: none; }
+        .side-card ul.list li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px dashed #f3f3f3; font-size: 15px; color: #555; align-items: flex-start; }
+        .side-card ul.list li:last-child { border-bottom: none; }
+        .side-card ul.list i { color: #006015; width: 18px; text-align: center; margin-top: 3px; }
+        .side-card ul.list a { color: #006015; font-weight: 700; text-decoration: none; }
+        .side-card ul.list a:hover { text-decoration: underline; }
+        .socials { display: flex; gap: 12px; margin-top: 12px; }
+        .socials a { font-size: 22px; color: #006015; }
+        .socials a:hover { color: #005c15; }
+        .visitor-card { background: #006015; color: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 4px 18px rgba(0,96,21,.25); }
+        .visitor-card h3 { font-size: 17px; margin-bottom: 12px; font-family: 'Gentium Plus', serif; }
+        .visitor-card li { padding: 5px 0; font-size: 14px; opacity: .95; display: flex; gap: 10px; align-items: flex-start; }
+        .visitor-card li i { margin-top: 3px; }
+        .visitor-card a { color: #fff; text-decoration: underline; font-weight: 700; }
+        .engage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .engage-card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.06); border-top: 4px solid #006015; }
+        .engage-card h3 { font-size: 17px; color: #333; margin-bottom: 4px; font-family: 'Gentium Plus', serif; }
+        .engage-card .sub { font-size: 13px; color: #888; margin-bottom: 12px; }
+        .engage-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; flex-wrap: wrap; }
+        .engage-row:last-of-type { border-bottom: none; }
+        .engage-row strong { font-size: 14px; color: #333; }
+        .engage-row span.dim { font-size: 12px; color: #888; display: block; margin-top: 2px; }
+        .progress-wrap { margin: 8px 0 2px; }
+        .progress-bar { background: #eef1f0; border-radius: 20px; height: 10px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #008000, #ffd700); height: 100%; border-radius: 20px; }
+        .testimonials { margin-top: 34px; }
+        .testimonials h2 { font-family: 'Gentium Plus', serif; color: #333; font-size: 26px; margin-bottom: 4px; }
+        .ct-underline { width: 50px; height: 3px; background: #006015; border: none; margin: 8px 0 22px; border-radius: 2px; }
+        .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        .testi-card { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+        .testi-card .stars { color: #f5b301; font-size: 13px; margin-bottom: 10px; }
+        .testi-card p { font-size: 14px; color: #555; line-height: 1.7; font-style: italic; }
+        .testi-card .who { margin-top: 12px; font-weight: 800; font-size: 13px; color: #333; }
+        .testi-card .role { font-size: 12px; color: #888; }
+        .ct-cta { margin: 34px 0 50px; }
+        .ct-cta-inner { background: linear-gradient(120deg, #006015, #008000); color: #fff; border-radius: 16px; padding: 44px 24px; text-align: center; }
+        .ct-cta-inner h3 { font-family: 'Gentium Plus', serif; font-size: 26px; margin-bottom: 8px; }
+        .ct-cta-inner p { opacity: .92; margin-bottom: 18px; }
+        .btn-gold { display: inline-block; background: #ffd700; color: #006015; padding: 12px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; margin: 4px; }
+        .btn-gold:hover { transform: translateY(-2px); }
+        .btn-outline-b { display: inline-block; border: 2px solid #fff; color: #fff; padding: 12px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: background .2s, transform .2s; margin: 4px; }
+        .btn-outline-b:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
+        @media (max-width: 900px) { .stats-strip { grid-template-columns: 1fr 1fr 1fr; } .ct-grid { grid-template-columns: 1fr; } .engage-grid, .testi-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 576px) { .ct-head h1 { font-size: 26px; } .stats-strip { grid-template-columns: 1fr; } .ct-cover img { height: 220px; } }
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: siteHeader(null, null)}"></div>
-<main class="profile-wrap">
-    <div class="profile-header">
-        <div>
-            <h1 th:text="${center.name}">Center Name</h1>
-            <p th:text="${center.location}">Location</p>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Center Profile">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">CENTER PROFILE</h1>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+<main class="ct-main">
+    <div class="ct-crumbs">
+        <a href="/">Home</a> &rarr; <a href="/centers">Meditation Centers</a> &rarr; <strong th:text="${center.name}">Center Name</strong>
+    </div>
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+    <div class="ct-head">
+        <span class="ct-badge" th:if="${center.verified}"><i class="fas fa-check-circle"></i> Verified Center</span>
+        <span class="ct-badge" th:unless="${center.verified}"><i class="fas fa-seedling"></i> Community-led</span>
+        <h1 th:text="${center.name}">Center Name</h1>
+        <div class="ct-meta">
+            <span th:if="${center.location}"><i class="fas fa-map-marker-alt"></i> <span th:text="${center.location}">Location</span></span>
+            <span th:if="${center.supportsOnlineSessions}"><i class="fas fa-video"></i> Online sessions</span>
+            <span th:if="${center.supportsPhysicalSessions}"><i class="fas fa-person-praying"></i> Physical sessions</span>
         </div>
     </div>
-    <p th:text="${center.description}">Description of the meditation center - history, services, instructors...</p>
-    <p><strong>Contact:</strong> <span th:text="${center.contactEmail}"></span> &middot; <span th:text="${center.contactNumber}"></span></p>
-    <div class="socials">
-        <a th:if="${center.website}" th:href="${center.website}" target="_blank"><i class="fas fa-globe"></i></a>
-        <a th:if="${center.facebookUrl}" th:href="${center.facebookUrl}" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a th:if="${center.instagramUrl}" th:href="${center.instagramUrl}" target="_blank"><i class="fab fa-instagram"></i></a>
+    <div class="ct-cover">
+        <img th:if="${center.coverImageUrl}" th:src="@{'/assets/images/' + ${center.coverImageUrl}}" alt="cover">
+        <img th:unless="${center.coverImageUrl}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="cover">
     </div>
-    <p>
-        <span th:if="${center.supportsOnlineSessions}" style="margin-right:14px;"><i class="fas fa-video"></i> Online sessions</span>
-        <span th:if="${center.supportsPhysicalSessions}"><i class="fas fa-person-praying"></i> Physical sessions</span>
-    </p>
-
-    <h2>Upcoming events &amp; programs</h2>
-    <p th:if="${#lists.isEmpty(events)}">No events published yet - check back soon.</p>
-    <div class="event-row" th:each="e : ${events}">
+    <div class="stats-strip">
+        <div class="stat-card"><div class="num" th:text="${programCount}">0</div><div class="label">Programs &amp; Courses</div></div>
+        <div class="stat-card"><div class="num" th:text="${eventCount}">0</div><div class="label">Upcoming Events</div></div>
+        <div class="stat-card"><div class="num" th:text="${opportunityCount}">0</div><div class="label">Volunteer Opportunities</div></div>
+    </div>
+    <div class="ct-grid">
         <div>
-            <strong th:text="${e.title}">Event title</strong><br>
-            <span th:text="${#temporals.format(e.eventDate, 'dd MMM yyyy, HH:mm')} + ' · ' + ${e.mode}"></span>
+            <div class="ct-card">
+                <div class="hd"><h2><i class="fas fa-book-open"></i> About this center</h2></div>
+                <div class="bd">
+                    <div class="ct-badge-row">
+                        <span class="tag" th:if="${center.supportsOnlineSessions}"><i class="fas fa-video"></i> Online sessions</span>
+                        <span class="tag" th:if="${center.supportsPhysicalSessions}"><i class="fas fa-person-praying"></i> Physical sessions</span>
+                    </div>
+                    <p class="about" th:text="${center.description}">Description of the meditation center - history, services, instructors...</p>
+                </div>
+            </div>
+            <div class="ct-card">
+                <div class="hd"><h2><i class="fas fa-calendar"></i> Upcoming events &amp; programs</h2></div>
+                <div class="bd">
+                    <p th:if="${#lists.isEmpty(events)}" style="color:#888;">No events published yet - check back soon.</p>
+                    <div class="event-row" th:each="e : ${events}">
+                        <div>
+                            <div class="t" th:text="${e.title}">Event title</div>
+                            <div class="d" th:text="${#temporals.format(e.eventDate, 'dd MMM yyyy, HH:mm')} + ' · ' + ${e.mode}">Date · Mode</div>
+                        </div>
+                        <a th:href="@{'/events/' + ${e.id}}" class="btn btn-outline-primary">View &amp; book</a>
+                    </div>
+                </div>
+            </div>
+            <div class="ct-card">
+                <div class="hd"><h2><i class="fas fa-star"></i> What to expect</h2></div>
+                <div class="bd">
+                    <ul class="expect">
+                        <li><i class="fas fa-spa"></i> Guided sitting and walking meditation sessions</li>
+                        <li><i class="fas fa-book-open"></i> Dhamma talks and study circles</li>
+                        <li><i class="fas fa-users"></i> Retreats, workshops and community gatherings</li>
+                        <li><i class="fas fa-hands-holding-circle"></i> Volunteer and service opportunities</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="engage-grid">
+                <div class="engage-card" th:if="${!volunteerOpportunities.isEmpty()}">
+                    <h3><i class="fas fa-hands-helping"></i> Volunteer opportunities</h3>
+                    <p class="sub">Give back at this center - every helping hand matters.</p>
+                    <div class="engage-row" th:each="vo : ${volunteerOpportunities}">
+                        <div>
+                            <strong th:text="${vo.title}">Opportunity</strong>
+                            <span class="dim" th:text="${#temporals.format(vo.opportunityDate, 'EEE, dd MMM yyyy')} + ' · ' + ${vo.location}"></span>
+                        </div>
+                        <a href="/volunteer" class="btn btn-outline-primary">Register</a>
+                    </div>
+                </div>
+                <div class="engage-card" th:if="${!charityCampaigns.isEmpty()}">
+                    <h3><i class="fas fa-heart"></i> Charity campaigns</h3>
+                    <p class="sub">Support causes championed by this center.</p>
+                    <div class="engage-row" th:each="cc : ${charityCampaigns}">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                                <strong th:text="${cc.title}">Campaign</strong>
+                                <span class="dim" th:text="${cc.getProgressPercent()} + '%' + ' raised'"></span>
+                            </div>
+                            <div class="progress-wrap">
+                                <div class="progress-bar"><div class="progress-fill" th:style="'width:' + ${cc.getProgressPercent()} + '%'"></div></div>
+                            </div>
+                            <span class="dim" th:text="'$' + ${cc.raisedAmount} + ' of $' + ${cc.goalAmount} + ' raised'"></span>
+                        </div>
+                        <a href="/charity" class="btn btn-outline-primary">Donate</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <a th:href="@{'/events/' + ${e.id}}" class="btn btn-outline-primary">View &amp; book</a>
+        <div class="ct-side">
+            <div class="side-card">
+                <h3><i class="fas fa-info-circle"></i> Contact information</h3>
+                <ul class="list">
+                    <li><i class="fas fa-map-marker-alt"></i> <span th:text="${center.location}">Location</span></li>
+                    <li><i class="fas fa-envelope"></i> <span th:text="${center.contactEmail}">Email</span></li>
+                    <li><i class="fas fa-phone"></i> <span th:text="${center.contactNumber ?: 'Not listed'}">Phone</span></li>
+                </ul>
+                <div class="socials">
+                    <a th:if="${center.website}" th:href="${center.website}" target="_blank" title="Website"><i class="fas fa-globe"></i><span class="sr-only">Website</span></a>
+                    <a th:if="${center.facebookUrl}" th:href="${center.facebookUrl}" target="_blank" title="Facebook"><i class="fab fa-facebook"></i><span class="sr-only">Facebook</span></a>
+                    <a th:if="${center.instagramUrl}" th:href="${center.instagramUrl}" target="_blank" title="Instagram"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+                </div>
+            </div>
+            <div class="visitor-card">
+                <h3>Plan your visit</h3>
+                <ul>
+                    <li><i class="fas fa-clock"></i> Arrive 15 minutes early for each session</li>
+                    <li><i class="fas fa-tshirt"></i> Comfortable, modest clothing recommended</li>
+                    <li><i class="fas fa-ban"></i> Please leave phones on silent</li>
+                    <li><i class="fas fa-ticket-alt"></i> Events are bookable from the events page</li>
+                    <li style="margin-top:10px;"><a href="/events">Browse all events &rarr;</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <section class="testimonials">
+        <h2>What members say</h2>
+        <hr class="ct-underline">
+        <div class="testi-grid">
+            <div class="testi-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"A serene place to learn and practice. The instructors are patient, kind, and deeply knowledgeable about the Dhamma."</p>
+                <div class="who">Rita Sharma</div>
+                <div class="role">Regular meditator</div>
+            </div>
+            <div class="testi-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                <p>"I joined an online session and was surprised by how connected I felt. The center truly welcomes both online and in-person students."</p>
+                <div class="who">Daniel Ríos</div>
+                <div class="role">Online participant</div>
+            </div>
+            <div class="testi-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"Volunteering here has transformed my practice. Everyone is welcome, and every act of service deepens the sense of community."</p>
+                <div class="who">Maya Gurung</div>
+                <div class="role">Volunteer</div>
+            </div>
+        </div>
+    </section>
+    <div class="ct-cta">
+        <div class="ct-cta-inner">
+            <h3 th:text="'Experience ' + ${center.name}">Experience this center</h3>
+            <p>Browse upcoming events, explore volunteer opportunities, or make a donation to support the community.</p>
+            <a href="/events" class="btn-gold"><i class="fas fa-calendar"></i> Browse events</a>
+            <a href="/volunteer" class="btn-outline-b"><i class="fas fa-hands-helping"></i> Volunteer</a>
+            <a href="/charity" class="btn-gold"><i class="fas fa-heart"></i> Donate</a>
+        </div>
     </div>
 </main>
-<div th:replace="~{fragments/footer :: siteFooter}"></div>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+        <div class="part3">
+            <h2>HELP &amp; SUPPORT</h2>
+            <div class="part3-desc">
+                <h4><a href="/contact">Contact Us</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+            </div>
+        </div>
+    </div>
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+                    }, 0);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

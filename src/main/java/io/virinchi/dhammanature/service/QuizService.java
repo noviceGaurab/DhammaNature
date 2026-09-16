@@ -26,7 +26,7 @@ public class QuizService {
     private final RewardService rewardService;
 
     public List<Quiz> all() {
-        return quizRepository.findAll();
+        return quizRepository.findAllWithQuestions();
     }
 
     public Quiz get(Integer id) {
@@ -62,5 +62,35 @@ public class QuizService {
 
     public List<QuizAttempt> historyFor(Integer userId) {
         return quizAttemptRepository.findByUser_IdOrderByAttemptedAtDesc(userId);
+    }
+
+    /** Top 5 quiz performances across the whole community, for the landing page. */
+    public List<QuizAttempt> leaderboard() {
+        return quizAttemptRepository.findTop5ByOrderByScoreDescAttemptedAtDesc();
+    }
+
+    /** Creates a quiz together with its questions. Admin-published quizzes appear on the live quiz page immediately. */
+    @Transactional
+    public Quiz createQuiz(String title, String description, int rewardPoints, List<QuizQuestion> questions) {
+        Quiz quiz = Quiz.builder()
+                .title(title)
+                .description(description)
+                .rewardPoints(rewardPoints)
+                .build();
+        questions.forEach(q -> {
+            q.setId(null);
+            q.setQuiz(quiz);
+            quiz.getQuestions().add(q);
+        });
+        return quizRepository.save(quiz);
+    }
+
+    /** Removes the quiz, its questions and any attempts (cascade orphanRemoval). */
+    @Transactional
+    public void delete(Integer id) {
+        if (!quizRepository.existsById(id)) {
+            throw new NoSuchElementException("Quiz not found");
+        }
+        quizRepository.deleteById(id);
     }
 }

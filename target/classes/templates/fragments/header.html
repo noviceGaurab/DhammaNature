@@ -1,55 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+</head>
 <body>
-<header th:fragment="siteHeader(heroTitle, heroTagline)">
+<header th:fragment="siteHeader(pageTitle, pageSubtitle)">
     <div class="header-img" id="hero">
         <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
-        <div class="hero" th:if="${heroTitle != null}">
-            <h2 th:text="${heroTitle}">WELCOME TO DHAMMA NATURE</h2>
-            <h1 class="mb-3" th:if="${heroTagline != null}" th:text="${heroTagline}">TOTAL CONVICTION IN BUDDHA</h1>
+        <div class="hero">
+            <h2>WELCOME TO DHAMMA NATURE</h2>
+            <h1 th:text="${pageTitle}">PAGE TITLE</h1>
+            <p th:if="${pageSubtitle != null}" th:text="${pageSubtitle}">Page subtitle</p>
         </div>
-        <div class="line-container">
-            <hr class="white-line">
-        </div>
-        <div class="header-top">
-            <p class="location">203 Fake St. Mountain View, San Francisco, California, USA</p>
-            <div class="social-media">
-                <a href="https://www.facebook.com" target="_blank" class="justify-content-center"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
-                <a href="https://www.twitter.com" target="_blank" class="justify-content-center"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
-                <a href="https://www.instagram.com" target="_blank" class="justify-content-center"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
-            </div>
-        </div>
+        
+        
         <div class="header-main">
-            <img src="/assets/images/transparent_logo.png" alt="Dhamma Nature Logo" class="logo">
+            <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dhamma Nature Logo" class="logo"></a>
             <nav>
                 <a href="/" class="nav-link">Home</a>
                 <a href="/about" class="nav-link">About</a>
-                <a href="/centers" class="nav-link">Centers</a>
                 <div class="dropdown">
-                    <a href="/teachings" class="nav-link">Sermons</a>
-                    <div class="dropdown-content">
-                        <a href="/upcoming-sermons">Upcoming Sermons</a>
-                        <a href="/teachings">Teachings</a>
-                    </div>
+                    <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+                    <div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div>
                 </div>
-                <a href="/events" class="nav-link">Events</a>
-                <a href="/volunteer" class="nav-link">Volunteer</a>
-                <a href="/charity" class="nav-link">Charity</a>
-                <a href="/marketplace" class="nav-link">Marketplace</a>
-                <a href="/quiz" class="nav-link">Quiz</a>
+                <div class="dropdown">
+                    <a href="/events" class="nav-link">Events</a>
+                    <div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div>
+                </div>
+                <div class="dropdown">
+                    <a href="/marketplace" class="nav-link">Explore</a>
+                    <div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div>
+                </div>
                 <a href="/blog" class="nav-link">Blog</a>
-                <a href="/contact" class="nav-link">Contact</a>
-                <a href="/discuss" class="nav-link">Discuss</a>
-                <a href="/donate" class="nav-link donate-btn">Donate</a>
-                <th:block th:if="${currentUser == null}">
-                    <a href="/login" class="nav-link">Login</a>
-                </th:block>
-                <th:block th:if="${currentUser != null}">
-                    <a href="/rewards" class="nav-link" th:text="${currentUser.rewardPoints} + ' pts'">0 pts</a>
-                    <a href="/profile" class="nav-link" th:text="${currentUser.fullName}">Profile</a>
-                    <a href="/logout" class="nav-link" style="color:#c0392b">Logout</a>
-                </th:block>
-            </nav>
+                
+                
+            </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
             <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
         </div>
     </div>

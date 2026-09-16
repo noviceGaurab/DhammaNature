@@ -13,7 +13,7 @@
 
         // Populate page with sermon details
         document.getElementById('sermonTitle').textContent = sermon.title || 'Sermon Title';
-        document.getElementById('sermonImage').innerHTML = `<img src="${sermon.image || 'assets/images/pexels-cryschanxanhy-29547000.jpg'}" alt="${sermon.title || 'Sermon'}">`;
+        document.getElementById('sermonImage').innerHTML = `<img src="${sermon.image || '/assets/images/pexels-cryschanxanhy-29547000.jpg'}" alt="${sermon.title || 'Sermon'}">`;
         document.getElementById('sermonDate').textContent = `Date: ${sermon.date ? new Date(sermon.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A'}`;
         document.getElementById('sermonTime').textContent = `Time: ${sermon.time || 'N/A'}`;
         document.getElementById('sermonSpeaker').textContent = `Speaker: ${sermon.speaker || 'N/A'}`;

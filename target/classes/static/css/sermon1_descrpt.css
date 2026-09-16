@@ -23,7 +23,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: url('assets/images/pexels-2152214764-32117889.jpg') no-repeat center;
+            background: url('/assets/images/pexels-2152214764-32117889.jpg') no-repeat center;
             background-size: cover;
         }
 
@@ -469,7 +469,7 @@
         }
 
         .toc-table td:hover i {
-            color: #4CAF50;
+            color: #008000;
         }
 
         .button-group {
@@ -480,7 +480,7 @@
         .button-group button {
             padding: 10px 20px;
             border: none;
-            background-color: #4CAF50;
+            background-color: #008000;
             color: white;
             border-radius: 5px;
             cursor: pointer;
@@ -493,7 +493,7 @@
         }
 
         .button-group button:hover {
-            background-color: #45a049;
+            background-color: #008000;
         }
 
         .button-group button i {
@@ -519,7 +519,7 @@
             font-family: "Gentium Basic-Bold", Helvetica;
             font-weight: bold;
             font-size: 32px;
-            color: #2c3e50;
+            color: #1d1a16;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -528,7 +528,7 @@
 
         .description h2 i {
             font-size: 28px;
-            color: #2c3e50;
+            color: #1d1a16;
         }
 
         .description p {
@@ -563,7 +563,7 @@
             right: 20px;
             padding: 10px 40px;
             border: none;
-            background-color: #4CAF50;
+            background-color: #008000;
             color: white;
             border-radius: 5px;
             cursor: pointer;
@@ -576,7 +576,7 @@
         }
 
         .read-more:hover {
-            background-color: #45a049;
+            background-color: #008000;
         }
 
         .read-more i {
@@ -615,7 +615,7 @@
             padding: 12px 20px;
             border: none;
             cursor: pointer;
-            background-color: #4CAF50;
+            background-color: #008000;
             color: white;
             border-radius: 5px;
             font-family: "Gentium Basic-Regular", Helvetica;
@@ -627,7 +627,7 @@
         }
 
         .nav-buttons button:hover {
-            background-color: #45a049;
+            background-color: #008000;
         }
 
         .nav-buttons button i {
@@ -640,11 +640,11 @@
         }
 
         .nav-buttons button:first-child {
-            background-color: #8B4513;
+            background-color: #704223;
         }
 
         .nav-buttons button:first-child:hover {
-            background-color: #7B3A13;
+            background-color: #704223;
         }
 
         .nav-buttons button:first-child:hover i {
@@ -670,7 +670,7 @@
         }
 
         .search-bar input:focus {
-            border-color: #4CAF50;
+            border-color: #008000;
         }
 
         .search-bar .search-icon {
@@ -683,7 +683,7 @@
         }
 
         .search-bar .search-icon:hover {
-            color: #4CAF50;
+            color: #008000;
         }
 
         /* Responsive Design */

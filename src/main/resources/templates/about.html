@@ -3,231 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dharma Club - Discuss & Discover</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Dhamma Nature - About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gentium+Basic:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-	<link rel = "stylesheet" href = "/css/community_about.css">
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; line-height: 1.6; background: #fff; }
+        .about-main { max-width: 1200px; margin: 0 auto; padding: 50px 24px 20px; }
+        .section-hero { text-align: center; margin-bottom: 44px; }
+        .section-hero h1 { font-size: 40px; color: #704223; }
+        .section-hero p { color: #666; font-size: 17px; max-width: 640px; margin: 10px auto 0; }
+        .accent-line { width: 70px; height: 4px; background: #704223; border: none; margin: 18px auto 0; border-radius: 2px; }
+        /* Welcome section */
+        .welcome { display: grid; grid-template-columns: 1.1fr 1fr; gap: 44px; align-items: center; margin-bottom: 56px; }
+        .welcome img { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+        .welcome h2 { font-size: 30px; color: #704223; margin-bottom: 8px; }
+        .welcome h3 { font-size: 20px; color: #333; margin-bottom: 18px; }
+        .welcome p { color: #666; margin-bottom: 14px; }
+        .welcome .btn-saffron { display: inline-block; background: #704223; color: #fff; padding: 12px 26px; border-radius: 30px; font-weight: 700; text-decoration: none; transition: background .3s, transform .2s; }
+        .welcome .btn-saffron:hover { background: #704223; transform: translateY(-2px); }
+        /* Values */
+        .values { margin-bottom: 56px; }
+        .values-head { text-align: center; margin-bottom: 32px; }
+        .values-head h2 { font-size: 30px; color: #333; }
+        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+        .value-card { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 30px 24px; box-shadow: 0 4px 14px rgba(0,0,0,.05); transition: transform .3s; }
+        .value-card:hover { transform: translateY(-4px); }
+        .value-icon { width: 64px; height: 64px; border-radius: 50%; background: #f5efe3; color: #704223; font-size: 24px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+        .value-card h3 { font-size: 18px; margin-bottom: 6px; color: #704223; }
+        .value-card h4 { font-size: 14px; color: #888; margin-bottom: 10px; }
+        .value-underline { width: 44px; height: 3px; background: #704223; border: none; margin-bottom: 12px; }
+        .value-card p { color: #666; font-size: 14px; }
+        /* Mission band */
+        .mission { background: linear-gradient(120deg, #704223, #704223); color: #fff; text-align: center; padding: 64px 24px; border-radius: 16px; margin-bottom: 56px; }
+        .mission h2 { font-size: 34px; line-height: 1.3; max-width: 800px; margin: 0 auto 18px; }
+        .mission p { opacity: .92; max-width: 640px; margin: 0 auto; }
+        /* Stats */
+        .stats-section { text-align: center; margin-bottom: 56px; }
+        .stats-section h2 { font-size: 30px; color: #333; margin-bottom: 30px; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
+        .stat-box { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 30px 16px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        .stat-box .n { font-size: 40px; font-weight: 800; color: #704223; }
+        .stat-box .l { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-top: 4px; }
+        /* Teachers */
+        .teachers { margin-bottom: 50px; }
+        .teachers-head { text-align: center; margin-bottom: 32px; }
+        .teachers-head h2 { font-size: 30px; color: #333; }
+        .teachers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+        .teacher-card { background: #fff; border: 1px solid #eee; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.05); text-align: center; transition: transform .3s; }
+        .teacher-card:hover { transform: translateY(-4px); }
+        .teacher-card img { width: 100%; height: 240px; object-fit: cover; }
+        .teacher-card .tc-body { padding: 20px; }
+        .teacher-card h3 { font-size: 19px; color: #333; }
+        .teacher-card .role { font-size: 13px; color: #704223; font-weight: 700; margin-bottom: 8px; }
+        .teacher-card p { font-size: 14px; color: #666; }
+        /* CTA */
+        .cta-band { background: linear-gradient(120deg, #333, #555); color: #fff; text-align: center; padding: 56px 24px; border-radius: 16px; }
+        .cta-band h2 { font-size: 30px; margin-bottom: 12px; }
+        .cta-band p { opacity: .92; margin-bottom: 24px; max-width: 580px; margin-left: auto; margin-right: auto; }
+        .cta-band .btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .cta-band .btn-saffron { display: inline-block; background: #ffd700; color: #333; padding: 13px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s; }
+        .cta-band .btn-outline { display: inline-block; border: 2px solid #fff; color: #fff; padding: 11px 26px; border-radius: 30px; font-weight: 800; text-decoration: none; transition: background .3s; }
+        .cta-band .btn-outline:hover { background: rgba(255,255,255,.15); }
+        .cta-band .btn-saffron:hover { transform: translateY(-2px); }
+        /* Footer (home style) */
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) {
+            .welcome { grid-template-columns: 1fr; }
+            .welcome img { max-height: 340px; object-fit: cover; }
+            .values-grid, .teachers-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: 1fr 1fr; }
+            .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .part1, .part2, .part3 { padding-left: 0; }
+            .copyright { flex-direction: column; padding: 20px 0; text-align: center; }
+            .copyright-sub { flex-direction: column; gap: 10px; padding: 0; }
+        }
+        @media (max-width: 576px) {
+            .section-hero h1 { font-size: 30px; }
+            .stats { grid-template-columns: 1fr; }
+            .part1-desc { width: auto; }
+        }
+    </style>
 </head>
-<style>
-    .header-img {
-        position: relative;
-        height: 720px;
-        width: 100%;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: url('/assets/images/pexels-2152214764-32117889.jpg') no-repeat center;
-        background-size: cover;
-        background-color: #233c9b; /* Fallback color (dark blue-ish) if image fails */
-    }
-    .header-img h2 {
-        position: absolute;
-        top: 20px;
-        left: 50%; /* Centered horizontally */
-        transform: translateX(-50%) translateY(320px); /* Adjust vertical as needed */
-        font-size: 36px;
-        color: #fff;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        z-index: 10;
-        font-family: "Gentium Basic-Bold", Helvetica, sans-serif;
-        text-align: center;
-        white-space: nowrap; /* Keeps text from wrapping oddly */
-    }
-    /* If .line-container or .white-line need dynamic tweaks, add them here too—but they're static, so external CSS is fine */
-
-	
-</style>
 <body>
-
     <header>
-        <div class="header-img">
-        	
-            <h2>Discuss & Discover</h2>
-            <div class="line-container">
-                <hr class="white-line">
-            </div>
-            <div class="header-top">
-                <p class="location">
-                    203 Fake St. Mountain View, San Francisco, California, USA
-                </p>
-                <div class="social-media">
-                    <a href="https://www.facebook.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span>
-                    </a>
-                    <a href="https://www.twitter.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-twitter"></i><span class="sr-only">Twitter</span>
-                    </a>
-                    <a href="https://www.instagram.com" target="_blank" class="justify-content-center">
-                        <i class="fab fa-instagram"></i><span class="sr-only">Instagram</span>
-                    </a>
-                </div>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="About Dhamma Nature">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">ABOUT US</h1>
+                <p>Connect, grow and serve with our community of practitioners</p>
             </div>
             <div class="header-main">
-                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
-                    <a href="#about" class="nav-link">About</a>
+                    <a href="/about" class="nav-link">About</a>
                     <div class="dropdown">
-                        <a href="#sermons" class="nav-link">Sermons</a>
+                        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
                         <div class="dropdown-content">
                             <a href="/upcoming-sermons">Upcoming Sermons</a>
-                            <a href="#past-sermons">Past Sermons</a>
-                            <a href="#sermon-series">Sermon Series</a>
+                            <a href="/teachings">Teachings</a>
                         </div>
                     </div>
                     <div class="dropdown">
                         <a href="/events" class="nav-link">Events</a>
                         <div class="dropdown-content">
-                            <a href="#18Dnew.html">Upcoming Events</a>
-                            <a href="/events">Past Events</a>
-                            <a href="#special-events">Special Events</a>
+                            <a href="/events">Upcoming Events</a>
+                            <a href="/centers">Meditation Centers</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/marketplace" class="nav-link">Explore</a>
+                        <div class="dropdown-content">
+                            <a href="/marketplace">Marketplace</a>
+                            <a href="/gallery">Gallery</a>
+                            <a href="/quiz">Quizzes</a>
+                            <a href="/rewards">Rewards</a>
+                            <a href="/volunteer">Volunteer</a>
+                            <a href="/charity">Charity</a>
+                            <a href="/community">Community</a>
+                            <a href="/discuss">Discuss</a>
                         </div>
                     </div>
                     <a href="/blog" class="nav-link">Blog</a>
-                    <a href="/contact" class="nav-link">Contact</a>
-                    <a href="#" class="nav-link">Discuss</a>
-                    <a href="/donate" class="nav-link donate-btn">Donate</a>
-                </nav>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
                 <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
             </div>
         </div>
     </header>
-    <main>
-        <div class="main-container">
-            <div class="content-wrapper">
-                <div class="main-content">
-                    <!-- Sidebar -->
-                    <div class="sidebar">
-                        <div class="sidebar-section">
-                            <div class="nav-item">
-                                <i class="fas fa-book"></i>
-                                <span>Topics</span>
-                            </div>
-                            <div class="nav-item">
-                                <i class="fas fa-info-circle"></i>
-                                <span>About</span>
-                            </div>
-                            <div class="nav-item">
-                                <i class="fas fa-question-circle"></i>
-                                <span>FAQ</span>
-                            </div>
-                            <div class="nav-item">
-                                <i class="fas fa-clipboard-list"></i>
-                                <span>Guidelines</span>
-                            </div>
-                            <div class="nav-item">
-                                <i class="fas fa-ellipsis-h"></i>
-                                <span>More</span>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="categories-header">
-                                <i class="fas fa-chevron-down"></i>
-                                <span>CATEGORIES</span>
-                            </div>
-                            <div class="category-item">
-                                <i class="fas fa-circle category-dot"></i>
-                                <span>Discussion</span>
-                            </div>
-                            <div class="category-item">
-                                <i class="fas fa-circle category-dot"></i>
-                                <span>Q & A</span>
-                            </div>
-                            <div class="category-item">
-                                <i class="fas fa-circle category-dot"></i>
-                                <span>Essays</span>
-                            </div>
-                            <div class="nav-item">
-                                <i class="fas fa-list"></i>
-                                <span>All categories</span>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="tags-section">
-                                <div class="tags-content">
-                                    <div class="categories-header">
-                                        <i class="fas fa-chevron-down"></i>
-                                        <span>TAGS</span>
-                                    </div>
-                                    <div class="tag-item">
-                                        <i class="fas fa-tag"></i>
-                                        <span>bodhi</span>
-                                    </div>
-                                    <div class="tag-item">
-                                        <i class="fas fa-tag"></i>
-                                        <span>ebt-translation</span>
-                                    </div>
-                                    <div class="tag-item">
-                                        <i class="fas fa-tag"></i>
-                                        <span>pali</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Middle Content -->
-                    <div class="middle-content">
-                        <div class="role-count">
-                            <div class="role-item">
-                                <i class="fas fa-user-shield"></i>
-                                <span class="role-label">Admins</span>
-                                <span class="role-number">5</span>
-                            </div>
-                            <div class="role-item">
-                                <i class="fas fa-users"></i>
-                                <span class="role-label">Users</span>
-                                <span class="role-number">3737</span>
-                            </div>
-                            <div class="role-item">
-                                <i class="fas fa-user-check"></i>
-                                <span class="role-label">Moderators</span>
-                                <span class="role-number">12</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Right Content -->
-                    <div class="right-content">
-                        <div class="contact-section">
-                            <h2 class="contact-title"><i class="fas fa-headset"></i> Contact Us</h2>
-                            <p class="contact-text">
-                                Have questions or need assistance? Reach out to us at 
-                                <a href="mailto:support@discussanddiscover.com"><i class="fas fa-envelope"></i> support@discussanddiscover.com</a> or call 
-                                <a href="tel:+18005550123"><i class="fas fa-phone"></i> +1-800-555-0123</a>. Our support team is available Monday to Friday, 9 AM - 5 PM EST. For 
-                                immediate help, use our live chat. We aim to respond within 24 hours. Last updated: 
-                                10:45 AM +0545, Sunday, August 31, 2025.
-                            </p>
-                        </div>
-                        <div class="site-activity">
-                            <h2 class="activity-title"><i class="fas fa-chart-line"></i> Site Activity</h2>
-                            <div class="activity-item">
-                                <span class="activity-text"><i class="fas fa-comment"></i> 14 topics created in the last 7 days</span>
-                                <span class="activity-time">Today</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-text"><i class="fas fa-pen"></i> 44 posts made today</span>
-                                <span class="activity-time">Today</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-text"><i class="fas fa-users"></i> 338 active users in the last 7 days</span>
-                                <span class="activity-time">Last 7 days</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-text"><i class="fas fa-user-plus"></i> 18 sign-ups in the last 7 days</span>
-                                <span class="activity-time">Last 7 days</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-text"><i class="fas fa-heart"></i> 575K likes all time</span>
-                                <span class="activity-time">All time</span>
-                            </div>
-                            <div class="activity-item">
-                                <span class="activity-text"><i class="fas fa-comments"></i> 92 chat messages in the last 7 days</span>
-                                <span class="activity-time">Last 7 days</span>
-                            </div>
-                        </div>
+    <main class="about-main">
+        <div class="section-hero">
+            <h1>Our Story</h1>
+            <p>Dhamma Nature is a community dedicated to walking the Buddhist path together - in the monastery, at the retreat centre and online.</p>
+            <hr class="accent-line">
+        </div>
+        <!-- Welcome -->
+        <section class="welcome">
+            <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Dhamma Nature community">
+            <div>
+                <h2>CONNECT, GROW AND SERVE WITH US</h2>
+                <h3>A way of life, not just a website</h3>
+                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. We are a community of monks, teachers and lay practitioners who share one conviction - that the Dhamma can be lived in every moment.</p>
+                <p>Through sermons, teachings, retreats, charity and a vibrant discussion community, we support one another toward wisdom, compassion and freedom from suffering.</p>
+                <a href="/volunteer" class="btn-saffron">Become a volunteer</a>
+            </div>
+        </section>
+        <!-- Values -->
+        <section class="values">
+            <div class="values-head">
+                <h2>What We Stand For</h2>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-praying-hands"></i></div>
+                    <h3>WORSHIP</h3>
+                    <h4>What to expect</h4>
+                    <hr class="value-underline">
+                    <p>Two similes are useful to keep in mind when we look at the practice of worship and devotion in the Buddhist tradition.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-hands-helping"></i></div>
+                    <h3>CONNECT</h3>
+                    <h4>Contact members</h4>
+                    <hr class="value-underline">
+                    <p>Two similes are useful to keep in mind when we look at the importance of community in sustaining a steady practice.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-heart"></i></div>
+                    <h3>DHAMMA'S LOVE</h3>
+                    <h4>Beliefs and history</h4>
+                    <hr class="value-underline">
+                    <p>Two similes are useful to keep in mind when we look at the love and compassion at the heart of the Buddha's teaching.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Mission band -->
+        <section class="mission">
+            <h2>A Monk should practice dhamma, teach laypeople when asked. Guide them to the truth.</h2>
+            <p>Our mission is to keep the Dhamma freely available to all who seek it, and to guide practitioners step by step toward the peace that is already within them.</p>
+        </section>
+        <!-- Stats -->
+        <section class="stats-section">
+            <h2>The Dhamma Nature Family</h2>
+            <div class="stats">
+                <div class="stat-box"><div class="n">1,04,000</div><div class="l">Members</div></div>
+                <div class="stat-box"><div class="n">4</div><div class="l">Ajahns</div></div>
+                <div class="stat-box"><div class="n">5,00,000</div><div class="l">Donations</div></div>
+                <div class="stat-box"><div class="n">50+</div><div class="l">Ministries</div></div>
+            </div>
+        </section>
+        <!-- Teachers -->
+        <section class="teachers">
+            <div class="teachers-head">
+                <h2>Our Guiding Monks</h2>
+                <p>The teachers who lead our sermons, teachings and retreats.</p>
+            </div>
+            <div class="teachers-grid">
+                <div class="teacher-card">
+                    <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Ajahn Brahm">
+                    <div class="tc-body">
+                        <h3>Ajahn Brahm</h3>
+                        <div class="role">Senior Teacher</div>
+                        <p>Known for his clarity and warmth, Ajahn Brahm brings the dhamma alive for modern audiences worldwide.</p>
                     </div>
                 </div>
+                <div class="teacher-card">
+                    <img src="/assets/images/pexels-pexels-user-1493533273-27021625.jpg" alt="Ajahn Thanissaro">
+                    <div class="tc-body">
+                        <h3>Ajahn Thanissaro</h3>
+                        <div class="role">Dhamma Translator</div>
+                        <p>Translator and author of dozens of sutta studies, Ajahn Thanissaro is a trusted guide to the early texts.</p>
+                    </div>
+                </div>
+                <div class="teacher-card">
+                    <img src="/assets/images/pexels-ron-lach-10461522.jpg" alt="Bhikkhu Buddharakkhita">
+                    <div class="tc-body">
+                        <h3>Bhikkhu Buddharakkhita</h3>
+                        <div class="role">Meditation Guide</div>
+                        <p>Leads our online and in-person retreats, guiding practitioners from the very first breath to deep stillness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CTA -->
+        <div class="cta-band">
+            <h2>Come practise with us</h2>
+            <p>Join a sermon, attend a retreat, explore our teachings, or simply come and sit with the community at a centre near you.</p>
+<div class="btns">
+                <a href="/upcoming-sermons" class="btn-saffron">Attend a sermon</a>
+                <a href="/teachings" class="btn-outline">Explore the teachings</a>
             </div>
         </div>
     </main>
@@ -241,34 +272,62 @@
         <div class="part2">
             <h2>QUICK LINKS</h2>
             <div class="part2-desc">
-                <h4><i class="fas fa-home"></i> <a href="/">Home</a></h4>
-                <h4><i class="fas fa-info-circle"></i> <a href="#about">About</a></h4>
-                <h4><i class="fas fa-pray"></i> <a href="#sermons">Sermons</a></h4>
-                <h4><i class="fas fa-calendar"></i> <a href="/events">Events</a></h4>
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="/about">About</a></h4>
+                <h4><a href="/upcoming-sermons">Sermons</a></h4>
+                <h4><a href="/events">Events</a></h4>
+                <h4><a href="/centers">Centers</a></h4>
+                <h4><a href="/marketplace">Marketplace</a></h4>
+                <h4><a href="/gallery">Gallery</a></h4>
+                <h4><a href="/quiz">Quizzes</a></h4>
+                <h4><a href="/rewards">Rewards</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="/blog">Blog</a></h4>
+                <h4><a href="/discuss">Discuss</a></h4>
+                <h4><a href="/contact">Contact</a></h4>
+                <h4><a href="/profile">My Profile</a></h4>
             </div>
         </div>
-        <div class="part3">
-            <h2>HAVE A QUESTION?</h2>
-            <div class="part3-desc">
-                <h4><i class="fas fa-map-marker-alt"></i> 203 Fake St. Mountain View, San Francisco, California, USA</h4>
-                <h4><i class="fas fa-phone"></i> +977 97820099</h4>
-                <h4><i class="fas fa-envelope"></i> info@gmail.com</h4>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
             </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
         </div>
     </div>
-    <div class="footer-sec2">
-        <div class="line">
-            <hr class="white-line-footer">
-        </div>
-        <div class="copyright">
-            <h4>Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
-            <div class="copyright-sub">
-                <h4><i class="fas fa-file-alt"></i> <a href="#terms">Terms & Conditions</a></h4>
-                <h4><i class="fas fa-shield-alt"></i> <a href="#privacy">Privacy Policy</a></h4>
-                <h4><i class="fas fa-undo"></i> <a href="#refund">Cancellation & Refund Policy</a></h4>
-            </div>
-        </div>
     </div>
-    <script src="/JS/community_about.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars', !(open && open.classList.contains('active')));
+                            icon.classList.toggle('fa-times', open && open.classList.contains('active'));
+                        }
+                    }, 0);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

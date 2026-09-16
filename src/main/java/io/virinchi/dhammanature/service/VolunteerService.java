@@ -61,4 +61,8 @@ public class VolunteerService {
     public List<VolunteerRegistration> forOpportunity(Integer opportunityId) {
         return registrationRepository.findByOpportunity_Id(opportunityId);
     }
+
+    public List<VolunteerOpportunity> forCenter(Integer centerId) {
+        return opportunityRepository.findByMeditationCenter_Id(centerId);
+    }
 }

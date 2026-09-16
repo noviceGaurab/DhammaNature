@@ -2,41 +2,664 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dhamma Nature - Community Discussion</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/community_discuss.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
     <style>
-        .discuss-wrap { max-width: 700px; margin: 0 auto; padding: 60px 20px; }
-        .comment { border-bottom: 1px solid #eee; padding: 14px 0; }
-        .comment .meta { color:#888; font-size: 13px; }
-        .comment-form input, .comment-form textarea { width:100%; padding:10px; margin-top:6px; }
-        .msg-err { color: #721c24; background:#f8d7da; padding:10px 14px; border-radius:6px; }
+        .comment-form input, .comment-form textarea { width:100%; padding:10px 12px; margin-top:8px; border:1px solid #ccc; border-radius:4px; font-size:15px; }
+        .comment-form textarea { resize:vertical; }
+        .comment-form input:focus, .comment-form textarea:focus { outline:none; border-color:#006015; box-shadow:0 0 5px rgba(0,96,21,.3); }
+        .btn-primary { display:inline-block; background:#006015; color:#fff; border:none; padding:10px 24px; border-radius:30px; font-size:15px; font-weight:700; cursor:pointer; transition:background .3s, transform .3s; }
+        .btn-primary:hover { background:#008000; transform:translateY(-2px); }
+        .msg-err { color:#7e211d; background:#fdecea; padding:10px 14px; border-radius:6px; margin-bottom:20px; }
+        .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .info-card { background:#fff; border:1px solid #e8e8e8; border-radius:8px; padding:24px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+        .info-card h3 { color:#006015; margin-bottom:10px; font-size:20px; }
+        .info-card h3 i { margin-right:8px; color:#006015; }
+        .info-card p, .info-card li { color:#555; font-size:15px; line-height:1.7; }
+        .info-card ul { padding-left:20px; margin-top:6px; }
+        .stats-strip { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+        .stat-box { text-align:center; background:linear-gradient(135deg, #006015, #008000); color:#fff; border-radius:8px; padding:24px 10px; box-shadow:0 2px 10px rgba(0,0,0,0.15); }
+        .stat-box .num { font-size:34px; font-weight:700; }
+        .stat-box .lbl { font-size:14px; opacity:.9; text-transform:uppercase; letter-spacing:1px; }
+        .category-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+        .category-card { background:#fff; border:1px solid #e8e8e8; border-radius:8px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); transition:transform .3s, box-shadow .3s; cursor:pointer; }
+        .category-card:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.12); }
+        .category-card .cat-icon { font-size:26px; color:#006015; margin-bottom:8px; }
+        .category-card h4 { color:#333; font-size:17px; margin-bottom:4px; }
+        .category-card p { color:#777; font-size:14px; }
+        .comment { border:1px solid #eee; border-radius:8px; padding:16px; margin-bottom:14px; background:#fdfdfd; }
+        .comment:hover { box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+        .comment .meta { display:flex; align-items:center; gap:10px; color:#888; font-size:13px; margin-bottom:8px; }
+        .comment-avatar { flex:0 0 38px; height:38px; width:38px; border-radius:50%; background:#006015; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; text-transform:uppercase; }
+        .comment-tag { background:#e6f4ea; color:#006015; padding:2px 10px; border-radius:20px; font-weight:600; }
+        .newsletter-band { background:linear-gradient(135deg,#065b0b,#008000); color:#fff; text-align:center; padding:42px 20px; border-radius:8px; }
+        .newsletter-band h2 { font-size:26px; margin-bottom:6px; }
+        .newsletter-band p { opacity:.9; margin-bottom:16px; }
+        .newsletter-band form { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+        .newsletter-band input { flex:0 1 320px; padding:11px 14px; border:none; border-radius:30px; font-size:15px; }
+        .newsletter-band input:focus { outline:none; }
+        .newsletter-band button { background:#ffd700; color:#333; border:none; padding:11px 24px; border-radius:30px; font-weight:700; cursor:pointer; transition:background .3s; }
+        .newsletter-band button:hover { background:#ffd700; }
+        @media (max-width: 768px) {
+            .info-grid, .stats-strip, .category-grid { grid-template-columns:1fr; }
+        }
     </style>
 </head>
 <body>
-<div th:replace="~{fragments/header :: siteHeader('COMMUNITY DISCUSSION', 'FR-06: a shared forum instead of scattered Facebook comments')}"></div>
-<main class="discuss-wrap">
-    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
-
-    <form class="comment-form" method="post" action="/discuss">
-        <input type="hidden" name="topic" th:value="${slug}"/>
-        <input type="text" name="name" placeholder="Your name" th:if="${currentUser == null}">
-        <input type="email" name="email" placeholder="Your email (optional)" th:if="${currentUser == null}">
-        <textarea name="content" rows="3" placeholder="Share your thoughts..." required></textarea>
-        <button type="submit" class="btn btn-primary" style="margin-top:8px;">Post</button>
-    </form>
-
-    <h2 style="margin-top:30px;">Recent posts</h2>
-    <p th:if="${#lists.isEmpty(comments)}">No posts yet - be the first to share.</p>
-    <div class="comment" th:each="c : ${comments}">
-        <div class="meta">
-            <strong th:text="${c.name}">Name</strong> &middot;
-            <span th:text="${#temporals.format(c.createdAt, 'dd MMM yyyy, HH:mm')}">Date</span>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">COMMUNITY DISCUSSION</h1>
+                <p>A shared forum instead of scattered Facebook comments</p>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown">
+                        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+                        <div class="dropdown-content">
+                            <a href="/upcoming-sermons">Upcoming Sermons</a>
+                            <a href="/teachings">Teachings</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/events" class="nav-link">Events</a>
+                        <div class="dropdown-content">
+                            <a href="/events">Upcoming Events</a>
+                            <a href="/centers">Meditation Centers</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="/marketplace" class="nav-link">Explore</a>
+                        <div class="dropdown-content">
+                            <a href="/marketplace">Marketplace</a>
+                            <a href="/gallery">Gallery</a>
+                            <a href="/quiz">Quizzes</a>
+                            <a href="/rewards">Rewards</a>
+                            <a href="/volunteer">Volunteer</a>
+                            <a href="/charity">Charity</a>
+                            <a href="/community">Community</a>
+                            <a href="/discuss">Discuss</a>
+                        </div>
+                    </div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
         </div>
-        <p th:text="${c.content}">Comment content</p>
+    </header>
+    <main>
+        <div class="main-container">
+            <div class="content-wrapper">
+                <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+                <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
+                <h1 class="main-title">Discuss &amp; Discover</h1>
+                <hr class="title-divider">
+                <div class="main-content">
+                    <!-- Sidebar -->
+                    <aside class="sidebar">
+                        <div class="sidebar-section">
+                            <div class="nav-item"><i class="fas fa-bars"></i><span>All topics</span></div>
+                            <div class="nav-item"><i class="fas fa-star"></i><span>Pinned</span></div>
+                            <div class="nav-item"><i class="fas fa-question-circle"></i><span>Q &amp; A</span></div>
+                            <div class="nav-item"><i class="fas fa-gavel"></i><span>Guidelines</span></div>
+                            <div class="divider"></div>
+                            <div class="categories-header">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>CATEGORIES</span>
+                            </div>
+                            <div class="category-item">
+                                <i class="fas fa-circle category-dot"></i>
+                                <span>Discussion</span>
+                            </div>
+                            <div class="category-item">
+                                <i class="fas fa-circle category-dot"></i>
+                                <span>Q &amp; A</span>
+                            </div>
+                            <div class="category-item">
+                                <i class="fas fa-circle category-dot"></i>
+                                <span>Essays</span>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="tags-content">
+                                <div class="categories-header">
+                                    <i class="fas fa-chevron-down"></i>
+                                    <span>TAGS</span>
+                                </div>
+                                <div class="tag-item"><i class="fas fa-tag"></i><span>bodhi</span></div>
+                                <div class="tag-item"><i class="fas fa-tag"></i><span>ebt-translation</span></div>
+                                <div class="tag-item"><i class="fas fa-tag"></i><span>pali</span></div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="categories-header">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>STATS</span>
+                            </div>
+                            <div class="tag-item"><i class="fas fa-comment-dots"></i><span th:text="${totalPosts} + ' posts'">0 posts</span></div>
+                            <div class="tag-item"><i class="fas fa-folder-open"></i><span th:text="${topicsCount} + ' topics'">0 topics</span></div>
+                            <div class="tag-item participants-trigger" data-toggle-participants title="View participants"><i class="fas fa-user-friends"></i><span th:text="${participants} + ' participants'">0 participants</span></div>
+                        </div>
+                    </aside>
+                    <!-- Right Content -->
+                    <section class="right-content">
+                        <div class="search-bar">
+                            <nav>
+                                <a href="#pinned">Pinned</a>
+                                <a href="#share">Write</a>
+                                <a href="#recent">Recent</a>
+                            </nav>
+                            <input type="text" id="postFilter" placeholder="Search posts..." />
+                            <i class="fas fa-magnifying-glass"></i>
+                        </div>
+                        <!-- Pinned discussions -->
+                        <section class="discussion-section" id="pinned">
+                            <h3 class="categories-header"><i class="fas fa-thumbtack"></i>PINNED DISCUSSIONS</h3>
+                            <div class="topic-header">
+                                <span class="header-label">Topic</span>
+                                <span class="header-replies">Replies</span>
+                                <span class="header-views">Views</span>
+                                <span class="header-activity">Last activity</span>
+                            </div>
+                            <div class="discussion-item">
+                                <span class="discussion-topic" onclick="window.location='/discuss?topic=general'" style="cursor:pointer;">Welcome - introduce yourself <span class="comment-tag">pinned</span></span>
+                                <span class="discussion-replies"><i class="fas fa-reply"></i> 0</span>
+                                <span class="discussion-views"><i class="fas fa-eye"></i> 12</span>
+                                <span class="discussion-activity"><i class="fas fa-clock"></i> Today</span>
+                            </div>
+                            <div class="discussion-item">
+                                <span class="discussion-topic" onclick="window.location='/discuss?topic=general'" style="cursor:pointer;">The Buddha's words on nature and mindfulness</span>
+                                <span class="discussion-replies"><i class="fas fa-reply"></i> 0</span>
+                                <span class="discussion-views"><i class="fas fa-eye"></i> 5</span>
+                                <span class="discussion-activity"><i class="fas fa-clock"></i> This week</span>
+                            </div>
+                        </section>
+                        <!-- Categories -->
+                        <div class="category-grid">
+                            <div class="category-card">
+                                <div class="cat-icon"><i class="fas fa-comments"></i></div>
+                                <h4>Discussion</h4>
+                                <p>Open dialogue on teachings, practice, and everyday life.</p>
+                            </div>
+                            <div class="category-card">
+                                <div class="cat-icon"><i class="fas fa-question-circle"></i></div>
+                                <h4>Q &amp; A</h4>
+                                <p>Ask questions and get answers from fellow practitioners.</p>
+                            </div>
+                            <div class="category-card">
+                                <div class="cat-icon"><i class="fas fa-feather-pointed"></i></div>
+                                <h4>Essays</h4>
+                                <p>Longer reflections and study notes shared with the sangha.</p>
+                            </div>
+                        </div>
+                        <!-- Stats -->
+                        <div class="stats-strip">
+                            <div class="stat-box">
+                                <div class="num" th:text="${totalPosts}">0</div>
+                                <div class="lbl">Posts</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="num" th:text="${topicsCount}">0</div>
+                                <div class="lbl">Topics</div>
+                            </div>
+<div class="stat-box participants-trigger" data-toggle-participants title="View participants" style="cursor:pointer;">
+                                <div class="num" th:text="${participants}">0</div>
+                                <div class="lbl">Participants</div>
+                            </div>
+                        </div>
+                        <!-- About & Guidelines -->
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h3><i class="fas fa-leaf"></i> About this Community</h3>
+                                <p>
+                                    This forum is a shared space for practitioners to discuss the Buddha's
+                                    teachings, meditation practice, mindfulness in daily life, and the many
+                                    ways the Dhamma touches nature and community. Ask questions, share
+                                    reflections, and learn together.
+                                </p>
+                            </div>
+                            <div class="info-card">
+                                <h3><i class="fas fa-gavel"></i> Community Guidelines</h3>
+                                <ul>
+                                    <li>Speak with kindness and respect others' views.</li>
+                                    <li>Stay on topic and keep posts constructive.</li>
+                                    <li>No advertising, spam, or personal attacks.</li>
+                                    <li>Refrain from political or sectarian debates.</li>
+                                    <li>Moderators may remove posts that break these rules.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Share a thought -->
+<section class="discussion-section" id="share">
+                            <h3 class="categories-header"><i class="fas fa-pen-nib"></i>SHARE YOUR THOUGHTS</h3>
+                            <form class="comment-form" method="post" action="/discuss">
+                                <input type="hidden" name="topic" th:value="${slug}"/>
+                                <input type="text" name="title" placeholder="Title - what is this thought about? (optional)"/>
+                                <input type="text" name="name" placeholder="Your name" th:if="${currentUser == null}">
+                                <input type="email" name="email" placeholder="Your email (optional)" th:if="${currentUser == null}">
+                                <div class="mention-box">
+                                    <textarea name="content" id="newThought" rows="3" placeholder="Share your thoughts... type @ to mention a participant." required></textarea>
+                                    <div class="mention-dropdown" id="mentionDropdown"></div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="margin-top:8px;">Post</button>
+                                <p class="mention-hint">Tip: use <em>@</em> followed by a participant's name to tag them — they will be notified.</p>
+                            </form>
+                        </section>
+<!-- Recent posts -->
+                        <section class="discussion-section" id="recent">
+                            <h3 class="categories-header"><i class="fas fa-comments"></i>RECENT POSTS</h3>
+                            <p th:if="${#lists.isEmpty(comments)}">No posts yet - be the first to share.</p>
+<th:block th:if="${!#lists.isEmpty(comments)}">
+                                <th:block th:each="c : ${comments}">
+                                    <div th:replace="~{fragments/comment :: commentNode(${c}, ${slug})}"></div>
+                                </th:block>
+                            </th:block>
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="part1">
+                <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+                <div class="part1-desc">
+                    <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+                </div>
+            </div>
+            <div class="part2">
+                <h2>QUICK LINKS</h2>
+                <div class="part2-desc">
+                    <h4><a href="/">Home</a></h4>
+                    <h4><a href="/about">About</a></h4>
+                    <h4><a href="/upcoming-sermons">Sermons</a></h4>
+                    <h4><a href="/events">Events</a></h4>
+                    <h4><a href="/centers">Centers</a></h4>
+                    <h4><a href="/marketplace">Marketplace</a></h4>
+                    <h4><a href="/gallery">Gallery</a></h4>
+                    <h4><a href="/quiz">Quizzes</a></h4>
+                    <h4><a href="/rewards">Rewards</a></h4>
+                    <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="/blog">Blog</a></h4>
+                    <h4><a href="/discuss">Discuss</a></h4>
+                    <h4><a href="/contact">Contact</a></h4>
+                    <h4><a href="/profile">My Profile</a></h4>
+                </div>
+            </div>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
+            </div>
+</div>
+        <div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
     </div>
+    </div>
+
 </main>
-<div th:replace="~{fragments/footer :: siteFooter}"></div>
+
+    <!-- Participants modal -->
+    <div class="modal-overlay" id="participantsModal">
+        <div class="modal-dialog">
+            <div class="modal-head">
+                <h3><i class="fa-solid fa-user-friends"></i> Participants</h3>
+                <span class="modal-count" id="participantCount">0</span>
+                <button type="button" class="modal-close" data-close-participants aria-label="Close">&times;</button>
+            </div>
+            <div class="participants-grid" id="participantsGrid">
+                <div class="participant-card" th:each="p : ${participantList}">
+                    <div class="p-avatar" th:attr="data-participant-id=${p.id}, data-participant-name=${p.name}" th:title="${p.guest ? '' : 'Hover for options'}">
+                        <img th:if="${p.profileImage}" th:src="${p.profileImage}" alt=""/>
+                        <span th:unless="${p.profileImage}" th:text="${p.avatarFallback}">A</span>
+                    </div>
+                    <div class="p-info">
+                        <strong th:text="${p.name}">Name</strong>
+                        <span class="role-pill" th:text="${p.guest ? 'Guest' : p.roleLabel}">USER</span>
+                        <p class="p-bio" th:text="${p.bio != null and !#strings.isEmpty(p.bio)} ? ${p.bio} : 'A fellow practitioner in the Dhamma Nature community.'">bio</p>
+                        <span class="p-status" th:classappend="${p.guest ? 'guest' : (p.afk ? 'afk' : 'online')}">
+                            <span th:if="${p.afk}"><i class="fa-solid fa-hourglass-half"></i> Away for [[${p.daysAway}]] days</span>
+                            <span th:if="${!p.afk and !p.guest}"><i class="fa-solid fa-circle" style="font-size:8px; vertical-align:middle;"></i> Active in the community</span>
+                            <span th:if="${p.guest}"><i class="fa-solid fa-user-shield"></i> Guest participant (not registered)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nudge-popover" id="nudgePopover"></div>
+    <div class="toast" id="nudgeToast"></div>
+
+    <script th:inline="javascript">
+        var PARTICIPANTS = JSON.parse(/*[[${participantsJson}]]*/ '[]');
+        var CURRENT_USER_ID = [[${currentUser != null ? currentUser.id : -1}]];
+        var DISCUSS_SLUG = [[${slug}]];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement.querySelector('nav');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars', !(open && open.classList.contains('active')));
+                            icon.classList.toggle('fa-times', open && open.classList.contains('active'));
+                        }
+                    }, 0);
+                });
+            }
+
+            var filter = document.getElementById('postFilter');
+            if (filter) {
+                filter.addEventListener('input', function () {
+                    var q = filter.value.toLowerCase().trim();
+                    document.querySelectorAll('#recent .comment').forEach(function (c) {
+                        c.style.display = (!q || c.textContent.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
+                    });
+                });
+            }
+
+            var newsletterForm = document.querySelector('.connect-form, .newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    var input = newsletterForm.querySelector('.connect-input, .newsletter-input');
+                    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (re.test(input.value)) {
+                        alert('Thank you for subscribing: ' + input.value);
+                        newsletterForm.reset();
+                    } else {
+                        alert('Please enter a valid email address.');
+                    }
+                });
+            }
+
+            initParticipantsModal();
+            initNudgeMenus();
+            initMentionAutocomplete();
+            initReplyForms();
+            initMentionClicks();
+        });
+
+        // ===== Participants modal =====
+        function initParticipantsModal() {
+            var overlay = document.getElementById('participantsModal');
+            var countEl = document.getElementById('participantCount');
+            if (countEl) countEl.textContent = PARTICIPANTS.length + ' participants';
+            var triggers = document.querySelectorAll('[data-toggle-participants]');
+            triggers.forEach(function (t) {
+                t.addEventListener('click', function () { overlay.classList.add('open'); });
+            });
+            var closeBtns = document.querySelectorAll('[data-close-participants]');
+            closeBtns.forEach(function (b) {
+                b.addEventListener('click', function () { overlay.classList.remove('open'); });
+            });
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) overlay.classList.remove('open');
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') overlay.classList.remove('open');
+            });
+        }
+
+        // ===== Hover-on-participant nudge menu =====
+        function initNudgeMenus() {
+            var popover = document.getElementById('nudgePopover');
+            var active = null;
+            var hideTimer = null;
+
+            function lookup(id) {
+                if (id === null || id === undefined || id === '') return null;
+                var numeric = parseInt(id, 10);
+                if (isNaN(numeric)) return null;
+                return PARTICIPANTS.find(function (p) { return p.id === numeric; }) || null;
+            }
+
+            function showPopover(target, participant) {
+                if (!participant || participant.guest || participant.id === CURRENT_USER_ID) return;
+                var rect = target.getBoundingClientRect();
+                popover.innerHTML = '';
+                var head = document.createElement('div');
+                head.className = 'np-head';
+                var avatar = document.createElement('span');
+                avatar.className = 'np-avatar';
+                if (participant.profileImage) {
+                    avatar.innerHTML = '<img src="' + participant.profileImage + '" alt=""/>';
+                } else {
+                    avatar.textContent = participant.avatarFallback || '?';
+                }
+                var strong = document.createElement('strong');
+                strong.textContent = '@' + participant.name;
+                var status = document.createElement('span');
+                status.textContent = participant.afk ? 'away ' + participant.daysAway + 'd' : 'active';
+                status.style.color = participant.afk ? '#b8860b' : '#008000';
+                head.appendChild(avatar); head.appendChild(strong); head.appendChild(status);
+                popover.appendChild(head);
+
+                var loggedOutNote = null;
+                if (CURRENT_USER_ID === -1) {
+                    var note = document.createElement('div');
+                    note.className = 'np-note';
+                    note.textContent = 'Log in to message, send a Dhamma quote, or nudge this participant.';
+                    popover.appendChild(note);
+                } else {
+                    addAction(popover, 'fa-envelope', 'Message personally', function (box) {
+                        var wrap = document.createElement('div');
+                        wrap.className = 'np-message-box open';
+                        var ta = document.createElement('textarea');
+                        ta.placeholder = 'Write a personal note to ' + participant.name + '...';
+                        var sendBtn = document.createElement('button');
+                        sendBtn.className = 'np-send';
+                        sendBtn.textContent = 'Send message';
+                        sendBtn.addEventListener('click', function () {
+                            postAction('/discuss/message', { participantId: participant.id, message: ta.value })
+                                .then(function () { wrap.classList.remove('open'); showToast('Your personal message was sent to ' + participant.name + '.'); });
+                        });
+                        wrap.appendChild(ta); wrap.appendChild(sendBtn);
+                        popover.appendChild(wrap);
+                    });
+                    addAction(popover, 'fa-leaf', 'Send a Dhamma quote', function () {
+                        postAction('/discuss/quote', { participantId: participant.id })
+                            .then(function () { showToast('A Dhamma quote was shared with ' + participant.name + '.'); });
+                    });
+                    if (participant.afk) {
+                        addAction(popover, 'fa-bell', 'Let them know they are missed', function () {
+                            postAction('/discuss/nudge', { participantId: participant.id })
+                                .then(function () { showToast('Your warm nudge was sent — thank you for caring.'); });
+                        });
+                    }
+                }
+
+                var left = Math.min(rect.right + 10, window.innerWidth - 290);
+                var top = Math.min(rect.bottom + 10, window.innerHeight - (popover.offsetHeight > 0 ? popover.offsetHeight : 220) - 10);
+                popover.style.left = Math.max(8, left) + 'px';
+                popover.style.top = Math.max(8, top) + 'px';
+                popover.style.display = 'block';
+            }
+
+            function hidePopover() {
+                popover.style.display = 'none';
+                popover.innerHTML = '';
+            }
+
+            function addAction(container, icon, label, onClick) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'np-action';
+                btn.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + label + '</span>';
+                btn.addEventListener('click', function () { onClick(); });
+                container.appendChild(btn);
+            }
+
+            document.querySelectorAll('[data-participant-id]').forEach(function (el) {
+                if (lookup(el.getAttribute('data-participant-id')) === null) return;
+                el.addEventListener('mouseenter', function () {
+                    clearTimeout(hideTimer);
+                    hidePopover();
+                    showPopover(el, lookup(el.getAttribute('data-participant-id')));
+                });
+                el.addEventListener('mouseleave', function () {
+                    hideTimer = setTimeout(function () {
+                        if (!popover.contains(document.activeElement)) hidePopover();
+                    }, 200);
+                });
+            });
+
+            popover.addEventListener('mouseenter', function () { clearTimeout(hideTimer); });
+            popover.addEventListener('mouseleave', function () {
+                hideTimer = setTimeout(hidePopover, 220);
+            });
+        }
+
+        function postAction(url, data) {
+            var body = new URLSearchParams();
+            body.set('topic', DISCUSS_SLUG);
+            Object.keys(data).forEach(function (k) { body.set(k, data[k]); });
+            return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
+        }
+
+        function showToast(msg) {
+            var toast = document.getElementById('nudgeToast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(showToast._t);
+            showToast._t = setTimeout(function () { toast.classList.remove('show'); }, 3200);
+        }
+
+        // ===== @ mention autocomplete in the share-thoughts box =====
+        function initMentionAutocomplete() {
+            var textarea = document.getElementById('newThought');
+            var dropdown = document.getElementById('mentionDropdown');
+            if (!textarea || !dropdown) return;
+
+            function candidates() {
+                return PARTICIPANTS.filter(function (p) { return !p.guest && p.id !== CURRENT_USER_ID; });
+            }
+
+            function tokenInfo() {
+                var text = textarea.value;
+                var pos = textarea.selectionStart || 0;
+                var at = text.lastIndexOf('@', pos - 1);
+                if (at === -1) return null;
+                if (text.slice(0, at).split(/\s/).pop().length > 0) return null;
+                var token = text.slice(at, pos);
+                if (/^@[\p{L}\p{N}_. \-]*$/u.test(token)) {
+                    return { at: at, pos: pos, query: token.slice(1).trim().toLowerCase() };
+                }
+                return null;
+            }
+
+            function closeDrop() {
+                dropdown.classList.remove('open');
+                dropdown.innerHTML = '';
+            }
+
+            function render(list, info) {
+                dropdown.innerHTML = '';
+                if (list.length === 0) { closeDrop(); return; }
+                list.forEach(function (p) {
+                    var opt = document.createElement('div');
+                    opt.className = 'mention-option';
+                    var av = document.createElement('span');
+                    av.className = 'mo-avatar';
+                    if (p.profileImage) { av.innerHTML = '<img src="' + p.profileImage + '" alt=""/>'; }
+                    else { av.textContent = p.avatarFallback || '?'; }
+                    var nameSpan = document.createElement('span');
+                    nameSpan.innerHTML = '@<em>' + p.name + '</em>';
+                    opt.appendChild(av); opt.appendChild(nameSpan);
+                    opt.addEventListener('mousedown', function (e) {
+                        e.preventDefault();
+                        insertMention(info, p.name);
+                    });
+                    dropdown.appendChild(opt);
+                });
+                dropdown.classList.add('open');
+            }
+
+            function insertMention(info, name) {
+                var text = textarea.value;
+                var value = text.slice(0, info.at) + '@' + name + ' ' + text.slice(info.pos);
+                textarea.value = value;
+                var newPos = info.at + name.length + 2;
+                textarea.focus();
+                textarea.setSelectionRange(newPos, newPos);
+                closeDrop();
+            }
+
+            textarea.addEventListener('input', function () {
+                var info = tokenInfo();
+                if (!info) { closeDrop(); return; }
+                var list = candidates().filter(function (p) { return p.name.toLowerCase().indexOf(info.query) !== -1; });
+                render(list.slice(0, 6), info);
+            });
+
+            textarea.addEventListener('blur', function () { setTimeout(closeDrop, 150); });
+            textarea.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeDrop();
+            });
+            document.addEventListener('click', function (e) {
+                if (!dropdown.contains(e.target) && e.target !== textarea) closeDrop();
+            });
+        }
+
+        // ===== Reply forms =====
+        function initReplyForms() {
+            document.querySelectorAll('.reply-toggle').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var form = document.querySelector('.reply-form[data-cid="' + btn.getAttribute('data-cid') + '"]');
+                    if (form) {
+                        form.classList.toggle('open');
+                        if (form.classList.contains('open')) {
+                            var ta = form.querySelector('textarea');
+                            if (ta) ta.focus();
+                        }
+                    }
+                });
+            });
+        }
+
+        // ===== Clicking a @mention fills the reply box =====
+        function initMentionClicks() {
+            document.querySelectorAll('#recent .mention').forEach(function (m) {
+                m.addEventListener('click', function () {
+                    var comment = m.closest('.comment');
+                    if (!comment) return;
+                    var toggle = comment.querySelector('.reply-toggle');
+                    var form = comment.querySelector('.reply-form');
+                    if (form) {
+                        form.classList.add('open');
+                        var ta = form.querySelector('textarea');
+                        if (ta) {
+                            ta.value = m.textContent + ' ';
+                            ta.focus();
+                        }
+                    }
+                });
+            });
+        }
+    </script>
 </body>
 </html>
