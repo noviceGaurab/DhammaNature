@@ -1,0 +1,327 @@
+{
+  "info": {
+    "_postman_id": "dhammanature-api-collection",
+    "name": "DhammaNature REST API",
+    "description": "REST endpoints for Gallery and Products modules.\n\nStart the Spring Boot app (server.port=3069) before running requests.\nSet `baseUrl` to match your configured port.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Gallery",
+      "description": "CRUD + image endpoints for the Gallery module.",
+      "item": [
+        {
+          "name": "Get All Gallery Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gallery",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "gallery"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gallery Item by Valid ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gallery/{{galleryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "gallery", "{{galleryId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gallery Item by Invalid ID (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gallery/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "gallery", "99999"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Gallery Item",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json && json.id) {",
+                  "    pm.collectionVariables.set('galleryId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Gallery Item\",\n  \"description\": \"A gallery item created via Postman.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/gallery",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "gallery"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gallery Image by Valid ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gallery/{{galleryId}}/image",
+              "host": ["{{baseUrl}}"],
+              "path": ["gallery", "{{galleryId}}", "image"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gallery Image by Invalid ID (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gallery/99999/image",
+              "host": ["{{baseUrl}}"],
+              "path": ["gallery", "99999", "image"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "description": "CRUD + image endpoints for the Products module.",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product by Valid ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product by Invalid ID (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "99999"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json && json.id) {",
+                  "    pm.collectionVariables.set('productId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Meditation Cushion\",\n  \"description\": \"A comfortable round cushion for seated meditation.\",\n  \"price\": 19.99\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product Image by Valid ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/image",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}", "image"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product Image by Invalid ID (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/99999/image",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "99999", "image"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "description": "REST endpoints for the Events module.",
+      "item": [
+        {
+          "name": "Get All Events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Event by Valid ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/events/{{eventId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events", "{{eventId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Event by Invalid ID (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/events/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events", "99999"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Event",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json && json.id) {",
+                  "    pm.collectionVariables.set('eventId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Group Meditation Retreat\",\n  \"description\": \"A weekend of guided meditation and silence.\",\n  \"eventDate\": \"2026-12-01T18:00:00\",\n  \"venue\": \"Dhamma Nature Center\",\n  \"capacity\": 50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3069",
+      "type": "string"
+    },
+    {
+      "key": "galleryId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "eventId",
+      "value": "1",
+      "type": "string"
+    }
+  ]
+}
