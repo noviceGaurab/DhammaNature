@@ -3,14 +3,16 @@ package io.virinchi.dhammanature.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /** FR-07: Marketplace - verified vendors sell authentic Dhamma-related products. */
 @Entity
 @Table(name = "vendor")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-@ToString(exclude = {"user", "products"})
+@ToString(exclude = {"user", "products", "documents"})
 @EqualsAndHashCode(of = "id")
 public class Vendor {
 
@@ -37,4 +39,10 @@ public class Vendor {
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Product> products = new HashSet<>();
+
+    /** Evidence uploaded with the application, reviewed by admins before verification. */
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    @Builder.Default
+    private List<VendorDocument> documents = new ArrayList<>();
 }

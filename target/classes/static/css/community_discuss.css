@@ -1224,6 +1224,34 @@
 }
 .reply-toggle:hover { background: #e6f4ea; border-color: #006015; }
 
+/* ===== Author-only edit / delete ===== */
+.comment-owner-actions {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+}
+.mini-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff; border: 1px solid #cfe3d4; color: #006015; font-size: 12.5px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: background .2s, border-color .2s, color .2s;
+}
+.mini-btn:hover { background: #e6f4ea; }
+.mini-btn.danger { border-color: #f5c2bd; color: #8f2a23; }
+.mini-btn.danger:hover { background: #fdecea; border-color: #8f2a23; }
+.mini-btn.primary { background: #006015; border-color: #006015; color: #fff; }
+.mini-btn.primary:hover { background: #005012; }
+.inline-del { display: inline-flex; margin: 0; }
+
+.edit-form {
+    display: none; margin-top: 10px; padding: 12px; border: 1px solid #b9d8c0;
+    border-radius: 8px; background: #fbfefb;
+}
+.edit-form.open { display: block; }
+.edit-form textarea {
+    width: 100%; padding: 9px 11px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
+    resize: vertical; font-family: inherit; min-height: 70px;
+}
+.edit-form textarea:focus { outline: none; border-color: #006015; box-shadow: 0 0 5px rgba(0,96,21,.3); }
+.edit-form-actions { display: flex; gap: 8px; margin-top: 8px; }
+
 .comment-replies {
     margin: 12px 0 2px 20px; padding-left: 14px; border-left: 2px solid #dcebde;
     display: flex; flex-direction: column; gap: 10px;

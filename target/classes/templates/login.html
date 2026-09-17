@@ -6,30 +6,45 @@
     <title>Login - Dhamma Nature</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <script defer src="/JS/carousel.js"></script>
 </head>
 <body class="auth-page">
     <div class="auth-wrap">
         <div class="auth-card">
             <aside class="auth-cover">
-                <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Meditation" />
+                <div class="dn-carousel dn-cover-carousel" data-autoplay="6000" data-mode="fade">
+                    <div class="dn-track">
+                        <div class="dn-slide active">
+                            <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Meditation" />
+                        </div>
+                        <div class="dn-slide">
+                            <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Peaceful Meditation" />
+                        </div>
+                        <div class="dn-slide">
+                            <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Dhamma Nature community" />
+                        </div>
+                    </div>
+                </div>
                 <div class="cover-quote">
                     <p>"Peace comes from within. Do not seek it without."</p>
                     <span>Dhamma Nature</span>
                 </div>
             </aside>
             <section class="auth-panel">
-                <a class="auth-back" href="/"><i class="fas fa-home"></i> Home</a>
-                <div class="auth-logo">
-                    <img src="/assets/images/logo.png" alt="Dhamma Nature Logo" />
-                </div>
-                <h1 class="auth-title">Welcome back</h1>
-                <p class="auth-subtitle">Please enter your details to continue your journey.</p>
+                <div class="auth-panel-decor"></div>
+                <div class="auth-panel-inner">
+                    <div class="logo-ring">
+                        <img class="auth-logo" src="/assets/images/logo.png" alt="Dhamma Nature Logo" />
+                    </div>
+                    <h1 class="auth-title">Welcome back</h1>
+                    <p class="auth-subtitle">Please enter your details to continue your journey.</p>
 
-                <p class="msg msg-success" th:if="${signupsuccessful}" th:text="${signupsuccessful}"></p>
-                <p class="msg msg-success" th:if="${resetSuccess}" th:text="${resetSuccess}"></p>
-                <p class="msg msg-error" th:if="${error}" th:text="${error}"></p>
+                    <p class="msg msg-success" th:if="${signupsuccessful}" th:text="${signupsuccessful}"></p>
+                    <p class="msg msg-success" th:if="${resetSuccess}" th:text="${resetSuccess}"></p>
+                    <p class="msg msg-error" th:if="${error}" th:text="${error}"></p>
 
-                <form class="auth-form" method="post" action="/login">
+                    <form class="auth-form" method="post" action="/login">
                     <div class="input-group">
                         <label for="email">Email</label>
                         <div class="input-wrapper">
@@ -49,11 +64,13 @@
                         <a class="forgot-password" href="/forgot-password"><i class="fas fa-key"></i> Forgot password?</a>
                     </div>
                     <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> Log in</button>
-                </form>
+                    </form>
 
-                <div class="auth-switch">
-                    Don't have an account? <a href="/signup"><i class="fas fa-user-plus"></i> Sign up</a>
+                    <div class="auth-switch">
+                        Don't have an account? <a href="/signup"><i class="fas fa-user-plus"></i> Sign up</a>
+                    </div>
                 </div>
+                <a class="auth-visit" href="/"><i class="fas fa-arrow-right"></i> Visit Site</a>
             </section>
         </div>
     </div>

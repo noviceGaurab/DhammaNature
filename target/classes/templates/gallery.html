@@ -562,12 +562,29 @@
     </style>
     <link rel="stylesheet" href="/css/nav-dropdown.css">
     <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/carousel.css">
     <script defer src="/JS/nav-dropdown.js"></script>
+    <script defer src="/JS/carousel.js"></script>
 </head>
 <body>
 <header>
     <div class="header-img" id="hero">
-        <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Gallery Header Image">
+        <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
+            <div class="dn-track">
+                <div class="dn-slide active">
+                    <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Gallery Header Image">
+                </div>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Meditation Session">
+                </div>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple Event">
+                </div>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Community Gathering">
+                </div>
+            </div>
+        </div>
         <div class="hero">
             <h2>WELCOME TO DHAMMA NATURE</h2>
             <h1 class="mb-3">OUR GALLERY</h1>
@@ -619,7 +636,26 @@
 </header>
 <main>
     <section class="gallery-intro">
-        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="About Gallery">
+        <div class="dn-carousel" data-autoplay="5000" data-mode="fade" style="height:430px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,.12);">
+            <div class="dn-track">
+                <div class="dn-slide active">
+                    <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="About Gallery">
+                    <div class="dn-caption"><strong>Sacred Moments</strong><span>Meditation, service and wisdom</span></div>
+                </div>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Peaceful Meditation">
+                    <div class="dn-caption"><strong>Peaceful Meditation</strong><span>Mindfulness and inner silence</span></div>
+                </div>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple Visit">
+                    <div class="dn-caption"><strong>Temple Visit</strong><span>Devotion and gratitude</span></div>
+                </div>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-rdne-8710873.jpg" alt="Community Service">
+                    <div class="dn-caption"><strong>Community Service</strong><span>Kindness in action</span></div>
+                </div>
+            </div>
+        </div>
         <div class="gallery-intro-content">
             <h4>SACRED MEMORIES</h4>
             <h2>Moments of Peace, Service and Wisdom</h2>
@@ -671,43 +707,35 @@
                 Some memorable glimpses from our Dhamma Nature events and peaceful gatherings.
             </p>
         </div>
-        <div class="featured-grid">
-            <div class="featured-item large">
-                <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Peaceful Meditation">
-                <div class="featured-overlay">
-                    <h3>Peaceful Meditation</h3>
-                    <p>A calm moment of mindfulness and reflection with the community.</p>
+        <div class="dn-carousel featured-carousel" data-autoplay="5500" style="margin:0 8%;">
+            <div class="dn-track">
+                <div class="dn-slide active">
+                    <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Peaceful Meditation">
+                    <div class="dn-caption"><strong>Peaceful Meditation</strong><span>A calm moment of mindfulness and reflection with the community.</span></div>
                 </div>
-            </div>
-            <div class="featured-item">
-                <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple Visit">
-                <div class="featured-overlay">
-                    <h3>Temple Visit</h3>
-                    <p>Devotional visits filled with faith and gratitude.</p>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple Visit">
+                    <div class="dn-caption"><strong>Temple Visit</strong><span>Devotional visits filled with faith and gratitude.</span></div>
                 </div>
-            </div>
-            <div class="featured-item">
-                <img src="/assets/images/pexels-nishantaneja-2381616.jpg" alt="Dhamma Session">
-                <div class="featured-overlay">
-                    <h3>Dhamma Session</h3>
-                    <p>Learning the path of wisdom through teachings.</p>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-nishantaneja-2381616.jpg" alt="Dhamma Session">
+                    <div class="dn-caption"><strong>Dhamma Session</strong><span>Learning the path of wisdom through teachings.</span></div>
                 </div>
-            </div>
-            <div class="featured-item">
-                <img src="/assets/images/pexels-rdne-8710873.jpg" alt="Community Service">
-                <div class="featured-overlay">
-                    <h3>Community Service</h3>
-                    <p>Serving others with kindness and compassion.</p>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-rdne-8710873.jpg" alt="Community Service">
+                    <div class="dn-caption"><strong>Community Service</strong><span>Serving others with kindness and compassion.</span></div>
                 </div>
-            </div>
-            <div class="featured-item">
-                <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Nature and Peace">
-                <div class="featured-overlay">
-                    <h3>Nature and Peace</h3>
-                    <p>Moments that connect practice with natural beauty.</p>
+                <div class="dn-slide">
+                    <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Nature and Peace">
+                    <div class="dn-caption"><strong>Nature and Peace</strong><span>Moments that connect practice with natural beauty.</span></div>
                 </div>
             </div>
         </div>
+        <style>
+            .featured-carousel { height: 520px; margin-top: 10px; border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,.15); }
+            .featured-carousel .dn-caption strong { font-size: 24px; }
+            @media (max-width: 768px) { .featured-carousel { height: 360px; } }
+        </style>
     </section>
     <section class="photo-collection" id="photo-collection">
         <div class="section-heading">
@@ -762,8 +790,7 @@
             <img src="/assets/images/transparent_logo.png" alt="logo" width="260" height="190">
             <div class="part1-desc">
                 <h4>
-                    Two similes are useful to keep in mind when we look at the Two similes are useful
-                    to keep in mind when we look at..
+                    Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.
                 </h4>
             </div>
         </div>

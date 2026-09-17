@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/site-header.css">
     <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <link rel="stylesheet" href="/css/carousel.css">
     <script defer src="/JS/nav-dropdown.js"></script>
+    <script defer src="/JS/carousel.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; overflow-x: hidden; }
@@ -121,12 +123,24 @@
 </head>
 <body>
     <header>
-        <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+<div class="header-img" id="hero">
+            <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
+                <div class="dn-track">
+                    <div class="dn-slide active">
+                        <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Donation">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Generosity">
+                    </div>
+                </div>
+            </div>
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">DONATION</h1>
-                <p>Your contribution changes lives - give with a generous heart</p>
+                <p>Support the Dhamma and help the community flourish - every gift counts</p>
             </div>
             <div class="header-main">
                 <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
@@ -285,7 +299,7 @@
         <div class="part1">
             <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
-                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+                <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>
         </div>
         <div class="part2">

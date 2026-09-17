@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/site-header.css">
     <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <link rel="stylesheet" href="/css/carousel.css">
     <script defer src="/JS/nav-dropdown.js"></script>
+    <script defer src="/JS/carousel.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; overflow-x: hidden; }
@@ -114,7 +116,22 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="About Dhamma Nature">
+            <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
+                <div class="dn-track">
+                    <div class="dn-slide active">
+                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="About Dhamma Nature">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Meditation Centre">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Dhamma Teaching">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Community">
+                    </div>
+                </div>
+            </div>
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">ABOUT US</h1>
@@ -166,11 +183,30 @@
         </div>
         <!-- Welcome -->
         <section class="welcome">
-            <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Dhamma Nature community">
+            <div class="dn-carousel" data-autoplay="5500" data-mode="fade" style="height:380px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.12);">
+                <div class="dn-track">
+                    <div class="dn-slide active">
+                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Dhamma Nature community">
+                        <div class="dn-caption"><strong>Our Community</strong><span>Walking the path together in person and online</span></div>
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple visit">
+                        <div class="dn-caption"><strong>Place of Worship</strong><span>Sermons, retreats and open Dhamma talks</span></div>
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Meditation">
+                        <div class="dn-caption"><strong>Meditation &amp; Mindfulness</strong><span>Training the mind toward stillness and clarity</span></div>
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-rdne-8710873.jpg" alt="Community service">
+                        <div class="dn-caption"><strong>Service &amp; Volunteering</strong><span>Compassion expressed through daily generosity</span></div>
+                    </div>
+                </div>
+            </div>
             <div>
                 <h2>CONNECT, GROW AND SERVE WITH US</h2>
                 <h3>A way of life, not just a website</h3>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. We are a community of monks, teachers and lay practitioners who share one conviction - that the Dhamma can be lived in every moment.</p>
+                <p>We are a community of monks, teachers and lay practitioners who share one conviction - that the Dhamma can be lived in every moment, not only on the cushion but at the market, in the family and amid the noise of ordinary days.</p>
                 <p>Through sermons, teachings, retreats, charity and a vibrant discussion community, we support one another toward wisdom, compassion and freedom from suffering.</p>
                 <a href="/volunteer" class="btn-saffron">Become a volunteer</a>
             </div>
@@ -186,21 +222,21 @@
                     <h3>WORSHIP</h3>
                     <h4>What to expect</h4>
                     <hr class="value-underline">
-                    <p>Two similes are useful to keep in mind when we look at the practice of worship and devotion in the Buddhist tradition.</p>
+                    <p>Each visit begins with a bow and ends with a blessing. Join us for chanting, offerings and quiet contemplation in a space held by centuries of tradition.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon"><i class="fas fa-hands-helping"></i></div>
                     <h3>CONNECT</h3>
                     <h4>Contact members</h4>
                     <hr class="value-underline">
-                    <p>Two similes are useful to keep in mind when we look at the importance of community in sustaining a steady practice.</p>
+                    <p>A steady practice rarely survives alone. Through discussion circles, shared retreats and everyday kindness, we keep one another walking the path.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon"><i class="fas fa-heart"></i></div>
                     <h3>DHAMMA'S LOVE</h3>
                     <h4>Beliefs and history</h4>
                     <hr class="value-underline">
-                    <p>Two similes are useful to keep in mind when we look at the love and compassion at the heart of the Buddha's teaching.</p>
+                    <p>The Buddha's love is not a doctrine to memorise but a warmth to extend - to ourselves first, then to every being we meet, without exception.</p>
                 </div>
             </div>
         </section>
@@ -266,7 +302,7 @@
         <div class="part1">
             <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
-                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+                <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>
         </div>
         <div class="part2">

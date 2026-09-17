@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/site-header.css">
     <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <link rel="stylesheet" href="/css/carousel.css">
     <script defer src="/JS/nav-dropdown.js"></script>
+    <script defer src="/JS/carousel.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; overflow-x: hidden; }
@@ -23,6 +25,10 @@
         /* Featured post */
         .featured { display: grid; grid-template-columns: 1.15fr 1fr; align-items: stretch; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.1); margin-bottom: 44px; }
         .featured img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 320px; }
+        .featured-blog-carousel { width: 100%; height: 100%; min-height: 320px; border-radius: 0; }
+        .featured-blog-carousel .dn-slide img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
+        .featured-blog-carousel .dn-caption strong { font-size: 20px; }
+        @media (max-width: 600px) { .featured-blog-carousel { min-height: 260px; } }
         .f-content { padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; }
         .chip { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; background: #fdecea; color: #9e2b25; margin-bottom: 14px; width: fit-content; }
         .f-content .f-meta { font-size: 13px; color: #999; margin-bottom: 12px; }
@@ -145,7 +151,19 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+            <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
+                <div class="dn-track">
+                    <div class="dn-slide active">
+                        <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Reading">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Reflection">
+                    </div>
+                </div>
+            </div>
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">THE BLOG</h1>
@@ -204,7 +222,17 @@
         </div>
         <!-- Featured post -->
         <section class="featured" th:unless="${#lists.isEmpty(posts)}">
-            <img th:src="@{'/assets/images/' + ${posts[0].imageUrl}}" th:alt="${posts[0].title}" src="/assets/images/pexels-tkirkgoz-13047288.jpg">
+            <div class="dn-carousel featured-blog-carousel" data-autoplay="6000">
+                <div class="dn-track">
+                    <div class="dn-slide active" th:each="post, postStat : ${posts}" th:if="${postStat.index < 4}">
+                        <img th:src="@{'/assets/images/' + ${post.imageUrl}}" th:alt="${post.title}" src="/assets/images/pexels-tkirkgoz-13047288.jpg">
+                        <div class="dn-caption">
+                            <strong th:text="${post.title}">Dhamma Will Uplift Your Mentality</strong>
+                            <span th:text="${#strings.capitalize(post.category)}">Meditation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="f-content">
                 <span class="chip">Featured</span>
                 <div class="f-meta"><i class="far fa-calendar-alt"></i> <span th:text="${#temporals.format(posts[0].createdAt, 'dd MMM, yyyy')}">05 May, 2025</span> &nbsp;&nbsp;|&nbsp;&nbsp; <i class="fas fa-user"></i> <span th:text="${posts[0].author != null ? posts[0].author.fullName : posts[0].authorName}">Author</span></div>
@@ -331,7 +359,7 @@
         <div class="part1">
             <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
-                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+                <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>
         </div>
         <div class="part2">

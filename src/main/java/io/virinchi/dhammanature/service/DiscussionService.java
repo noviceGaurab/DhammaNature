@@ -146,6 +146,32 @@ public class DiscussionService {
         commentRepository.deleteById(commentId);
     }
 
+    /** Deletes a comment but only when the acting user is its registered author. */
+    @Transactional
+    public void deleteOwned(Integer commentId, User actor) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException("Comment not found"));
+        if (actor == null || comment.getUser() == null || !comment.getUser().getId().equals(actor.getId())) {
+            throw new IllegalStateException("You can only delete your own comments.");
+        }
+        commentRepository.deleteById(commentId);
+    }
+
+    /** Updates the text of a comment, allowed only for its registered author. */
+    @Transactional
+    public Comment updateOwned(Integer commentId, String content, User actor) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException("Comment not found"));
+        if (actor == null || comment.getUser() == null || !comment.getUser().getId().equals(actor.getId())) {
+            throw new IllegalStateException("You can only edit your own comments.");
+        }
+        if (content == null || content.isBlank()) {
+            throw new IllegalArgumentException("Comment cannot be empty.");
+        }
+        comment.setContent(content.trim());
+        return commentRepository.save(comment);
+    }
+
     @Transactional
     public void hide(Integer commentId) {
         commentRepository.findById(commentId).ifPresent(c -> {
@@ -254,7 +280,7 @@ public class DiscussionService {
             }
         }
         return new CommentView(c.getId(), c.getTitle(), renderMentions(c.getContent(), names),
-                name, initial(name), imageUrl(author != null ? author.getProfileImage() : null),
+                c.getContent(), name, initial(name), imageUrl(author != null ? author.getProfileImage() : null),
                 author != null ? author.getId() : null, c.getCreatedAt(),
                 c.getParent() == null ? null : c.getParent().getId(), replyViews);
     }

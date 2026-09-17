@@ -6,28 +6,43 @@
     <title>Sign Up - Dhamma Nature</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <script defer src="/JS/carousel.js"></script>
 </head>
 <body class="auth-page">
     <div class="auth-wrap">
         <div class="auth-card">
             <aside class="auth-cover">
-                <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Meditation" />
+                <div class="dn-carousel dn-cover-carousel" data-autoplay="6000" data-mode="fade">
+                    <div class="dn-track">
+                        <div class="dn-slide active">
+                            <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Meditation" />
+                        </div>
+                        <div class="dn-slide">
+                            <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple Visit" />
+                        </div>
+                        <div class="dn-slide">
+                            <img src="/assets/images/pexels-rdne-8710873.jpg" alt="Community Service" />
+                        </div>
+                    </div>
+                </div>
                 <div class="cover-quote">
                     <p>"Every morning we are born again. What we do today is what matters most."</p>
                     <span>Join the community</span>
                 </div>
             </aside>
             <section class="auth-panel">
-                <a class="auth-back" href="/"><i class="fas fa-home"></i> Home</a>
-                <div class="auth-logo">
-                    <img src="/assets/images/logo.png" alt="Dhamma Nature Logo" />
-                </div>
-                <h1 class="auth-title">Join Dhamma Nature</h1>
-                <p class="auth-subtitle">Create your account to explore teachings, events &amp; the community.</p>
+                <div class="auth-panel-decor"></div>
+                <div class="auth-panel-inner">
+                    <div class="logo-ring">
+                        <img class="auth-logo" src="/assets/images/logo.png" alt="Dhamma Nature Logo" />
+                    </div>
+                    <h1 class="auth-title">Join Dhamma Nature</h1>
+                    <p class="auth-subtitle">Create your account to explore teachings, events &amp; the community.</p>
 
-                <p class="msg msg-error" th:if="${signupfail}" th:text="${signupfail}"></p>
+                    <p class="msg msg-error" th:if="${signupfail}" th:text="${signupfail}"></p>
 
-                <form class="auth-form" method="post" action="/signup">
+                    <form class="auth-form" method="post" action="/signup">
                     <div class="input-group">
                         <label for="email">Email</label>
                         <div class="input-wrapper">
@@ -55,11 +70,13 @@
                         <label for="acceptTerms">I have read the community guidelines and accept the Terms of Service.</label>
                     </div>
                     <button type="submit" class="login-btn"><i class="fas fa-user-plus"></i> Sign Up</button>
-                </form>
+                    </form>
 
-                <div class="auth-switch">
-                    Already have an account? <a href="/login"><i class="fas fa-sign-in-alt"></i> Log in</a>
+                    <div class="auth-switch">
+                        Already have an account? <a href="/login"><i class="fas fa-sign-in-alt"></i> Log in</a>
+                    </div>
                 </div>
+                <a class="auth-visit" href="/"><i class="fas fa-arrow-right"></i> Visit Site</a>
             </section>
         </div>
     </div>

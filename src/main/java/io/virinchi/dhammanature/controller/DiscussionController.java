@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -62,6 +63,37 @@ public class DiscussionController {
             return "redirect:/discuss?topic=" + topic;
         }
         discussionService.post(topic, "Community Discussion", user, name, email, title, content, parentId);
+        return "redirect:/discuss?topic=" + topic;
+    }
+
+    // ===== Edit / delete a comment (author-only) =====
+
+    @PostMapping("/discuss/comment/{id}/delete")
+    public String deleteComment(@PathVariable Integer id,
+                                @RequestParam(defaultValue = DEFAULT_SLUG) String topic,
+                                HttpSession session, RedirectAttributes redirectAttributes) {
+        var user = sessionUserResolver.resolve(session).orElse(null);
+        try {
+            discussionService.deleteOwned(id, user);
+            redirectAttributes.addFlashAttribute("success", "Your comment was deleted.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/discuss?topic=" + topic;
+    }
+
+    @PostMapping("/discuss/comment/{id}/edit")
+    public String editComment(@PathVariable Integer id,
+                              @RequestParam(defaultValue = DEFAULT_SLUG) String topic,
+                              @RequestParam String content,
+                              HttpSession session, RedirectAttributes redirectAttributes) {
+        var user = sessionUserResolver.resolve(session).orElse(null);
+        try {
+            discussionService.updateOwned(id, content, user);
+            redirectAttributes.addFlashAttribute("success", "Your comment was updated.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/discuss?topic=" + topic;
     }
 

@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/site-header.css">
     <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <link rel="stylesheet" href="/css/carousel.css">
     <script defer src="/JS/nav-dropdown.js"></script>
+    <script defer src="/JS/carousel.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; overflow-x: hidden; }
@@ -114,7 +116,22 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Events">
+            <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
+                <div class="dn-track">
+                    <div class="dn-slide active">
+                        <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Events">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Retreat">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Meditation Workshop">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Community Gathering">
+                    </div>
+                </div>
+            </div>
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">UPCOMING EVENTS</h1>
@@ -243,7 +260,7 @@
         <div class="part1">
             <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
-                <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+                <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>
         </div>
         <div class="part2">

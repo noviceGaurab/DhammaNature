@@ -47,6 +47,7 @@ C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhamm
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\enums\RewardTransactionType.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\enums\Role.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\enums\SessionMode.java
+C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\enums\VendorDocType.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\enums\VolunteerStatus.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\Event.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\Gallery.java
@@ -66,6 +67,7 @@ C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhamm
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\RewardTransaction.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\User.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\Vendor.java
+C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\VendorDocument.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\VolunteerOpportunity.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\model\VolunteerRegistration.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\BlogPostRepository.java
@@ -92,6 +94,7 @@ C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhamm
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\RewardCatalogItemRepository.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\RewardTransactionRepository.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\UserRepository.java
+C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\VendorDocumentRepository.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\VendorRepository.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\VolunteerOpportunityRepository.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\repository\VolunteerRegistrationRepository.java
@@ -99,6 +102,7 @@ C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhamm
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\restapi\GalleryRestController.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\restapi\ProductImageController.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\restapi\ProductRestController.java
+C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\restapi\VendorDocController.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\service\AdminService.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\service\AuthService.java
 C:\Users\ADMIN\Downloads\DhammaNature-SpringBoot\src\main\java\io\virinchi\dhammanature\service\BlogService.java

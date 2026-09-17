@@ -6,6 +6,7 @@ import io.virinchi.dhammanature.model.Event;
 import io.virinchi.dhammanature.model.MeditationCenter;
 import io.virinchi.dhammanature.model.QuizQuestion;
 import io.virinchi.dhammanature.model.User;
+import io.virinchi.dhammanature.model.Vendor;
 import io.virinchi.dhammanature.model.enums.SessionMode;
 import io.virinchi.dhammanature.repository.*;
 import io.virinchi.dhammanature.service.AdminService;
@@ -77,6 +78,85 @@ public class AdminController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("pageBase", "/admin");
         return "admin/users";
+    }
+
+    /** Summary report with imagery charts - the admin "conclusion" view of how the platform is doing. */
+    @GetMapping("/reports")
+    public String reports(Model model) {
+        model.addAttribute("totalUsers", adminService.totalUsers());
+        model.addAttribute("totalCenters", adminService.totalCenters());
+        model.addAttribute("totalDonations", adminService.totalDonations());
+        model.addAttribute("totalBookings", adminService.totalBookings());
+        model.addAttribute("totalOrders", adminService.totalOrders());
+
+        // Users registered per month (last 6 months, ascending)
+        java.util.LinkedHashMap<String, Long> usersByMonth = new java.util.LinkedHashMap<>();
+        java.util.LinkedHashMap<String, Long> donationsByMonth = new java.util.LinkedHashMap<>();
+        java.time.LocalDate today = java.time.LocalDate.now();
+        for (int i = 5; i >= 0; i--) {
+            java.time.YearMonth ym = java.time.YearMonth.from(today.minusMonths(i));
+            usersByMonth.put(ym.toString(), 0L);
+            donationsByMonth.put(ym.toString(), 0L);
+        }
+        userRepository.findAll().forEach(u -> {
+            if (u.getCreatedAt() != null) {
+                String key = java.time.YearMonth.from(u.getCreatedAt().toLocalDate()).toString();
+                if (usersByMonth.containsKey(key)) usersByMonth.replace(key, usersByMonth.get(key) + 1);
+            }
+        });
+        donationRepository.findAll().forEach(d -> {
+            if (d.getDonationDate() != null) {
+                String key = java.time.YearMonth.from(d.getDonationDate().toLocalDate()).toString();
+                if (donationsByMonth.containsKey(key)) donationsByMonth.replace(key, donationsByMonth.get(key) + 1);
+            }
+        });
+        model.addAttribute("userMonthLabels", new ArrayList<>(usersByMonth.keySet()));
+        model.addAttribute("userMonthValues", new ArrayList<>(usersByMonth.values()));
+        model.addAttribute("donationMonthLabels", new ArrayList<>(donationsByMonth.keySet()));
+        model.addAttribute("donationMonthValues", new ArrayList<>(donationsByMonth.values()));
+
+        // Role distribution (doughnut)
+        java.util.LinkedHashMap<String, Long> roles = new java.util.LinkedHashMap<>();
+        userRepository.findAll().forEach(u -> roles.merge(u.getRole() != null ? u.getRole().name() : "USER", 1L, Long::sum));
+        model.addAttribute("roleLabels", new ArrayList<>(roles.keySet()));
+        model.addAttribute("roleValues", new ArrayList<>(roles.values()));
+
+        // Interactions by page (bar)
+        java.util.LinkedHashMap<String, Long> pages = new java.util.LinkedHashMap<>();
+        pageInteractionRepository.findAll().forEach(pi -> {
+            String p = pi.getPageName() == null || pi.getPageName().isBlank() ? "Unknown" : pi.getPageName();
+            pages.merge(p, 1L, Long::sum);
+        });
+        java.util.LinkedHashMap<String, Long> topPages = pages.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .collect(java.util.stream.Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (a, b) -> a, java.util.LinkedHashMap::new));
+        List<String> topPageLabels = new ArrayList<>();
+        List<Long> topPageValues = new ArrayList<>();
+        topPages.forEach((k, v) -> { topPageLabels.add(k); topPageValues.add(v); });
+        model.addAttribute("pageLabels", topPageLabels);
+        model.addAttribute("pageValues", topPageValues);
+
+        // Comment activity by topic (horizontal bar) - top 8 topics
+        java.util.LinkedHashMap<String, Long> topics = new java.util.LinkedHashMap<>();
+        commentRepository.findAllByOrderByCreatedAtDesc().forEach(c -> {
+            String t = c.getTopic() != null ? c.getTopic().getTitle() : "General";
+            topics.merge(t, 1L, Long::sum);
+        });
+        List<String> topicLabels = new ArrayList<>();
+        List<Long> topicValues = new ArrayList<>();
+        topics.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(8)
+                .forEach(e -> { topicLabels.add(e.getKey()); topicValues.add(e.getValue()); });
+        model.addAttribute("topicLabels", topicLabels);
+        model.addAttribute("topicValues", topicValues);
+
+        model.addAttribute("donationTotal",
+                donationRepository.findAll().stream()
+                        .map(io.virinchi.dhammanature.model.Donation::getAmount)
+                        .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
+        return "admin/reports";
     }
 
     @GetMapping("/donations")
@@ -161,13 +241,22 @@ public class AdminController {
 
     @GetMapping("/vendors")
     public String vendors(Model model) {
-        model.addAttribute("vendors", vendorRepository.findAll());
+        var all = vendorRepository.findAll();
+        model.addAttribute("vendors", all);
+        model.addAttribute("pendingCount", all.stream().filter(v -> !v.isVerified()).count());
+        model.addAttribute("verifiedCount", all.stream().filter(Vendor::isVerified).count());
         return "admin/vendors";
     }
 
     @PostMapping("/vendors/{id}/verify")
     public String verifyVendor(@PathVariable Integer id) {
         vendorService.verify(id);
+        return "redirect:/admin/vendors";
+    }
+
+    @PostMapping("/vendors/{id}/reject")
+    public String rejectVendor(@PathVariable Integer id) {
+        vendorService.reject(id);
         return "redirect:/admin/vendors";
     }
 

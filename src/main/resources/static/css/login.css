@@ -11,37 +11,37 @@
 
 body.auth-page {
   font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, #eef2e6 0%, #f7f4ec 55%, #e8efe4 100%);
+  background: #f6f8f3;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px;
+  overflow-x: hidden;
 }
 
-/* ---- Card shell ---- */
+/* ---- Full-screen split shell ---- */
 .auth-wrap {
   width: 100%;
-  max-width: 1080px;
+  min-height: 100vh;
 }
 
 .auth-card {
   display: flex;
+  width: 100%;
+  min-height: 100vh;
   background: #ffffff;
-  border-radius: 22px;
-  box-shadow: 0 24px 60px rgba(46, 61, 38, 0.16);
-  overflow: hidden;
-  min-height: 640px;
-  border: 1px solid rgba(212, 163, 115, 0.35);
 }
 
-/* ---- Cover panel ---- */
+/* ---- Cover panel (edge-to-edge image) ---- */
 .auth-cover {
-  flex: 1.15;
+  flex: 1.25;
   position: relative;
-  min-height: 640px;
+  min-height: 100vh;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.auth-cover ::selection {
+  background: rgba(255, 215, 0, 0.35);
 }
 
 .auth-cover img {
@@ -58,63 +58,144 @@ body.auth-page {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-    rgba(24, 38, 22, 0.05) 0%,
-    rgba(24, 38, 22, 0.25) 55%,
-    rgba(24, 38, 22, 0.78) 100%);
+    rgba(12, 28, 14, 0.05) 0%,
+    rgba(12, 28, 14, 0.06) 30%,
+    rgba(10, 26, 12, 0.55) 72%,
+    rgba(8, 22, 10, 0.86) 100%);
 }
 
 .cover-quote {
   position: relative;
   z-index: 2;
   color: #fff;
-  padding: 40px;
+  padding: 48px 52px 96px;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: flex-end;
+}
+
+.cover-quote::before {
+  content: "\f10d";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  display: inline-block;
+  font-size: 1.3rem;
+  color: #ffd700;
+  margin-bottom: 14px;
 }
 
 .cover-quote p {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 400;
   font-style: italic;
+  font-family: "Gentium Plus", Georgia, serif;
   line-height: 1.5;
-  max-width: 360px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  max-width: 380px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+  margin: 0;
 }
 
 .cover-quote span {
-  display: block;
-  margin-top: 14px;
-  font-size: 0.9rem;
-  letter-spacing: 2.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 0.82rem;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  opacity: 0.9;
+  color: #f3f7ef;
+  font-weight: 600;
 }
 
-/* ---- Form panel ---- */
+.cover-quote span::before {
+  content: "";
+  width: 34px;
+  height: 2px;
+  background: #ffd700;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+/* ---- Form panel (warm, centered) ---- */
 .auth-panel {
   flex: 1;
-  padding: 48px 52px;
+  position: relative;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  padding: 48px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 12%, rgba(46, 125, 50, 0.09) 0%, transparent 46%),
+    radial-gradient(circle at 6% 92%, rgba(184, 134, 11, 0.07) 0%, transparent 42%),
+    linear-gradient(160deg, #fdfefb 0%, #f4f7ef 55%, #eef3e9 100%);
 }
 
-.auth-back {
+.auth-panel-decor {
   position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 0.85rem;
-  color: #8a947f;
-  text-decoration: none;
-  padding: 6px 10px;
+  inset: 0;
+  pointer-events: none;
+}
+
+.auth-panel-decor::before {
+  content: "\f06c";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  right: -40px;
+  bottom: -60px;
+  font-size: 300px;
+  line-height: 1;
+  color: rgba(46, 125, 50, 0.05);
+  transform: rotate(-12deg);
+}
+
+.auth-panel-decor::after {
+  content: "";
+  position: absolute;
+  top: -160px;
+  right: -160px;
+  width: 420px;
+  height: 420px;
+  border: 1px solid rgba(46, 125, 50, 0.07);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 40px rgba(46, 125, 50, 0.02),
+    0 0 0 80px rgba(46, 125, 50, 0.015);
+}
+
+.auth-panel-inner {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
 }
 
 .auth-logo {
-  text-align: center;
-  margin-bottom: 18px;
+  display: block;
+  max-height: 78px;
+  width: auto;
+  margin: 0 auto;
+  mix-blend-mode: multiply;
+  transition: transform 0.3s;
 }
 
-.auth-logo img {
-  max-height: 64px;
-  width: auto;
+.auth-logo:hover {
+  transform: scale(1.04);
+}
+
+.auth-panel .logo-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 6px;
+  border: 2px solid #ffd700;
+  border-radius: 18px;
+  box-sizing: border-box;
+  background: #ffffff;
 }
 
 .auth-title {
@@ -122,14 +203,25 @@ body.auth-page {
   font-size: 1.7rem;
   color: #2b3a26;
   letter-spacing: -0.3px;
+  margin-top: 14px;
+}
+
+.auth-title::after {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin: 14px auto 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #2e7d32, #b8860b);
 }
 
 .auth-subtitle {
   text-align: center;
   color: #7c8873;
-  margin: 8px 0 26px;
+  margin: 12px 0 30px;
   font-size: 0.98rem;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 /* ---- Flash / error messages ---- */
@@ -191,7 +283,7 @@ body.auth-page {
   border: 1.5px solid #dfe4d8;
   border-radius: 12px;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .input-wrapper input::placeholder {
@@ -202,6 +294,10 @@ body.auth-page {
   border-color: #2e7d32;
   box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.12);
   background: #fff;
+}
+
+.input-wrapper:focus-within .input-icon {
+  color: #2e7d32;
 }
 
 .password-toggle {
@@ -271,7 +367,7 @@ body.auth-page {
 .login-btn:hover {
   background: linear-gradient(135deg, #266a2b, #1a5a24);
   box-shadow: 0 12px 24px rgba(31, 107, 46, 0.32);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .login-btn:active {
@@ -284,6 +380,10 @@ body.auth-page {
   align-items: flex-start;
   gap: 10px;
   margin-top: 2px;
+  padding: 12px 14px;
+  background: #f5f8f2;
+  border: 1px solid #e6ecdf;
+  border-radius: 10px;
 }
 
 .checkbox-row input[type="checkbox"] {
@@ -296,7 +396,7 @@ body.auth-page {
 }
 
 .checkbox-row label {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: #55614f;
   line-height: 1.5;
   cursor: pointer;
@@ -323,38 +423,88 @@ body.auth-page {
   text-decoration: underline;
 }
 
+/* ---- Visit site link (bottom right) ---- */
+.auth-visit {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #2e7d32;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid #2e7d32;
+  border-radius: 30px;
+  box-shadow: 0 4px 14px rgba(46, 61, 38, 0.12);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.auth-visit i {
+  transition: transform 0.2s;
+}
+
+.auth-visit:hover {
+  background: #2e7d32;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.auth-visit:hover i {
+  transform: translateX(3px);
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
   .auth-card {
     flex-direction: column;
-    min-height: 0;
+    min-height: 100vh;
   }
 
   .auth-cover {
-    min-height: 220px;
+    min-height: 240px;
     flex: none;
   }
 
   .cover-quote {
-    padding: 20px 28px;
+    padding: 24px 28px;
   }
 
   .cover-quote p {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     max-width: none;
   }
 
   .auth-panel {
-    padding: 36px 28px;
+    min-height: auto;
+    padding: 44px 28px;
+    align-items: flex-start;
+  }
+
+  .auth-panel-inner {
+    max-width: 420px;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 480px) {
-  body.auth-page {
-    padding: 14px;
+  .auth-cover {
+    min-height: 190px;
+  }
+
+  .cover-quote {
+    padding: 18px 20px;
   }
 
   .auth-panel {
-    padding: 28px 20px;
+    padding: 32px 20px;
+  }
+
+  .auth-panel-decor::before {
+    font-size: 200px;
   }
 }

@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dharma Club</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="
+    https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel = "stylesheet" href = "/css/home.css">
     <link rel="stylesheet" href="/css/site-header.css">
     <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <link rel="stylesheet" href="/css/carousel.css">
     <script defer src="/JS/nav-dropdown.js"></script>
+    <script defer src="/JS/carousel.js"></script>
 <style>
         .sermons .container-4-top { text-align: center; padding-left: 0; }
         .sermons .container-4-top h4 { transform: translateX(0); }
@@ -52,19 +55,36 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+            <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
+                <div class="dn-track">
+                    <div class="dn-slide active">
+                        <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Peaceful Meditation">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple Visit">
+                    </div>
+                    <div class="dn-slide">
+                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Dhamma Community">
+                    </div>
+                </div>
+            </div>
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 class="mb-3">TOTAL CONVICTION IN BUDDHA</h1>
                 <p class="mb-4">
-                    "Far far away, behind the word mountains, far from the countries vokalia and consonatia, there live the blind texts. Separated they live in."
+                    A place to listen, learn and practise the Buddha's teaching - together, at your own pace, in the heart of everyday life.
                 </p>
                 <p class="mb-0">
                     <a href="/volunteer" class="btn btn-primary">BECOME A VOLUNTEER</a>
                 </p>
             </div>
             <div class="header-main">
-                <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                <div class="logo-ring">
+                    <img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo">
+                </div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -111,7 +131,7 @@
                         <div class="col-underline">
                             <hr class="red-line">
                         </div>
-                        <p>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</p>
+                        <p>Daily puja, serene chanting and quiet reflection - an open invitation to see how devotion settles a restless mind.</p>
                     </div>
                     <div class="col">
                         <h3>CONNECT</h3>
@@ -119,7 +139,7 @@
                         <div class="col-underline">
                             <hr class="red-line">
                         </div>
-                        <p>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</p>
+                        <p>Throughout the week our monks are available to answer questions, offer guidance and walk with you through difficult stretches of the path.</p>
                     </div>
                     <div class="col">
                         <h3>DHAMMA'S LOVE</h3>
@@ -127,11 +147,11 @@
                         <div class="col-underline">
                             <hr class="red-line">
                         </div>
-                        <p>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</p>
+                        <p>Rooted in the Buddha's original teachings, we honour the living lineage: compassion in action, wisdom in daily choices and kindness without exception.</p>
                     </div>
                     <div class="red-container">
                         <h2>A Monk should practice dhamma, teach laypeople when asked. Guide them to the truth.</h2>
-                        <p>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</p>
+                        <p>Whatever your background, you are welcome to sit, listen and question freely - the Dhamma is open to all who seek it.</p>
                     </div>
                 </div>
             </div>
@@ -143,10 +163,10 @@
                     <h2>WELCOME TO DHAMMA NATURE</h2>
                     <h3>CONNECT, GROW AND SERVE WITH US</h3>
                     <p class="text1">
-                        "Far far away, behind the word mountains, far from the countries vokalia and consonatia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia."
+                        We are a community of monks, teachers and lay practitioners who share one conviction - that the Dhamma can be lived in every moment. Not only on the meditation cushion, but at home, at work and in the small choices of an ordinary day.
                     </p>
                     <p class="text2">
-                        "Far far away, behind the word mountains, far from the countries vokalia and consonatia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia."
+                        Through sermons, teachings, retreats, charity and a lively discussion community, we support one another toward wisdom, compassion and freedom from unnecessary suffering.
                     </p>
                     <p class="button">
                         <a href="#learn-more" class="btn btn-primary1">LEARN MORE</a>
@@ -198,14 +218,14 @@
             </div>
             <div class="sermons-2">
                 <div class="sermons-1-desc">
-                    <h3>Dhamma will uplift your mentality</h3>
-                    <h4>Speaker: <span class="highlight-red">Thanissaro Bhikku</span></h4>
-                    <h4>Categories: <span class="highlight-red">Faith, love, connection</span></h4>
-                    <h4>On <span class="highlight-red">Thursday 05 May, 2025</span></h4>
+                    <h3>Letting go of the heavy mind</h3>
+                    <h4>Speaker: <span class="highlight-red">Ajahn Brahm</span></h4>
+                    <h4>Categories: <span class="highlight-red">Stillness, letting go, peace</span></h4>
+                    <h4>On <span class="highlight-red">Saturday 14 June, 2025</span></h4>
                     <div class="sermon-actions">
-                        <a href="#" class="button-sermons watch-sermon" data-title="Dhamma will uplift your mentality" data-speaker="Thanissaro Bhikku" data-date="2025-05-05" data-time="May 5, 2025 @ 10:00 AM - 12:00 PM" data-image="/assets/images/pexels-pexels-user-1493533273-27021625.jpg" data-desc="How the dhamma can transform the way we think about suffering, joy and daily practice.">WATCH SERMON</a>
-                        <a href="#" class="button-sermons read-transcript" data-title="Dhamma will uplift your mentality" data-speaker="Thanissaro Bhikku" data-date="May 5, 2025">READ TRANSCRIPT</a>
-                        <a href="#" class="button-sermons download-file" data-title="Dhamma will uplift your mentality" data-speaker="Thanissaro Bhikku" data-date="May 5, 2025">DOWNLOAD FILE</a>
+                        <a href="#" class="button-sermons watch-sermon" data-title="Letting go of the heavy mind" data-speaker="Ajahn Brahm" data-date="2025-06-14" data-time="June 14, 2025 @ 10:00 AM - 11:30 AM" data-image="/assets/images/pexels-pexels-user-1493533273-27021625.jpg" data-desc="Why the mind carries so much, and how the Dhamma shows a way to put that burden down.">WATCH SERMON</a>
+                        <a href="#" class="button-sermons read-transcript" data-title="Letting go of the heavy mind" data-speaker="Ajahn Brahm" data-date="June 14, 2025">READ TRANSCRIPT</a>
+                        <a href="#" class="button-sermons download-file" data-title="Letting go of the heavy mind" data-speaker="Ajahn Brahm" data-date="June 14, 2025">DOWNLOAD FILE</a>
                     </div>
                 </div>
                 <img src="/assets/images/pexels-pexels-user-1493533273-27021625.jpg" width="320px" height="260px" alt="Sermon 2">
@@ -279,7 +299,7 @@
             <div class="part1">
                 <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
                 <div class="part1-desc">
-                    <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+                    <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
                 </div>
             </div>
             <div class="part2">

@@ -273,7 +273,7 @@
             <div class="part1">
                 <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
                 <div class="part1-desc">
-                    <h4>Two similes are useful to keep in mind when we look at the Two similes are useful to keep in mind when we look at..</h4>
+                    <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
                 </div>
             </div>
             <div class="part2">
@@ -402,6 +402,7 @@
             initMentionAutocomplete();
             initReplyForms();
             initMentionClicks();
+            initCommentEdit();
         });
 
         // ===== Participants modal =====
@@ -657,6 +658,43 @@
                             ta.focus();
                         }
                     }
+                });
+            });
+        }
+
+        // ===== Author-only comment edit (inline form toggle) =====
+        function initCommentEdit() {
+            document.querySelectorAll('.edit-cmt-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var comment = btn.closest('.comment');
+                    if (!comment) return;
+                    var form = comment.querySelector('.edit-form');
+                    var body = comment.querySelector('.comment-body');
+                    var ownerActions = comment.querySelector('.comment-owner-actions');
+                    if (form) {
+                        var open = form.classList.toggle('open');
+                        if (open && body) body.style.display = 'none';
+                        if (open && ownerActions) ownerActions.style.display = 'none';
+                        if (open) {
+                            var ta = form.querySelector('textarea');
+                            if (ta) ta.focus();
+                        }
+                    } else {
+                        // Fallback to the plain form submit (no JS inline toggle needed)
+                        btn.form && btn.form.submit();
+                    }
+                });
+            });
+            document.querySelectorAll('.edit-cancel-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var comment = btn.closest('.comment');
+                    if (!comment) return;
+                    var form = comment.querySelector('.edit-form');
+                    var body = comment.querySelector('.comment-body');
+                    var ownerActions = comment.querySelector('.comment-owner-actions');
+                    if (form) form.classList.remove('open');
+                    if (body) body.style.display = '';
+                    if (ownerActions) ownerActions.style.display = '';
                 });
             });
         }
