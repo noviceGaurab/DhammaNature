@@ -8,6 +8,7 @@ import io.virinchi.dhammanature.model.User;
 import io.virinchi.dhammanature.model.enums.NotificationType;
 import io.virinchi.dhammanature.repository.CommentRepository;
 import io.virinchi.dhammanature.repository.DiscussionTopicRepository;
+import io.virinchi.dhammanature.repository.UserBlockRepository;
 import io.virinchi.dhammanature.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,6 +43,7 @@ public class DiscussionService {
     private final CommentRepository commentRepository;
     private final RewardService rewardService;
     private final UserRepository userRepository;
+    private final UserBlockRepository userBlockRepository;
     private final NotificationService notificationService;
     private final EmailService emailService;
 
@@ -82,16 +85,19 @@ public class DiscussionService {
     }
 
     /** Registered members + named guests who took part in any discussion (for the participants modal). */
-    public List<ParticipantView> participantList() {
+    public List<ParticipantView> participantList(User viewer) {
         LocalDateTime now = LocalDateTime.now();
+        Set<Integer> blocked = viewer == null ? Set.of() : userBlockRepository.blockedUserIdsBy(viewer.getId()).stream()
+                .collect(Collectors.toSet());
         List<ParticipantView> views = new ArrayList<>();
         commentRepository.findDistinctRegisteredParticipants().forEach(u ->
                 views.add(new ParticipantView(u.getId(), u.getFullName(), u.getBio(),
                         imageUrl(u.getProfileImage()), u.getRole().name(), false,
                         u.getLastSeenAt() == null || u.getLastSeenAt().isBefore(now.minusDays(AFK_THRESHOLD_DAYS)),
-                        daysAway(u.getLastSeenAt(), now), u.getLastSeenAt(), initial(u.getFullName()))));
+                        daysAway(u.getLastSeenAt(), now), u.getLastSeenAt(), initial(u.getFullName()),
+                        blocked.contains(u.getId()))));
         commentRepository.findDistinctGuestNames().forEach(name ->
-                views.add(new ParticipantView(null, name, null, null, "GUEST", true, false, 0, null, initial(name))));
+                views.add(new ParticipantView(null, name, null, null, "GUEST", true, false, 0, null, initial(name), false)));
         return views;
     }
 

@@ -1403,6 +1403,28 @@
 .np-action i { width: 16px; text-align: center; color: #006015; }
 .np-action:hover { background: #e6f4ea; color: #006015; }
 .np-note { padding: 6px 8px; font-size: 12px; color: #777; line-height: 1.4; }
+.np-sep { height: 1px; background: #f0f0f0; margin: 4px 0 2px; }
+.np-action.is-danger i { color: #a12; }
+.np-action.is-danger:hover { background: #fdecea; color: #a12; }
+
+/* ===== Report modal ===== */
+.report-dialog { width: min(520px, 100%); }
+.report-body { padding: 20px 22px; }
+.report-intro { font-size: 14px; color: #444; margin-bottom: 14px; line-height: 1.5; }
+.report-body textarea {
+    width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;
+    resize: vertical; font-family: inherit;
+}
+.report-body textarea:focus { outline: none; border-color: #a12; }
+.report-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+.btn-danger {
+    background: #a12; color: #fff; border: none; padding: 9px 18px; border-radius: 22px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.btn-danger:disabled { opacity: .5; cursor: not-allowed; }
+.btn-danger:hover:not(:disabled) { background: #8f100e; }
+.btn-ghost { background: #fff; color: #444; border: 1px solid #ccc; padding: 9px 18px; border-radius: 22px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-ghost:hover { background: #f4f4f4; }
 .np-message-box { display: none; padding: 6px 2px 2px; }
 .np-message-box.open { display: block; }
 .np-message-box textarea {

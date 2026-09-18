@@ -9,5 +9,6 @@ public enum NotificationType {
     SYSTEM,
     PRIVATE_MESSAGE,
     DHAMMA_QUOTE,
-    NUDGE
+    NUDGE,
+    USER_REPORT
 }

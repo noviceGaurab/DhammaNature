@@ -16,6 +16,7 @@ public record ParticipantView(
         boolean afk,
         long daysAway,
         LocalDateTime lastSeenAt,
-        String avatarFallback
+        String avatarFallback,
+        boolean blockedByMe
 ) {
 }

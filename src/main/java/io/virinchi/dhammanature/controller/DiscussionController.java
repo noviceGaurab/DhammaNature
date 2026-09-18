@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.virinchi.dhammanature.config.SessionUserResolver;
 import io.virinchi.dhammanature.dto.ParticipantView;
 import io.virinchi.dhammanature.model.User;
+import io.virinchi.dhammanature.service.CommunitySafetyService;
 import io.virinchi.dhammanature.service.DiscussionService;
 import io.virinchi.dhammanature.service.NudgeService;
 import jakarta.servlet.http.HttpSession;
@@ -28,18 +29,20 @@ public class DiscussionController {
 
     private final DiscussionService discussionService;
     private final NudgeService nudgeService;
+    private final CommunitySafetyService communitySafetyService;
     private final SessionUserResolver sessionUserResolver;
     private final ObjectMapper objectMapper;
 
     @GetMapping("/discuss")
-    public String discuss(@RequestParam(defaultValue = DEFAULT_SLUG) String topic, Model model) {
+    public String discuss(@RequestParam(defaultValue = DEFAULT_SLUG) String topic, HttpSession session, Model model) {
         discussionService.topicFor(topic, "Community Discussion");
+        var viewer = sessionUserResolver.resolve(session).orElse(null);
         model.addAttribute("slug", topic);
         model.addAttribute("comments", discussionService.commentTree(topic));
         model.addAttribute("totalPosts", discussionService.totalPosts());
         model.addAttribute("topicsCount", discussionService.topicCount());
         model.addAttribute("participants", discussionService.participants());
-        List<ParticipantView> participantList = discussionService.participantList();
+        List<ParticipantView> participantList = discussionService.participantList(viewer);
         model.addAttribute("participantList", participantList);
         try {
             model.addAttribute("participantsJson", objectMapper.writeValueAsString(participantList));
@@ -113,8 +116,12 @@ public class DiscussionController {
             redirectAttributes.addFlashAttribute("error", "Write something before sending a personal message.");
             return "redirect:/discuss?topic=" + topic;
         }
-        nudgeService.sendMessage(sender, participantId, message);
-        redirectAttributes.addFlashAttribute("success", "Your message was sent.");
+        try {
+            nudgeService.sendMessage(sender, participantId, message);
+            redirectAttributes.addFlashAttribute("success", "Your message was sent.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/discuss?topic=" + topic;
     }
 
@@ -127,8 +134,12 @@ public class DiscussionController {
             redirectAttributes.addFlashAttribute("error", "Please log in to send a Dhamma quote.");
             return "redirect:/discuss?topic=" + topic;
         }
-        nudgeService.sendQuote(sender, participantId);
-        redirectAttributes.addFlashAttribute("success", "A Dhamma quote was sent.");
+        try {
+            nudgeService.sendQuote(sender, participantId);
+            redirectAttributes.addFlashAttribute("success", "A Dhamma quote was sent.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/discuss?topic=" + topic;
     }
 
@@ -141,8 +152,65 @@ public class DiscussionController {
             redirectAttributes.addFlashAttribute("error", "Please log in to nudge a participant.");
             return "redirect:/discuss?topic=" + topic;
         }
-        nudgeService.sendAfkNudge(sender, participantId);
-        redirectAttributes.addFlashAttribute("success", "Your warm nudge was sent — thank you for caring.");
+        try {
+            nudgeService.sendAfkNudge(sender, participantId);
+            redirectAttributes.addFlashAttribute("success", "Your warm nudge was sent — thank you for caring.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/discuss?topic=" + topic;
+    }
+
+    // ===== Block / unblock / report =====
+
+    @PostMapping("/discuss/block")
+    public String blockParticipant(@RequestParam(defaultValue = DEFAULT_SLUG) String topic,
+                                   @RequestParam Integer participantId,
+                                   HttpSession session, RedirectAttributes redirectAttributes) {
+        var actor = sessionUserResolver.resolve(session).orElse(null);
+        if (actor == null) {
+            redirectAttributes.addFlashAttribute("error", "Please log in to block a participant.");
+            return "redirect:/discuss?topic=" + topic;
+        }
+        try {
+            communitySafetyService.block(actor, participantId);
+            redirectAttributes.addFlashAttribute("success", "You blocked this participant. They can no longer message or nudge you.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/discuss?topic=" + topic;
+    }
+
+    @PostMapping("/discuss/unblock")
+    public String unblockParticipant(@RequestParam(defaultValue = DEFAULT_SLUG) String topic,
+                                     @RequestParam Integer participantId,
+                                     HttpSession session, RedirectAttributes redirectAttributes) {
+        var actor = sessionUserResolver.resolve(session).orElse(null);
+        if (actor == null) {
+            redirectAttributes.addFlashAttribute("error", "Please log in to unblock a participant.");
+            return "redirect:/discuss?topic=" + topic;
+        }
+        communitySafetyService.unblock(actor, participantId);
+        redirectAttributes.addFlashAttribute("success", "You unblocked this participant.");
+        return "redirect:/discuss?topic=" + topic;
+    }
+
+    @PostMapping("/discuss/report")
+    public String reportParticipant(@RequestParam(defaultValue = DEFAULT_SLUG) String topic,
+                                    @RequestParam Integer participantId,
+                                    @RequestParam String reason,
+                                    HttpSession session, RedirectAttributes redirectAttributes) {
+        var actor = sessionUserResolver.resolve(session).orElse(null);
+        if (actor == null) {
+            redirectAttributes.addFlashAttribute("error", "Please log in to report a participant.");
+            return "redirect:/discuss?topic=" + topic;
+        }
+        try {
+            communitySafetyService.report(actor, participantId, reason);
+            redirectAttributes.addFlashAttribute("success", "Your report was submitted. An administrator will review it.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/discuss?topic=" + topic;
     }
 }

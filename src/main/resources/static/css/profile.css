@@ -554,6 +554,11 @@ tr:last-child td {
     margin-top: 6px;
 }
 
+.notify-dot.unread {
+    background: #d4a012;
+    box-shadow: 0 0 0 3px rgba(212, 160, 18, .2);
+}
+
 .notify-body {
     flex: 1;
     min-width: 0;

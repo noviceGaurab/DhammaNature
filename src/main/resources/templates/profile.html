@@ -230,6 +230,27 @@
         </div>
     </section>
 <section class="panel">
+        <div class="panel-head"><h2 class="section-heading">Private messages</h2>
+            <form method="post" action="/profile/messages/read" style="display:inline;">
+                <button type="submit" class="panel-link" style="background:none;border:none;cursor:pointer;text-decoration:underline;">Mark all as read</button>
+            </form>
+        </div><hr class="section-underline">
+        <p class="empty-note" th:if="${#lists.isEmpty(privateMessages)}">No private messages yet. On the discuss page, hover over another participant to send them a personal message.</p>
+        <div class="notify-block" th:unless="${#lists.isEmpty(privateMessages)}">
+            <div class="notify-list">
+                <article class="notify-item" th:each="m : ${privateMessages}">
+                    <span class="notify-dot unread" th:if="${!m.read and m.recipient.id == currentUser.id}"></span>
+                    <span class="notify-dot" th:unless="${!m.read and m.recipient.id == currentUser.id}"></span>
+                    <div class="notify-body">
+                        <strong th:text="${m.sender.id == currentUser.id ? 'To: ' + m.recipient.fullName : 'From: ' + m.sender.fullName}"></strong>
+                        <p th:text="${m.content}">Message</p>
+                    </div>
+                    <small th:text="${#temporals.format(m.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="panel">
         <div class="panel-head"><h2 class="section-heading">Notifications</h2></div><hr class="section-underline">
         <p class="empty-note" th:if="${#lists.isEmpty(notifications)}">No notifications yet.</p>
         <div class="notify-block" th:unless="${#lists.isEmpty(notifications)}">

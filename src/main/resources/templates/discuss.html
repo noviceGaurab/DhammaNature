@@ -346,12 +346,15 @@
                             <span th:if="${!p.afk and !p.guest}"><i class="fa-solid fa-circle" style="font-size:8px; vertical-align:middle;"></i> Active in the community</span>
                             <span th:if="${p.guest}"><i class="fa-solid fa-user-shield"></i> Guest participant (not registered)</span>
                         </span>
-                        <div class="p-actions" th:if="${!p.guest}">
+                        <div class="p-actions" th:if="${!p.guest and (currentUser == null or p.id != currentUser.id)}">
                             <button type="button" class="p-act" th:attr="data-message-id=${p.id}, data-message-name=${p.name}" title="Send a private message">
                                 <i class="fa-solid fa-envelope"></i> Message
                             </button>
                             <button type="button" class="p-act" th:attr="data-proof-id=${p.id}, data-proof-name=${p.name}" title="Send a Dhamma teaching">
                                 <i class="fa-solid fa-leaf"></i> Dhamma teaching
+                            </button>
+                            <button type="button" class="p-act" th:attr="data-block-id=${p.id}, data-blocked-by-me=${p.blockedByMe}, data-block-name=${p.name}" title="Report or block this participant">
+                                <i class="fa-solid fa-shield-halved"></i> <span th:text="${p.blockedByMe ? 'Unblock' : 'Block / Report'}">Report</span>
                             </button>
                             <div class="p-message-box" th:attr="data-mbox-id=${p.id}">
                                 <textarea rows="2" placeholder="Write a personal note or teaching to send..."></textarea>
@@ -366,6 +369,28 @@
 
     <div class="nudge-popover" id="nudgePopover"></div>
     <div class="toast" id="nudgeToast"></div>
+
+    <!-- Report participant modal -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-dialog report-dialog">
+            <div class="modal-head">
+                <h3 id="evReportTitle"><i class="fa-solid fa-flag"></i> Report participant</h3>
+                <button type="button" class="modal-close" data-close-report aria-label="Close">&times;</button>
+            </div>
+            <div class="report-body">
+                <p id="evReportName" class="report-intro"></p>
+                <form method="post" action="/discuss/report">
+                    <input type="hidden" name="topic" th:value="${slug}"/>
+                    <input type="hidden" name="participantId" id="evReportTargetId" value=""/>
+                    <textarea name="reason" id="evReportReason" rows="4" placeholder="Explain what happened (offensive behaviour, spam, harassment, impersonation...)" required></textarea>
+                    <div class="report-actions">
+                        <button type="button" class="btn btn-ghost" data-close-report>Cancel</button>
+                        <button type="submit" class="btn btn-danger" id="evReportSubmit" disabled>Submit report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script th:inline="javascript">
         var PARTICIPANTS = JSON.parse(/*[[${participantsJson}]]*/ '[]');
@@ -414,6 +439,7 @@
 
             initParticipantsModal();
             initNudgeMenus();
+            initBlockReport();
             initMentionAutocomplete();
             initReplyForms();
             initMentionClicks();
@@ -463,6 +489,10 @@
                         showToast('Please log in to message this participant.');
                         return;
                     }
+                    if (btn.getAttribute('data-message-id') == CURRENT_USER_ID) {
+                        showToast('You cannot send a private message to yourself.');
+                        return;
+                    }
                     var box = document.querySelector('.p-message-box[data-mbox-id="' + btn.getAttribute('data-message-id') + '"]');
                     if (box) box.classList.toggle('open');
                 });
@@ -478,6 +508,10 @@
                         showToast('Write something before sending.');
                         return;
                     }
+                    if (id == CURRENT_USER_ID) {
+                        showToast('You cannot send a private message to yourself.');
+                        return;
+                    }
                     postAction('/discuss/message', { participantId: id, message: ta.value })
                         .then(function () {
                             ta.value = '';
@@ -486,6 +520,63 @@
                         });
                 });
             });
+            document.querySelectorAll('[data-block-id]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    if (CURRENT_USER_ID === -1) {
+                        showToast('Please log in to block or unblock.');
+                        return;
+                    }
+                    var id = btn.getAttribute('data-block-id');
+                    var name = btn.getAttribute('data-block-name');
+                    var blocked = btn.getAttribute('data-blocked-by-me') === 'true';
+                    var url = blocked ? '/discuss/unblock' : '/discuss/block';
+                    if (confirm((blocked ? 'Unblock ' : 'Block ') + name + (blocked ? '?' : '? They will no longer be able to message or nudge you.'))) {
+                        postAction(url, { participantId: id })
+                            .then(function () { window.location.reload(); });
+                    }
+                });
+            });
+        }
+
+        function initBlockReport() {
+            document.getElementById('evReportReason').addEventListener('input', function () {
+                document.getElementById('evReportSubmit').disabled = this.value.trim().length === 0;
+            });
+            var overlay = document.getElementById('reportModal');
+            document.querySelectorAll('[data-close-report]').forEach(function (b) {
+                b.addEventListener('click', function () { overlay.classList.remove('open'); });
+            });
+            overlay.addEventListener('click', function (e) {
+                if (e.target === overlay) overlay.classList.remove('open');
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') overlay.classList.remove('open');
+            });
+            document.querySelectorAll('[data-report-id]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    if (CURRENT_USER_ID === -1) {
+                        showToast('Please log in to report a participant.');
+                        return;
+                    }
+                    openReportForm(btn.getAttribute('data-report-id'), btn.getAttribute('data-report-name'));
+                });
+            });
+        }
+
+        function openReportForm(id, name) {
+            var overlay = document.getElementById('reportModal');
+            var hiddenName = document.getElementById('evReportName');
+            var title = document.getElementById('evReportTitle');
+            var reason = document.getElementById('evReportReason');
+            var submit = document.getElementById('evReportSubmit');
+            if (!overlay) return;
+            document.getElementById('evReportTargetId').value = id;
+            title.textContent = 'Report ' + name;
+            hiddenName.textContent = 'You are reporting @' + name + ' to the administrators. Please explain what happened so they can review it.';
+            reason.value = '';
+            submit.disabled = true;
+            var overlayObj = overlay;
+            overlayObj.classList.add('open');
         }
 
         // ===== Hover-on-participant nudge menu =====
@@ -554,6 +645,21 @@
                                 .then(function () { showToast('Your warm nudge was sent — thank you for caring.'); });
                         });
                     }
+
+                    var sep = document.createElement('div');
+                    sep.className = 'np-sep';
+                    popover.appendChild(sep);
+
+                    addAction(popover, participant.blockedByMe ? 'fa-user-slash' : 'fa-user-shield', participant.blockedByMe ? 'Unblock ' + participant.name : 'Block ' + participant.name, function () {
+                        var url = participant.blockedByMe ? '/discuss/unblock' : '/discuss/block';
+                        if (confirm((participant.blockedByMe ? 'Unblock ' : 'Block ') + participant.name + (participant.blockedByMe ? '?' : '? They will no longer be able to message or nudge you.'))) {
+                            postAction(url, { participantId: participant.id })
+                                .then(function () { window.location.reload(); });
+                        }
+                    });
+                    addAction(popover, 'fa-flag', 'Report this participant', function () {
+                        openReportForm(participant.id, participant.name);
+                    });
                 }
 
                 var left = Math.min(rect.right + 10, window.innerWidth - 290);

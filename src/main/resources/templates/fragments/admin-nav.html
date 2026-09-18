@@ -74,14 +74,15 @@
       <span>Donations</span>
     </a>
 
-    <a href="/admin/interactions" class="admin-nav-link" th:classappend="${activePage == 'interactions'} ? ' active'">
-      <i class="fa-solid fa-chart-line"></i>
-      <span>Page Interactions</span>
-    </a>
-
     <a href="/admin/reports" class="admin-nav-link" th:classappend="${activePage == 'reports'} ? ' active'">
       <i class="fa-solid fa-chart-pie"></i>
       <span>Reports &amp; Charts</span>
+    </a>
+
+    <a href="/admin/incidents" class="admin-nav-link" th:classappend="${activePage == 'incidents'} ? ' active'">
+      <i class="fa-solid fa-flag"></i>
+      <span>Incidents</span>
+      <span class="admin-nav-badge" th:if="${activePage == 'incidents' and pendingCount != null and pendingCount > 0}" th:text="${pendingCount}">0</span>
     </a>
   </div>
 

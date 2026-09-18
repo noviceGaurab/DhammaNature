@@ -1,6 +1,7 @@
 package io.virinchi.dhammanature.controller;
 
 import io.virinchi.dhammanature.config.SessionUserResolver;
+import io.virinchi.dhammanature.config.GlobalModelAttributes;
 import io.virinchi.dhammanature.config.StorageConfig;
 import io.virinchi.dhammanature.model.User;
 import io.virinchi.dhammanature.repository.UserRepository;
@@ -32,6 +33,7 @@ public class ProfileController {
     private final VolunteerService volunteerService;
     private final QuizService quizService;
     private final BlogService blogService;
+    private final NudgeService nudgeService;
     private final StorageConfig storageConfig;
 
     @GetMapping("/profile")
@@ -49,6 +51,8 @@ public class ProfileController {
         var volunteerRegistrations = volunteerService.forUser(user.getId());
         var quizHistory = quizService.historyFor(user.getId());
         var blogPosts = blogService.forUser(user.getId());
+        var privateMessages = nudgeService.inboxFor(user.getId());
+        var unreadMessages = nudgeService.unreadCountFor(user.getId());
         var wishlist = userRepository.findByIdWithWishlist(user.getId())
                 .map(User::getWishlist)
                 .orElse(Collections.emptySet());
@@ -64,6 +68,8 @@ public class ProfileController {
         model.addAttribute("volunteerRegistrations", volunteerRegistrations);
         model.addAttribute("quizHistory", quizHistory);
         model.addAttribute("blogPosts", blogPosts);
+        model.addAttribute("privateMessages", privateMessages);
+        model.addAttribute("unreadMessages", unreadMessages);
         model.addAttribute("wishlist", wishlist);
         model.addAttribute("followedCenters", followedCenters);
         model.addAttribute("bookingCount", bookings.size());
@@ -111,6 +117,20 @@ public class ProfileController {
         user.setBio(bio.isBlank() ? null : bio.trim());
         userRepository.save(user);
         redirectAttributes.addFlashAttribute("success", "Your profile description was saved.");
+        return "redirect:/profile";
+    }
+
+    /** Marks all received private messages as read. */
+    @PostMapping("/profile/messages/read")
+    public String markMessagesRead(HttpSession session, RedirectAttributes redirectAttributes) {
+        if (sessionUserResolver.resolve(session).isEmpty()) {
+            return "redirect:/login";
+        }
+        Integer userId = (Integer) session.getAttribute(GlobalModelAttributes.SESSION_USER_ID);
+        if (userId != null) {
+            nudgeService.markInboxRead(userId);
+        }
+        redirectAttributes.addFlashAttribute("success", "All private messages marked as read.");
         return "redirect:/profile";
     }
 }

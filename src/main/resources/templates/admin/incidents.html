@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Incidents</title>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
+    <style>
+        .report-body { white-space: pre-wrap; background: #f8fafc; border: 1px solid #eef1f5; border-radius: 8px; padding: 10px 12px; margin: 8px 0; font-size: 13.5px; color: #334155; }
+    </style>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('incidents')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('Community Incidents', 'User-submitted reports against discuss participants, with the reporter\'s written reasoning.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Reports &amp; Incidents</h2>
+                    <p>Members can report a participant straight from the discuss hover menu. Resolve reports here once you have reviewed them, and take further action (blocking a user) directly in the Users list.</p>
+                </div>
+            </div>
+
+            <section class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon warn"><i class="fa-solid fa-flag"></i></div>
+                    <h3 th:text="${#lists.size(reports)}">0</h3>
+                    <p>Total Reports</p>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                    <h3 th:text="${pendingCount}">0</h3>
+                    <p>Pending Review</p>
+                </div>
+            </section>
+
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h3><i class="fa-solid fa-flag"></i> User Reports</h3>
+                    <span class="admin-badge info">Newest first</span>
+                </div>
+
+                <div class="admin-card-body">
+                    <div class="admin-empty" th:if="${#lists.isEmpty(reports)}">
+                        <i class="fa-regular fa-flag"></i>
+                        <p>No reports yet. Members can report a participant from the discuss page's hover menu.</p>
+                    </div>
+
+                    <div class="comment-list" th:unless="${#lists.isEmpty(reports)}">
+                        <article class="comment-card" th:each="r : ${reports}">
+                            <div class="comment-card-top">
+                                <div class="comment-card-meta">
+                                    <div class="comment-avatar danger" th:text="${#strings.substring(#strings.isEmpty(r.reporter != null ? r.reporter.fullName : '?') ? '?' : r.reporter.fullName, 0, 1)}">R</div>
+                                    <span class="name" th:text="${r.reporter != null ? r.reporter.fullName : 'Unknown reporter'}">Name</span>
+                                    <span class="topic"><i class="fa-solid fa-arrow-right"></i> reported</span>
+                                    <span class="name" th:text="${r.reported != null ? r.reported.fullName : 'Unknown participant'}">Reported</span>
+                                    <span class="time"><i class="fa-regular fa-clock"></i> <span th:text="${r.createdAt != null ? #temporals.format(r.createdAt, 'dd MMM yyyy HH:mm') : '-'}">time</span></span>
+                                </div>
+
+                                <div>
+                                    <span class="admin-badge danger" th:if="${r.status.name() == 'PENDING'}">
+                                        <i class="fa-solid fa-hourglass-half"></i>
+                                        PENDING
+                                    </span>
+                                    <span class="admin-badge success" th:unless="${r.status.name() == 'PENDING'}">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        RESOLVED
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="comment-card-body">
+                                <p class="report-body" th:text="${r.reason}">Reason for reporting...</p>
+                                <div style="font-size:12px;color:#64708a;">
+                                    <span class="me-3"><i class="fa-solid fa-user"></i> Reporter ID <span th:text="${r.reporter != null ? r.reporter.id : '-'}">1</span></span>
+                                    <span class="me-3"><i class="fa-solid fa-user-slash"></i> Reported ID <span th:text="${r.reported != null ? r.reported.id : '-'}">2</span></span>
+                                    <span th:if="${r.resolvedAt != null}"><i class="fa-solid fa-check-double"></i> Resolved <span th:text="${#temporals.format(r.resolvedAt, 'dd MMM yyyy HH:mm')}">time</span></span>
+                                </div>
+                            </div>
+
+                            <div class="comment-card-actions">
+                                <form method="post" th:if="${r.status.name() == 'PENDING'}"
+                                      th:action="@{'/admin/incidents/' + ${r.id} + '/resolve'}"
+                                      class="d-inline-flex"
+                                      onsubmit="return confirm('Mark this report as resolved?');">
+                                    <button type="submit" class="admin-btn sm success">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Mark Resolved
+                                    </button>
+                                </form>
+
+                                <a th:if="${r.reported != null}" th:href="@{'/admin'}" class="admin-btn sm secondary">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                    Review Reporting User
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

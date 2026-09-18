@@ -11,6 +11,7 @@ import io.virinchi.dhammanature.model.enums.SessionMode;
 import io.virinchi.dhammanature.repository.*;
 import io.virinchi.dhammanature.service.AdminService;
 import io.virinchi.dhammanature.service.BookingService;
+import io.virinchi.dhammanature.service.CommunitySafetyService;
 import io.virinchi.dhammanature.service.QuizService;
 import io.virinchi.dhammanature.service.VendorService;
 import io.virinchi.dhammanature.service.DiscussionService;
@@ -35,8 +36,8 @@ import java.util.NoSuchElementException;
 
 /**
  * Admin dashboard - carries over admin.jsp / admin_donations.jsp / admin_comments.jsp /
- * admin_gallery.jsp / admin_page_interactions.jsp, now rendered with Thymeleaf th:each
- * instead of JSP scriptlets, plus new center/vendor verification screens.
+ * admin_gallery.jsp, now rendered with Thymeleaf th:each instead of JSP scriptlets,
+ * plus center/vendor verification screens and the community incident (user report) review.
  */
 @Controller
 @RequestMapping("/admin")
@@ -47,7 +48,6 @@ public class AdminController {
     private final DonationRepository donationRepository;
     private final CommentRepository commentRepository;
     private final GalleryRepository galleryRepository;
-    private final PageInteractionRepository pageInteractionRepository;
     private final MeditationCenterRepository meditationCenterRepository;
     private final VendorRepository vendorRepository;
     private final AdminService adminService;
@@ -61,6 +61,21 @@ public class AdminController {
     private final QuizAttemptRepository quizAttemptRepository;
     private final io.virinchi.dhammanature.service.VolunteerService volunteerService;
     private final SessionUserResolver sessionUserResolver;
+    private final CommunitySafetyService communitySafetyService;
+
+    /** User-submitted reports against other participants (see hover menu on discuss). */
+    @GetMapping("/incidents")
+    public String incidents(Model model) {
+        model.addAttribute("reports", communitySafetyService.reports());
+        model.addAttribute("pendingCount", communitySafetyService.pendingReportCount());
+        return "admin/incidents";
+    }
+
+    @PostMapping("/incidents/{id}/resolve")
+    public String resolveIncident(@PathVariable Integer id, HttpSession session) {
+        communitySafetyService.resolveReport(id, sessionUserResolver.require(session));
+        return "redirect:/admin/incidents";
+    }
 
     @GetMapping
     public String users(@org.springframework.web.bind.annotation.RequestParam(defaultValue = "1") int page, Model model) {
@@ -122,21 +137,36 @@ public class AdminController {
         model.addAttribute("roleLabels", new ArrayList<>(roles.keySet()));
         model.addAttribute("roleValues", new ArrayList<>(roles.values()));
 
-        // Interactions by page (bar)
-        java.util.LinkedHashMap<String, Long> pages = new java.util.LinkedHashMap<>();
-        pageInteractionRepository.findAll().forEach(pi -> {
-            String p = pi.getPageName() == null || pi.getPageName().isBlank() ? "Unknown" : pi.getPageName();
-            pages.merge(p, 1L, Long::sum);
+        // Donation amounts per month (last 6 months, ascending) - the "donation chart"
+        java.util.LinkedHashMap<String, java.math.BigDecimal> donationAmountByMonth = new java.util.LinkedHashMap<>();
+        donationRepository.findAll().forEach(d -> {
+            if (d.getDonationDate() != null) {
+                String key = java.time.YearMonth.from(d.getDonationDate().toLocalDate()).toString();
+                if (donationAmountByMonth.containsKey(key)) {
+                    donationAmountByMonth.replace(key, donationAmountByMonth.get(key).add(d.getAmount() != null ? d.getAmount() : java.math.BigDecimal.ZERO));
+                } else {
+                    donationAmountByMonth.put(key, d.getAmount() != null ? d.getAmount() : java.math.BigDecimal.ZERO);
+                }
+            }
         });
-        java.util.LinkedHashMap<String, Long> topPages = pages.entrySet().stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                .collect(java.util.stream.Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (a, b) -> a, java.util.LinkedHashMap::new));
-        List<String> topPageLabels = new ArrayList<>();
-        List<Long> topPageValues = new ArrayList<>();
-        topPages.forEach((k, v) -> { topPageLabels.add(k); topPageValues.add(v); });
-        model.addAttribute("pageLabels", topPageLabels);
-        model.addAttribute("pageValues", topPageValues);
+        model.addAttribute("donationAmountMonthLabels", new ArrayList<>(donationAmountByMonth.keySet()));
+        model.addAttribute("donationAmountMonthValues", new ArrayList<>(donationAmountByMonth.values()));
+
+        // Donations by campaign (bar) - top 8 campaigns by donated amount
+        java.util.LinkedHashMap<String, java.math.BigDecimal> byCampaign = new java.util.LinkedHashMap<>();
+        donationRepository.findAll().forEach(d -> {
+            String c = d.getCampaign() != null && d.getCampaign().getTitle() != null
+                    ? d.getCampaign().getTitle() : "General";
+            byCampaign.merge(c, d.getAmount() != null ? d.getAmount() : java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+        });
+        List<String> campaignLabels = new ArrayList<>();
+        List<java.math.BigDecimal> campaignValues = new ArrayList<>();
+        byCampaign.entrySet().stream()
+                .sorted(Map.Entry.<String, java.math.BigDecimal>comparingByValue().reversed())
+                .limit(8)
+                .forEach(e -> { campaignLabels.add(e.getKey()); campaignValues.add(e.getValue()); });
+        model.addAttribute("campaignLabels", campaignLabels);
+        model.addAttribute("campaignValues", campaignValues);
 
         // Comment activity by topic (horizontal bar) - top 8 topics
         java.util.LinkedHashMap<String, Long> topics = new java.util.LinkedHashMap<>();
@@ -220,12 +250,6 @@ public class AdminController {
     public String deleteGalleryImage(@PathVariable Integer id) {
         galleryService.delete(id);
         return "redirect:/admin/gallery";
-    }
-
-    @GetMapping("/interactions")
-    public String interactions(Model model) {
-        model.addAttribute("interactionData", pageInteractionRepository.findAllByOrderByInteractionTimeDesc());
-        return "admin/interactions";
     }
 
     @GetMapping("/centers")

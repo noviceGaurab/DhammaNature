@@ -61,9 +61,15 @@
                 </section>
 
                 <section class="report-card">
-                    <h3><i class="fa-solid fa-chart-line"></i> Most visited pages</h3>
-                    <p class="report-sub">Where the community spends the most time.</p>
-                    <div class="report-canvas-wrap" style="height:320px;"><canvas id="pageChart"></canvas></div>
+                    <h3><i class="fa-solid fa-chart-line"></i> Donation amounts - last 6 months</h3>
+                    <p class="report-sub">Money raised per month.</p>
+                    <div class="report-canvas-wrap"><canvas id="donationAmountChart"></canvas></div>
+                </section>
+
+                <section class="report-card">
+                    <h3><i class="fa-solid fa-hand-holding-heart"></i> Donations by campaign</h3>
+                    <p class="report-sub">Raised amount grouped by charity campaign.</p>
+                    <div class="report-canvas-wrap" style="height:320px;"><canvas id="campaignChart"></canvas></div>
                 </section>
 
                 <section class="report-card full">
@@ -83,6 +89,9 @@
         var monthLabels = /*[[${userMonthLabels}]]*/ [];
         var userValues = /*[[${userMonthValues}]]*/ [];
         var donationValues = /*[[${donationMonthValues}]]*/ [];
+        var donationAmountValues = /*[[${donationAmountMonthValues}]]*/ [];
+        var campaignLabels = /*[[${campaignLabels}]]*/ [];
+        var campaignValues = /*[[${campaignValues}]]*/ [];
 
         // prettier month labels e.g. "2026-05" -> "May 26"
         var prettyMonths = monthLabels.map(function (m) {
@@ -115,16 +124,27 @@
                 plugins: { legend: { position: 'bottom' } } }
         });
 
-        new Chart(document.getElementById('pageChart'), {
+        new Chart(document.getElementById('donationAmountChart'), {
             type: 'bar',
             data: {
-                labels: /*[[${pageLabels}]]*/ [],
-                datasets: [{ label: 'Interactions', data: /*[[${pageValues}]]*/ [], backgroundColor: green + 'cc', borderRadius: 6 }]
+                labels: prettyMonths,
+                datasets: [{ label: 'Raised ($)', data: donationAmountValues, backgroundColor: gold + 'cc', borderRadius: 6 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } } }
+        });
+
+        new Chart(document.getElementById('campaignChart'), {
+            type: 'bar',
+            data: {
+                labels: campaignLabels,
+                datasets: [{ label: 'Donated', data: campaignValues, backgroundColor: blue + 'cc', borderRadius: 6 }]
             },
             options: { responsive: true, maintainAspectRatio: false,
                 indexAxis: 'y',
                 plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+                scales: { x: { beginAtZero: true } } }
         });
 
         new Chart(document.getElementById('topicChart'), {

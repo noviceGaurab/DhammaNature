@@ -155,6 +155,22 @@ body.admin-body {
   background: var(--a-danger-light);
 }
 
+.admin-nav-badge {
+  margin-left: auto;
+  background: var(--a-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  line-height: 1;
+}
+
 /* ── Topbar ──────────────────────────────────────────────────── */
 .admin-topbar {
   height: 68px;
