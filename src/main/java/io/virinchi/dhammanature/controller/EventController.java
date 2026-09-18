@@ -1,6 +1,8 @@
 package io.virinchi.dhammanature.controller;
 
 import io.virinchi.dhammanature.config.SessionUserResolver;
+import io.virinchi.dhammanature.model.enums.PaymentMethod;
+import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.SessionMode;
 import io.virinchi.dhammanature.service.BookingService;
 import io.virinchi.dhammanature.service.EventService;
@@ -54,10 +56,13 @@ public class EventController {
     public String book(@PathVariable Integer id,
                         @RequestParam(defaultValue = "PHYSICAL") SessionMode mode,
                         @RequestParam(defaultValue = "1") int attendees,
+                        @RequestParam(required = false) PaymentMethod paymentMethod,
+                        @RequestParam(defaultValue = "0") int pointsToUse,
                         HttpSession session, RedirectAttributes redirectAttributes) {
         return sessionUserResolver.resolve(session)
                 .map(user -> {
-                    var booking = bookingService.book(user, id, mode, attendees);
+                    var booking = bookingService.book(user, id, mode, attendees,
+                            paymentMethod, pointsToUse);
                     redirectAttributes.addFlashAttribute("bookingId", booking.getId());
                     return "redirect:/events/confirmed";
                 })

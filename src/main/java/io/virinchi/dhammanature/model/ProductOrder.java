@@ -1,6 +1,7 @@
 package io.virinchi.dhammanature.model;
 
 import io.virinchi.dhammanature.model.enums.OrderStatus;
+import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +37,14 @@ public class ProductOrder {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private OrderStatus status = OrderStatus.PLACED;
+
+    /** How the customer chose to pay when placing this order. */
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    /** Reward points spent on this order (0 = paid in money/eSewa/card/COD). */
+    @Builder.Default
+    private int pointsUsed = 0;
 
     @Column(updatable = false)
     private LocalDateTime orderDate;

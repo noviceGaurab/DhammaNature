@@ -186,8 +186,10 @@
         <h2 class="section-heading">Marketplace orders</h2><hr class="section-underline">
         <p class="empty-note" th:if="${#lists.isEmpty(orders)}">No orders yet.</p>
         <div class="table-wrap" th:unless="${#lists.isEmpty(orders)}">
-<table><tr><th>Product</th><th>Qty</th><th>Total</th><th>Status</th><th>Date</th><th>Action</th></tr>
-            <tr th:each="o : ${orders}"><td th:text="${o.product.productName}"></td><td th:text="${o.quantity}"></td><td th:text="'$' + ${#numbers.formatDecimal(o.totalPrice, 1, 2)}"></td><td><span class="status" th:text="${o.status}"></span></td><td th:text="${#temporals.format(o.orderDate, 'dd MMM yyyy')}"></td>
+<table><tr><th>Product</th><th>Qty</th><th>Total</th><th>Paid via</th><th>Status</th><th>Date</th><th>Action</th></tr>
+            <tr th:each="o : ${orders}"><td th:text="${o.product.productName}"></td><td th:text="${o.quantity}"></td><td th:text="'$' + ${#numbers.formatDecimal(o.totalPrice, 1, 2)}"></td>
+            <td th:text="${o.pointsUsed > 0 ? o.pointsUsed + ' pts' : (o.paymentMethod != null ? o.paymentMethod.displayName : 'eSewa')}"></td>
+            <td><span class="status" th:text="${o.status}"></span></td><td th:text="${#temporals.format(o.orderDate, 'dd MMM yyyy')}"></td>
             <td><a th:href="@{'/marketplace/order-confirmed?orderId=' + ${o.id}}" style="padding:6px 14px; border-radius:20px; background:#e6f4ea; color:#006015; font-size:12px; font-weight:700; text-decoration:none;">View</a></td></tr></table>
         </div>
     </section>

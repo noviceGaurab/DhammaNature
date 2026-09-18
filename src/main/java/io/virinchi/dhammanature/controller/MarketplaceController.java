@@ -3,8 +3,10 @@ package io.virinchi.dhammanature.controller;
 import io.virinchi.dhammanature.config.SessionUserResolver;
 import io.virinchi.dhammanature.model.Product;
 import io.virinchi.dhammanature.model.ProductReview;
+import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.ProductCategory;
 import io.virinchi.dhammanature.service.MarketplaceService;
+import io.virinchi.dhammanature.service.PointValue;
 import io.virinchi.dhammanature.service.VendorService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,7 @@ public class MarketplaceController {
     @GetMapping("/marketplace")
     public String browse(@RequestParam(defaultValue = "1") int page,
                          @RequestParam(required = false) ProductCategory cat,
-                         Model model) {
+                         HttpSession session, Model model) {
         var allProducts = marketplaceService.browseAvailable();
         var products = cat != null
                 ? allProducts.stream().filter(p -> p.getCategory() == cat).toList()
@@ -54,6 +56,8 @@ public class MarketplaceController {
         model.addAttribute("page", current);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("pageBase", cat != null ? "/marketplace?cat=" + cat.name() : "/marketplace");
+        model.addAttribute("purchasedIds",
+                sessionUserResolver.resolve(session).map(u -> marketplaceService.purchasedProductIds(u.getId())).orElse(List.of()));
         return "marketplace";
     }
 
@@ -71,25 +75,42 @@ public class MarketplaceController {
         model.addAttribute("relatedProducts", related);
         model.addAttribute("averageRating", reviews.stream()
                 .mapToInt(ProductReview::getRating).average().orElse(0.0));
+        boolean purchased = sessionUserResolver.resolve(session)
+                .map(u -> marketplaceService.purchasedProductIds(u.getId()).contains(id))
+                .orElse(false);
+        model.addAttribute("alreadyPurchased", purchased);
         model.addAttribute("inWishlist",
                 sessionUserResolver.resolve(session).map(user -> user.getWishlist().stream()
                         .anyMatch(p -> p.getId().equals(id))).orElse(false));
         return "product-detail";
     }
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public String handleMissing(NoSuchElementException ex, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("error", ex.getMessage() + " - please choose a product from the marketplace.");
-        return "redirect:/marketplace";
+    /** Step 1 of buying: choose quantity + how you want to pay (eSewa, card, cash, redeemed points). */
+    @GetMapping("/marketplace/{id}/checkout")
+    public String checkout(@PathVariable Integer id, HttpSession session, Model model) {
+        if (sessionUserResolver.resolve(session).isEmpty()) {
+            return "redirect:/login";
+        }
+        var product = marketplaceService.getProduct(id);
+        model.addAttribute("product", product);
+        model.addAttribute("paymentMethods", PaymentMethod.values());
+        sessionUserResolver.resolve(session).ifPresent(user -> {
+            model.addAttribute("user", user);
+            model.addAttribute("pointsNeeded", PointValue.pointsFor(product.getPrice()));
+        });
+        return "checkout";
     }
 
     @PostMapping("/marketplace/{id}/buy")
-    public String buy(@PathVariable Integer id, @RequestParam(defaultValue = "1") int quantity,
+    public String buy(@PathVariable Integer id,
+                       @RequestParam(defaultValue = "1") int quantity,
+                       @RequestParam(required = false) PaymentMethod paymentMethod,
                        HttpSession session, RedirectAttributes redirectAttributes) {
         return sessionUserResolver.resolve(session)
                 .map(user -> {
                     try {
-                        var order = marketplaceService.purchase(user, id, quantity);
+                        var order = marketplaceService.purchase(user, id, quantity,
+                                paymentMethod != null ? paymentMethod : PaymentMethod.ESEWA);
                         return "redirect:/marketplace/order-confirmed?orderId=" + order.getId();
                     } catch (Exception e) {
                         redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -97,6 +118,12 @@ public class MarketplaceController {
                     }
                 })
                 .orElse("redirect:/login");
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public String handleMissing(NoSuchElementException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", ex.getMessage() + " - please choose a product from the marketplace.");
+        return "redirect:/marketplace";
     }
 
     @GetMapping("/marketplace/order-confirmed")

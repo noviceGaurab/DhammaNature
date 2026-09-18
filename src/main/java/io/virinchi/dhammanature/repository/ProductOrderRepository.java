@@ -13,4 +13,7 @@ public interface ProductOrderRepository extends JpaRepository<ProductOrder, Inte
     List<ProductOrder> findByUser_IdOrderByOrderDateDesc(@Param("userId") Integer userId);
 
     long countByProduct_Id(Integer productId);
+
+    @Query("SELECT DISTINCT o.product.id FROM ProductOrder o WHERE o.user.id = :userId AND o.status <> 'CANCELLED'")
+    List<Integer> findPurchasedProductIdsByUser(@Param("userId") Integer userId);
 }

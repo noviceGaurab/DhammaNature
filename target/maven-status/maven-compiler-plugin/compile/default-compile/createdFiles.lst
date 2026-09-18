@@ -32,6 +32,7 @@ io\virinchi\dhammanature\dto\ProductCreateRequest.class
 io\virinchi\dhammanature\restapi\ProductRestController.class
 io\virinchi\dhammanature\config\StorageConfig.class
 io\virinchi\dhammanature\service\EventService.class
+io\virinchi\dhammanature\model\enums\PaymentMethod.class
 io\virinchi\dhammanature\service\NotificationService.class
 io\virinchi\dhammanature\service\NewsletterService$SubscriptionResult.class
 io\virinchi\dhammanature\controller\ProfileController.class
@@ -150,6 +151,7 @@ io\virinchi\dhammanature\model\ProductReview.class
 io\virinchi\dhammanature\repository\CommentRepository.class
 io\virinchi\dhammanature\model\VolunteerRegistration$VolunteerRegistrationBuilder.class
 io\virinchi\dhammanature\service\MeditationCenterService.class
+io\virinchi\dhammanature\service\PointValue.class
 io\virinchi\dhammanature\controller\VendorController.class
 io\virinchi\dhammanature\service\UserActivityService.class
 io\virinchi\dhammanature\controller\QuizController.class

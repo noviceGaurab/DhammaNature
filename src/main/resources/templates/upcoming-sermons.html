@@ -111,6 +111,12 @@
         /* Back to top */
         .btt { position: fixed; bottom: 20px; right: 20px; background: #b8860b; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.3); font-size: 18px; z-index: 1000; }
         .btt:hover { background: #b8860b; transform: scale(1.1); }
+        /* Toast for calendar / reminder feedback */
+        .toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(16px); background: #704223; color: #fff; padding: 12px 22px; border-radius: 30px; box-shadow: 0 8px 22px rgba(0,0,0,.25); opacity: 0; transition: opacity .3s, transform .3s; z-index: 2000; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast i { color: #ffd700; }
+        .sp-btn.added, .cal-btn.added { background: #008000 !important; }
+        .sp-btn.added { background: #06750e !important; }
         /* Footer (home style) */
         .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
@@ -237,7 +243,7 @@
                         <button class="date-btn" onclick="navigate('next')">Next &rarr;</button>
                     </div>
                     <div class="date-display" id="dateDisplay"></div>
-                    <button class="cal-btn" onclick="addToCalendar()"><i class="far fa-calendar-plus"></i> Add to Calendar</button>
+                    <button class="cal-btn" onclick="addToCalendar(this)"><i class="far fa-calendar-plus"></i> Add to Calendar</button>
                 </div>
                 <div class="sermon-list" id="sermonList"></div>
                 <div class="empty-msg" id="emptyMsg" style="display:none;">No sermons found for this view. Try switching tabs or changing the month.</div>
@@ -327,6 +333,7 @@
     </div>
 
     <button class="btt" id="btt" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+    <div class="toast" id="sermonToast"><i class="fas fa-check-circle"></i><span id="sermonToastMsg"></span></div>
     <script>
         (function () {
             var sermons = [
@@ -394,7 +401,7 @@
                         '<div class="sp-desc">' + next.description + '</div>' +
                     '</div>' +
                     '<div class="sp-actions">' +
-                        '<button class="sp-btn" onclick="addToCalendar()"><i class="far fa-calendar-plus"></i> Remind me</button>' +
+                        '<button class="sp-btn" onclick="remindMe(this)"><i class="far fa-bell"></i> Remind me</button>' +
                         '<a class="sp-btn sp-link" href="' + detailUrl(next) + '">Details <i class="fas fa-arrow-right"></i></a>' +
                     '</div>';
             }
@@ -484,13 +491,43 @@
                 render();
             };
             // Add to calendar
-            window.addToCalendar = function () {
+            window.showSermonToast = function (msg) {
+                var toastEl = document.getElementById('sermonToast');
+                document.getElementById('sermonToastMsg').textContent = msg;
+                toastEl.classList.add('show');
+                clearTimeout(window.__sermonToastT);
+                window.__sermonToastT = setTimeout(function () {
+                    toastEl.classList.remove('show');
+                }, 2600);
+            };
+            window.addToCalendar = function (btn) {
                 var upcoming = sermons.filter(function (s) { return !s.recorded; })
                     .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
                 if (upcoming.length > 0) {
-                    alert('Added "' + upcoming[0].title + '" (' + upcoming[0].time + ') to your calendar.');
+                    if (btn) {
+                        btn.innerHTML = '<i class="fas fa-check"></i> Added';
+                        btn.classList.add('added');
+                        btn.disabled = true;
+                        btn.setAttribute('title', 'Added to your calendar');
+                    }
+                    window.showSermonToast('Added "' + upcoming[0].title + '" (' + upcoming[0].time + ') to your calendar');
                 } else {
-                    alert('No sermon available to add.');
+                    window.showSermonToast('No sermon available to add right now.');
+                }
+            };
+            window.remindMe = function (btn) {
+                var upcoming = sermons.filter(function (s) { return !s.recorded; })
+                    .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
+                if (upcoming.length > 0) {
+                    if (btn) {
+                        btn.innerHTML = '<i class="fas fa-check"></i> Will be reminded';
+                        btn.classList.add('added');
+                        btn.disabled = true;
+                        btn.setAttribute('title', 'You will be reminded before the sermon');
+                    }
+                    window.showSermonToast('You will be reminded before "' + upcoming[0].title + '"');
+                } else {
+                    window.showSermonToast('No sermon available to remind you about right now.');
                 }
             };
             // Back to top

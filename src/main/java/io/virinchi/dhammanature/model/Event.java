@@ -4,6 +4,7 @@ import io.virinchi.dhammanature.model.enums.SessionMode;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +41,10 @@ public class Event {
     private SessionMode mode = SessionMode.PHYSICAL;
 
     private Integer capacity;
+
+    /** FR-04 extension: admission price (null/0 = free). */
+    @Builder.Default
+    private BigDecimal price = BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "center_id", nullable = false)

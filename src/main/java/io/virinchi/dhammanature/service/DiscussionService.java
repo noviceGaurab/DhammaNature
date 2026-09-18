@@ -258,25 +258,28 @@ public class DiscussionService {
         for (Comment c : flat) {
             byId.put(c.getId(), c);
         }
-        List<CommentView> roots = new ArrayList<>();
+        // Build replies purely from the flat list so the tree is always nested
+        // under the correct parent comment, regardless of lazy-loading state.
+        Map<Integer, List<Comment>> childrenByParent = new LinkedHashMap<>();
         for (Comment c : flat) {
-            Comment parent = (c.getParent() != null) ? byId.get(c.getParent().getId()) : null;
-            if (parent == null) {
-                roots.add(toView(c, byId, names));
-            }
+            Integer parentId = c.getParent() != null ? c.getParent().getId() : null;
+            childrenByParent.computeIfAbsent(parentId, k -> new ArrayList<>()).add(c);
+        }
+        List<CommentView> roots = new ArrayList<>();
+        for (Comment c : childrenByParent.getOrDefault(null, List.of())) {
+            roots.add(toView(c, byId, names, childrenByParent));
         }
         return roots;
     }
 
-    private CommentView toView(Comment c, Map<Integer, Comment> byId, List<String> names) {
+    private CommentView toView(Comment c, Map<Integer, Comment> byId, List<String> names,
+                               Map<Integer, List<Comment>> childrenByParent) {
         String name = (c.getName() == null || c.getName().isBlank()) ? "Guest" : c.getName();
         User author = c.getUser();
         List<CommentView> replyViews = new ArrayList<>();
-        if (c.getReplies() != null) {
-            for (Comment reply : c.getReplies()) {
-                if (!reply.isHidden()) {
-                    replyViews.add(toView(reply, byId, names));
-                }
+        for (Comment reply : childrenByParent.getOrDefault(c.getId(), List.of())) {
+            if (!reply.isHidden()) {
+                replyViews.add(toView(reply, byId, names, childrenByParent));
             }
         }
         return new CommentView(c.getId(), c.getTitle(), renderMentions(c.getContent(), names),

@@ -121,6 +121,7 @@
 <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}"/>
                     <img th:unless="${p.imageData != null}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="product"/>
                     <span class="badge-featured">Featured</span>
+                    <span class="badge-purchased" th:if="${#lists.contains(purchasedIds, p.id)}">Already purchased</span>
                 </a>
                 <div class="card-body">
 <span class="category-tag" th:text="${p.category.displayName}">Category</span>
@@ -161,6 +162,7 @@
                 <a class="card-media" th:href="@{'/marketplace/' + ${p.id}}">
                     <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}"/>
                     <img th:unless="${p.imageData != null}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="product"/>
+                    <span class="badge-purchased" th:if="${#lists.contains(purchasedIds, p.id)}">Already purchased</span>
                 </a>
                 <div class="card-body">
 <span class="category-tag" th:text="${p.category.displayName}">Category</span>

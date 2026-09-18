@@ -1,6 +1,7 @@
 package io.virinchi.dhammanature.model;
 
 import io.virinchi.dhammanature.model.enums.BookingStatus;
+import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.SessionMode;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,6 +42,14 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private BookingStatus status = BookingStatus.CONFIRMED;
+
+    /** FR-04 extension: how the booking was paid (null/free for free sessions). */
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    /** FR-04 extension: reward points redeemed toward this booking. */
+    @Builder.Default
+    private int pointsUsed = 0;
 
     @Column(updatable = false)
     private LocalDateTime bookingDate;

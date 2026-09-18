@@ -76,6 +76,32 @@ public class RewardService {
         return tx;
     }
 
+    /**
+     * Spends {@code points} toward a purchase/booking/donation. Fails with an
+     * IllegalStateException when the user does not have enough points
+     * (Business Rule 9).
+     */
+    @Transactional
+    public void spendPoints(User user, int points, String reason) {
+        if (points <= 0) {
+            return;
+        }
+        if (user.getRewardPoints() < points) {
+            throw new IllegalStateException("Not enough reward points - you have "
+                    + user.getRewardPoints() + " but " + points + " are needed.");
+        }
+        user.setRewardPoints(user.getRewardPoints() - points);
+        userRepository.save(user);
+        rewardTransactionRepository.save(RewardTransaction.builder()
+                .user(user)
+                .type(RewardTransactionType.REDEEMED)
+                .points(-points)
+                .reason(reason)
+                .build());
+        notificationService.notifyUser(user, points + " reward points spent",
+                reason, NotificationType.REWARD);
+    }
+
     public List<RewardCatalogItem> catalog() {
         return rewardCatalogItemRepository.findByActiveTrue();
     }

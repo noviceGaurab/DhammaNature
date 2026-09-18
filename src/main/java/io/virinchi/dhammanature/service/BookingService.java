@@ -5,6 +5,7 @@ import io.virinchi.dhammanature.model.Event;
 import io.virinchi.dhammanature.model.User;
 import io.virinchi.dhammanature.model.enums.BookingStatus;
 import io.virinchi.dhammanature.model.enums.NotificationType;
+import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.SessionMode;
 import io.virinchi.dhammanature.repository.BookingRepository;
 import io.virinchi.dhammanature.repository.EventRepository;
@@ -12,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.List;
+import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 
 /** FR-03 / FR-04: booking a meditation session or event; supports hybrid mode (NFR-02). */
@@ -26,7 +28,8 @@ public class BookingService {
     private final NotificationService notificationService;
 
     @Transactional
-    public Booking book(User user, Integer eventId, SessionMode attendanceMode, int attendees) {
+    public Booking book(User user, Integer eventId, SessionMode attendanceMode, int attendees,
+                        PaymentMethod paymentMethod, int pointsToUse) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoSuchElementException("Event not found"));
 
@@ -43,9 +46,28 @@ public class BookingService {
             throw new IllegalStateException("This center does not offer physical sessions for this event.");
         }
 
+        BigDecimal cost = event.getPrice() == null ? BigDecimal.ZERO : event.getPrice();
+        BigDecimal total = cost.multiply(BigDecimal.valueOf(attendees));
+        BigDecimal pointsWorth = PointValue.moneyValue(pointsToUse);
+        if (pointsToUse > 0 && pointsWorth.compareTo(total) > 0) {
+            pointsToUse = PointValue.pointsFor(total); // never over-redeem
+            pointsWorth = PointValue.moneyValue(pointsToUse);
+        }
+        if (pointsToUse > 0) {
+            rewardService.spendPoints(user, pointsToUse, "Booking \"" + event.getTitle() + "\"");
+        }
+        BigDecimal remaining = total.subtract(pointsWorth);
+        if (remaining.signum() > 0 && paymentMethod == null) {
+            throw new IllegalStateException("Please choose a payment method for this session.");
+        }
+        if (remaining.signum() <= 0) {
+            paymentMethod = PaymentMethod.REDEEMED_POINTS;
+        }
+
         Booking booking = bookingRepository.save(Booking.builder()
                 .user(user).event(event).attendanceMode(attendanceMode)
-                .numberOfAttendees(attendees).status(BookingStatus.CONFIRMED).build());
+                .numberOfAttendees(attendees).status(BookingStatus.CONFIRMED)
+                .paymentMethod(paymentMethod).pointsUsed(pointsToUse).build());
 
         rewardService.awardPoints(user, 5, "Booked \"" + event.getTitle() + "\"");
         notificationService.notifyUser(user, "Booking confirmed: " + event.getTitle(),

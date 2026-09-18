@@ -161,9 +161,11 @@
                 <span class="stock-in" th:if="${product.stockQuantity > 0}" th:text="${product.stockQuantity} + ' in stock'"></span>
                 <span class="stock-out" th:if="${product.stockQuantity <= 0}">Out of stock</span>
             </p>
+            <div th:if="${alreadyPurchased}" class="pd-purchased-tag" style="display:inline-flex; align-items:center; gap:8px; background:#e6f4ea; color:#006015; border:1px solid #cde7d3; border-radius:24px; padding:8px 16px; font-size:13px; font-weight:700; margin-bottom:12px;">
+                <i class="fas fa-check-circle"></i> Already purchased - thank you for your support
+            </div>
             <div th:if="${currentUser != null}">
-                <form class="pd-form" method="post" th:action="@{'/marketplace/' + ${product.id} + '/buy'}">
-                    <input type="number" name="quantity" min="1" value="1">
+                <form class="pd-form" method="get" th:action="@{'/marketplace/' + ${product.id} + '/checkout'}">
                     <button type="submit" class="btn btn-primary" th:disabled="${product.stockQuantity <= 0}"><i class="fas fa-shopping-bag"></i> Buy now</button>
                 </form>
                 <form class="pd-form" method="post" th:action="@{'/marketplace/' + ${product.id} + '/wishlist'}">
@@ -174,6 +176,7 @@
                 </form>
             </div>
             <p class="pd-login" th:if="${currentUser == null}"><i class="fas fa-lock"></i> <a href="/login">Log in</a> to buy or save this item.</p>
+            <p class="pd-login" th:if="${currentUser != null}" style="font-size:13px; color:#888; margin-top:8px;"><i class="fas fa-info-circle"></i> Choose eSewa, card, cash on delivery, or reward points at checkout.</p>
             <div class="pd-vendor">
                 <div class="avatar">V</div>
                 <div>

@@ -3,6 +3,7 @@ package io.virinchi.dhammanature.service;
 import io.virinchi.dhammanature.model.*;
 import io.virinchi.dhammanature.model.enums.NotificationType;
 import io.virinchi.dhammanature.model.enums.OrderStatus;
+import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.ProductCategory;
 import io.virinchi.dhammanature.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -108,17 +109,26 @@ public class MarketplaceService {
     }
 
     @Transactional
-    public ProductOrder purchase(User user, Integer productId, int quantity) {
+    public ProductOrder purchase(User user, Integer productId, int quantity, PaymentMethod paymentMethod) {
         Product product = getProduct(productId);
         if (product.getStockQuantity() < quantity) {
             throw new IllegalStateException("Not enough stock for \"" + product.getProductName() + "\".");
+        }
+        BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        int pointsUsed = 0;
+        if (paymentMethod == PaymentMethod.REDEEMED_POINTS) {
+            pointsUsed = PointValue.pointsFor(totalPrice);
+            rewardService.spendPoints(user, pointsUsed,
+                    "Paid for \"" + product.getProductName() + "\" x " + quantity + " with reward points");
         }
         product.setStockQuantity(product.getStockQuantity() - quantity);
         productRepository.save(product);
 
         ProductOrder order = productOrderRepository.save(ProductOrder.builder()
                 .user(user).product(product).quantity(quantity)
-                .totalPrice(product.getPrice().multiply(BigDecimal.valueOf(quantity)))
+                .totalPrice(totalPrice)
+                .paymentMethod(paymentMethod != null ? paymentMethod : PaymentMethod.ESEWA)
+                .pointsUsed(pointsUsed)
                 .status(OrderStatus.PLACED).build());
 
         rewardService.awardPoints(user, Math.max(1, quantity), "Purchased " + product.getProductName());
@@ -129,13 +139,19 @@ public class MarketplaceService {
                         + "Your order has been placed:\n"
                         + " - " + product.getProductName() + " x " + quantity
                         + "\nTotal: $" + order.getTotalPrice() + "\n"
-                        + "Status: " + order.getStatus() + "\n\n"
+                        + "Payment: " + (pointsUsed > 0 ? pointsUsed + " reward points" : paymentMethod.getDisplayName())
+                        + "\nStatus: " + order.getStatus() + "\n\n"
                         + "Track its status from your profile.\n\n"
                         + "With metta,\nThe Dhamma Nature team");
         emailService.sendSiteAlert("New order placed",
                 user.getFullName() + " (" + user.getEmail() + ") purchased "
                         + quantity + "x " + product.getProductName() + " (order #" + order.getId() + ").");
         return order;
+    }
+
+    /** Ids of every product the user has bought (and not cancelled) - used to tag "already purchased" in the catalog. */
+    public List<Integer> purchasedProductIds(Integer userId) {
+        return productOrderRepository.findPurchasedProductIdsByUser(userId);
     }
 
     public ProductOrder getOrder(Integer id) {
