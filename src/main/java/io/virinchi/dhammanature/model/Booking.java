@@ -51,6 +51,18 @@ public class Booking {
     @Builder.Default
     private int pointsUsed = 0;
 
+    /** What the attendee plans to bring to the session (requested before booking). */
+    @Column(length = 1000)
+    private String itemsToBring;
+
+    /** Credential/reference the attendee gave (e.g. student or member ID) before booking. */
+    @Column(length = 200)
+    private String credential;
+
+    /** Whether the attendee accepted the center's etiquette &amp; rules agreement. */
+    @Builder.Default
+    private boolean etiquetteAgreed = false;
+
     @Column(updatable = false)
     private LocalDateTime bookingDate;
 

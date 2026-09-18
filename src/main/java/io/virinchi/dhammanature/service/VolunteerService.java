@@ -33,25 +33,100 @@ public class VolunteerService {
         return opportunityRepository.findAllByOrderByOpportunityDateAsc();
     }
 
+    public List<VolunteerRegistration> allRegistrations() {
+        return registrationRepository.findAll();
+    }
+
+    /**
+     * Step 2 of the verified sign-up flow: an existing record created in the warning step
+     * is completed with the student's ID card and college approval evidence.
+     */
     @Transactional
-    public VolunteerRegistration register(User user, Integer opportunityId) {
+    public VolunteerRegistration registerVerified(User user, Integer opportunityId, String studentIdNumber,
+                                                  String studentIdImage, String collegeApprovalImage,
+                                                  String collegeName) {
         VolunteerOpportunity opportunity = opportunityRepository.findById(opportunityId)
                 .orElseThrow(() -> new NoSuchElementException("Volunteer opportunity not found"));
 
-        boolean already = registrationRepository.findByUser_Id(user.getId()).stream()
-                .anyMatch(r -> r.getOpportunity().getId().equals(opportunityId));
+        List<VolunteerRegistration> mine = registrationRepository.findByUser_Id(user.getId());
+        boolean already = mine.stream()
+                .anyMatch(r -> r.getOpportunity().getId().equals(opportunityId)
+                        && r.getStatus() != VolunteerStatus.CANCELLED
+                        && r.getStatus() != VolunteerStatus.REJECTED);
         if (already) {
             throw new IllegalStateException("You're already registered for \"" + opportunity.getTitle() + "\".");
         }
 
-        VolunteerRegistration registration = registrationRepository.save(VolunteerRegistration.builder()
-                .user(user).opportunity(opportunity).status(VolunteerStatus.REGISTERED).build());
+        if (studentIdNumber == null || studentIdNumber.isBlank()) {
+            throw new IllegalStateException("Please provide your student ID number so we can verify you as a student.");
+        }
+        if (studentIdImage == null || studentIdImage.isBlank()) {
+            throw new IllegalStateException("Please upload a photo of your student ID card.");
+        }
+        if (collegeApprovalImage == null || collegeApprovalImage.isBlank()) {
+            throw new IllegalStateException("Please upload the signed college approval letter (with the college logo / letterhead).");
+        }
 
-        rewardService.awardPoints(user, 15, "Volunteered for \"" + opportunity.getTitle() + "\"");
-        notificationService.notifyUser(user, "Volunteer registration confirmed",
-                "You're signed up for \"" + opportunity.getTitle() + "\" on " + opportunity.getOpportunityDate() + ".",
+        VolunteerRegistration registration = registrationRepository.save(VolunteerRegistration.builder()
+                .user(user).opportunity(opportunity).status(VolunteerStatus.PENDING_VERIFICATION)
+                .studentIdNumber(studentIdNumber.trim())
+                .studentIdImage(studentIdImage)
+                .collegeApprovalImage(collegeApprovalImage)
+                .collegeName(collegeName == null || collegeName.isBlank() ? null : collegeName.trim())
+                .warningsAccepted(true)
+                .build());
+
+        notificationService.notifyUser(user, "Volunteer verification pending",
+                "We received your application for \"" + opportunity.getTitle() + "\" on " + opportunity.getOpportunityDate()
+                        + ". A coordinator will review your student ID and college approval letter before your seat is confirmed.",
                 NotificationType.VOLUNTEER);
         return registration;
+    }
+
+    /** Admin approves a volunteer's verified documents - seat confirmed + reward points credited. */
+    @Transactional
+    public VolunteerRegistration approve(Integer registrationId, User admin) {
+        requireAdmin(admin);
+        VolunteerRegistration registration = registrationRepository.findById(registrationId)
+                .orElseThrow(() -> new NoSuchElementException("Volunteer registration not found"));
+        if (registration.getStatus() == VolunteerStatus.CONFIRMED) {
+            return registration;
+        }
+        registration.setStatus(VolunteerStatus.CONFIRMED);
+        registrationRepository.save(registration);
+        rewardService.awardPoints(registration.getUser(), 15,
+                "Volunteer verified & confirmed for \"" + registration.getOpportunity().getTitle() + "\"");
+        notificationService.notifyUser(registration.getUser(),
+                "Volunteer seat confirmed",
+                "Your documents were verified. You're confirmed for \"" + registration.getOpportunity().getTitle()
+                        + "\" on " + registration.getOpportunity().getOpportunityDate()
+                        + ". Remember: if you can no longer attend, email us at least 24 hours in advance.",
+                NotificationType.VOLUNTEER);
+        return registration;
+    }
+
+    /** Admin rejects a volunteer whose documents cannot be verified. */
+    @Transactional
+    public VolunteerRegistration reject(Integer registrationId, User admin) {
+        requireAdmin(admin);
+        VolunteerRegistration registration = registrationRepository.findById(registrationId)
+                .orElseThrow(() -> new NoSuchElementException("Volunteer registration not found"));
+        registration.setStatus(VolunteerStatus.REJECTED);
+        registrationRepository.save(registration);
+        notificationService.notifyUser(registration.getUser(),
+                "Volunteer application not verified",
+                "We couldn't verify the documents for \"" + registration.getOpportunity().getTitle()
+                        + "\". You can sign up again with a valid student ID and a college approval letter on official letterhead.",
+                NotificationType.VOLUNTEER);
+        return registration;
+    }
+
+    public List<VolunteerRegistration> pendingVerifications() {
+        return registrationRepository.findByStatusOrderByRegisteredAtDesc(VolunteerStatus.PENDING_VERIFICATION);
+    }
+
+    public long pendingCount() {
+        return registrationRepository.countByStatus(VolunteerStatus.PENDING_VERIFICATION);
     }
 
     public List<VolunteerRegistration> forUser(Integer userId) {
@@ -64,5 +139,12 @@ public class VolunteerService {
 
     public List<VolunteerOpportunity> forCenter(Integer centerId) {
         return opportunityRepository.findByMeditationCenter_Id(centerId);
+    }
+
+    /** Only an ADMIN may approve or reject a volunteer's verification documents. */
+    private void requireAdmin(User admin) {
+        if (admin == null || admin.getRole() != io.virinchi.dhammanature.model.enums.Role.ADMIN) {
+            throw new IllegalStateException("Only an administrator may approve or reject volunteer documents.");
+        }
     }
 }

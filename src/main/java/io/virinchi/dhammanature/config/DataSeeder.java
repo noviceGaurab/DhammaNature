@@ -36,6 +36,8 @@ public class DataSeeder implements CommandLineRunner {
     private final VendorRepository vendorRepository;
     private final ProductRepository productRepository;
     private final BlogPostRepository blogPostRepository;
+    private final DiscussionTopicRepository discussionTopicRepository;
+    private final CommentRepository commentRepository;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -59,6 +61,7 @@ public class DataSeeder implements CommandLineRunner {
             ensureUpcomingDemoContent();
             seedMarketplace();
             seedBlog(admin);
+            seedBlogComments();
         }
     }
 
@@ -239,8 +242,45 @@ public class DataSeeder implements CommandLineRunner {
                 .imageUrl("pexels-ron-lach-10461522.jpg")
                 .author(admin)
                 .authorName(admin.getFullName())
-                .status(BlogStatus.PENDING)
-                .build());
+.status(BlogStatus.PENDING)
+            .build());
+    }
+
+    /** Attaches the classic demonstration comments (John Doe / Jane Smith) to each approved blog post
+     * as real discussion comments so blog replies render through the nested tree (IDEMPOTENT - only runs
+     * per topic when that topic has no comments yet). */
+    private void seedBlogComments() {
+        List<BlogPost> posts = blogPostRepository.findAll().stream()
+                .filter(p -> p.getStatus() == BlogStatus.APPROVED)
+                .toList();
+        for (BlogPost post : posts) {
+            String slug = "blog-" + post.getId();
+            DiscussionTopic topic = discussionTopicRepository.findBySlug(slug).orElseGet(() ->
+                    discussionTopicRepository.save(DiscussionTopic.builder()
+                            .slug(slug)
+                            .title("Comments on \"" + post.getTitle() + "\"")
+                            .category("blog")
+                            .build()));
+            boolean hasComments = !commentRepository.findByTopic_IdAndHiddenFalseOrderByCreatedAtAsc(topic.getId()).isEmpty();
+            if (hasComments) {
+                continue;
+            }
+            Comment john = commentRepository.save(Comment.builder()
+                    .topic(topic)
+                    .name("John Doe")
+                    .email("john.doe@dhammanature.org")
+                    .title("Wise words")
+                    .content("This really resonated with me. The quiet practice of returning to the breath has been transformative lately - thank you for writing it.")
+                    .build());
+            commentRepository.save(Comment.builder()
+                    .topic(topic)
+                    .name("Jane Smith")
+                    .email("jane.smith@dhammanature.org")
+                    .title("Another perspective")
+                    .content("Lovely article! I found the section on letting the mind settle slowly especially helpful. I'd love to read more on this topic.")
+                    .parent(john)
+                    .build());
+        }
     }
 
     private User ensureAdmin() {

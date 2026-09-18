@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Shared top nav for pages that use .nav-link / .dropdown styling (home, gallery, about, etc.) -->
+<nav th:fragment="classicNav">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/about" class="nav-link">About</a>
+
+    <div class="dropdown">
+        <a href="/upcoming-sermons" class="nav-link">Sermons</a>
+        <div class="dropdown-content">
+            <a href="/upcoming-sermons">Upcoming Sermons</a>
+            <a href="/teachings">Teachings</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <a href="/events" class="nav-link">Events</a>
+        <div class="dropdown-content">
+            <a href="/events">Upcoming Events</a>
+            <a href="/centers">Meditation Centers</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <a href="/marketplace" class="nav-link">Explore</a>
+        <div class="dropdown-content">
+            <a href="/marketplace">Marketplace</a>
+            <a href="/gallery">Gallery</a>
+            <a href="/quiz">Quizzes</a>
+            <a href="/rewards">Rewards</a>
+            <a href="/volunteer">Volunteer</a>
+            <a href="/charity">Charity</a>
+            <a href="/community">Community</a>
+            <a href="/discuss">Discuss</a>
+        </div>
+    </div>
+
+    <a href="/blog" class="nav-link">Blog</a>
+    <a href="/contact" class="nav-link">Contact</a>
+    <a href="/profile" class="nav-link profile-nav-link">My Profile <i class="fas fa-user-circle"></i></a><a href="/donate" class="nav-link donate-btn">Donate</a>
+</nav>
+
+<!-- Minimal nav for pages with plain <a> links and a donate button -->
+<nav th:fragment="simpleNav">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/upcoming-sermons">Sermons</a>
+    <a href="/events">Events</a>
+    <a href="/marketplace">Marketplace</a>
+    <a href="/gallery">Gallery</a>
+    <a href="/quiz">Quiz</a>
+    <a href="/rewards">Rewards</a>
+    <a href="/volunteer">Volunteer</a>
+    <a href="/blog">Blog</a>
+    <a href="/contact">Contact</a>
+    <a href="/discuss">Discuss</a>
+    <a href="/profile">Profile</a>
+    <a href="/donate" class="donate-btn">Donate</a>
+</nav>
+
+</body>
+</html>

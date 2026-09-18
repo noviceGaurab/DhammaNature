@@ -59,6 +59,7 @@ public class AdminController {
     private final BookingService bookingService;
     private final QuizService quizService;
     private final QuizAttemptRepository quizAttemptRepository;
+    private final io.virinchi.dhammanature.service.VolunteerService volunteerService;
     private final SessionUserResolver sessionUserResolver;
 
     @GetMapping
@@ -249,14 +250,14 @@ public class AdminController {
     }
 
     @PostMapping("/vendors/{id}/verify")
-    public String verifyVendor(@PathVariable Integer id) {
-        vendorService.verify(id);
+    public String verifyVendor(@PathVariable Integer id, HttpSession session) {
+        vendorService.verify(id, sessionUserResolver.require(session));
         return "redirect:/admin/vendors";
     }
 
     @PostMapping("/vendors/{id}/reject")
-    public String rejectVendor(@PathVariable Integer id) {
-        vendorService.reject(id);
+    public String rejectVendor(@PathVariable Integer id, HttpSession session) {
+        vendorService.reject(id, sessionUserResolver.require(session));
         return "redirect:/admin/vendors";
     }
 
@@ -375,5 +376,28 @@ public class AdminController {
     public String deleteQuiz(@PathVariable Integer id) {
         quizService.delete(id);
         return "redirect:/admin/quizzes";
+    }
+
+    @GetMapping("/volunteers")
+    public String volunteers(Model model) {
+        var pending = volunteerService.pendingVerifications();
+        model.addAttribute("pendingVerifications", pending);
+        model.addAttribute("pendingCount", pending.size());
+        model.addAttribute("confirmedCount", volunteerService.allRegistrations().stream()
+                .filter(r -> r.getStatus() == io.virinchi.dhammanature.model.enums.VolunteerStatus.CONFIRMED)
+                .count());
+        return "admin/volunteers";
+    }
+
+    @PostMapping("/volunteers/{id}/approve")
+    public String approveVolunteer(@PathVariable Integer id, HttpSession session) {
+        volunteerService.approve(id, sessionUserResolver.require(session));
+        return "redirect:/admin/volunteers";
+    }
+
+    @PostMapping("/volunteers/{id}/reject")
+    public String rejectVolunteer(@PathVariable Integer id, HttpSession session) {
+        volunteerService.reject(id, sessionUserResolver.require(session));
+        return "redirect:/admin/volunteers";
     }
 }

@@ -505,10 +505,16 @@
                     .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
                 if (upcoming.length > 0) {
                     if (btn) {
-                        btn.innerHTML = '<i class="fas fa-check"></i> Added';
+                        if (btn.classList.contains('added')) {
+                            btn.classList.remove('added');
+                            btn.innerHTML = '<i class="far fa-calendar-plus"></i> Add to Calendar';
+                            btn.setAttribute('title', 'Add this sermon to your calendar');
+                            window.showSermonToast('Removed "' + upcoming[0].title + '" from your calendar');
+                            return;
+                        }
                         btn.classList.add('added');
-                        btn.disabled = true;
-                        btn.setAttribute('title', 'Added to your calendar');
+                        btn.innerHTML = '<i class="fas fa-check"></i> Added';
+                        btn.setAttribute('title', 'Click again to remove from your calendar');
                     }
                     window.showSermonToast('Added "' + upcoming[0].title + '" (' + upcoming[0].time + ') to your calendar');
                 } else {
@@ -520,10 +526,16 @@
                     .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
                 if (upcoming.length > 0) {
                     if (btn) {
-                        btn.innerHTML = '<i class="fas fa-check"></i> Will be reminded';
+                        if (btn.classList.contains('added')) {
+                            btn.classList.remove('added');
+                            btn.innerHTML = '<i class="far fa-bell"></i> Remind me';
+                            btn.setAttribute('title', 'Get a reminder before the sermon');
+                            window.showSermonToast('Reminder cancelled for "' + upcoming[0].title + '"');
+                            return;
+                        }
                         btn.classList.add('added');
-                        btn.disabled = true;
-                        btn.setAttribute('title', 'You will be reminded before the sermon');
+                        btn.innerHTML = '<i class="fas fa-check"></i> Will be reminded';
+                        btn.setAttribute('title', 'Click again to cancel the reminder');
                     }
                     window.showSermonToast('You will be reminded before "' + upcoming[0].title + '"');
                 } else {

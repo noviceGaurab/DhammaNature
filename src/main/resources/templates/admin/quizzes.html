@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Quizzes</title>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('quizzes')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('Quizzes', 'Create or remove Dhamma quizzes that are live on the site.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Quizzes</h2>
+                    <p>Quizzes you create appear instantly on the public quiz page for members to attempt and earn reward points.</p>
+                </div>
+                <a href="/admin/quizzes/new" class="admin-btn success">
+                    <i class="fa-solid fa-plus"></i>
+                    New Quiz
+                </a>
+            </div>
+
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h3>
+                        <i class="fa-solid fa-brain"></i>
+                        Quiz Records
+                    </h3>
+                    <span class="admin-badge info" th:text="${#lists.size(quizzes)} + ' quizzes'">0 quizzes</span>
+                </div>
+
+                <div class="admin-card-body">
+                    <div class="admin-empty" th:if="${#lists.isEmpty(quizzes)}">
+                        <i class="fa-solid fa-circle-question"></i>
+                        <p>No quizzes yet. Create your first one from the button above.</p>
+                    </div>
+
+                    <div class="admin-table-wrap" th:unless="${#lists.isEmpty(quizzes)}">
+                        <table class="admin-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Reward</th>
+                                <th>Questions</th>
+                                <th>Attempts</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="q : ${quizzes}">
+                                <td th:text="${q.id}">1</td>
+                                <td>
+                                    <strong th:text="${q.title}">Quiz title</strong>
+                                    <div th:if="${q.description}" class="text-muted" style="font-size:12px; max-width:380px;"
+                                         th:text="${q.description}">Description</div>
+                                </td>
+                                <td th:text="${q.rewardPoints} + ' pts'">10 pts</td>
+                                <td th:text="${#lists.size(q.questions)}">0</td>
+                                <td th:text="${attemptCounts[q.id] ?: 0}">0</td>
+                                <td>
+                                    <form method="post" th:action="@{'/admin/quizzes/' + ${q.id} + '/delete'}"
+                                          onsubmit="return confirm('Delete this quiz? Its questions and all member attempts will also be removed.');">
+                                        <button type="submit" class="admin-btn danger">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

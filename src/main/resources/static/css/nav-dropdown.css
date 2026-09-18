@@ -1,0 +1,141 @@
+/* Shared hover dropdown nav - clean, light, modern.
+   Higher specificity than .header-main nav a (22px) so menu links stay small. */
+
+.dropdown,
+.site-dropdown {
+    position: relative;
+}
+
+.dropdown-content,
+.site-dropdown-content {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    min-width: 236px;
+    max-height: 68vh;
+    overflow-y: auto;
+    background: #fffdf8;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14), 0 4px 12px rgba(15, 23, 42, 0.06);
+    z-index: 1000;
+    padding: 8px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    transform-origin: top left;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+/* Small caret above the panel */
+.dropdown-content::before,
+.site-dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 26px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    transform: rotate(45deg);
+    border-radius: 3px 0 0 0;
+}
+
+/* Invisible bridge so the menu stays open while moving the cursor down */
+.dropdown::after,
+.site-dropdown::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 12px;
+}
+
+.dropdown:hover > .dropdown-content,
+.dropdown-content.active,
+.site-dropdown:hover > .site-dropdown-content,
+.site-dropdown-content.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Menu links - beat .header-main nav a (font-size 22px) via higher specificity */
+.header-main nav .dropdown-content a,
+.site-nav .site-dropdown-content a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    color: #1d1a16 !important;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    border-radius: 9px;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.header-main nav .dropdown-content a:hover,
+.site-nav .site-dropdown-content a:hover {
+    background: #fbf1dc;
+    color: #7e211d !important;
+    transform: translateX(3px);
+}
+
+@media (max-width: 992px) {
+    .dropdown-content,
+    .site-dropdown-content {
+        position: static;
+        box-shadow: none;
+        border: none;
+        background: rgba(0, 0, 0, 0.35);
+        max-height: none;
+        transform: none;
+        opacity: 1;
+        display: none;
+        margin-top: 4px;
+        padding: 4px 0 4px 8px;
+        border-radius: 8px;
+    }
+
+    .dropdown-content::before,
+    .site-dropdown-content::before {
+        display: none;
+    }
+
+    .dropdown-content.active,
+    .site-dropdown-content.active {
+        display: block;
+    }
+
+    .dropdown:hover > .dropdown-content,
+    .site-dropdown:hover > .site-dropdown-content {
+        display: none;
+    }
+
+    .dropdown:hover > .dropdown-content.active,
+    .site-dropdown:hover > .site-dropdown-content.active {
+        display: block;
+    }
+
+    /* Mobile drawers keep a dark panel - keep links light for contrast */
+    .header-main nav .dropdown-content a,
+    .site-nav .site-dropdown-content a {
+        padding: 9px 12px;
+        font-size: 14px;
+        color: #fff !important;
+    }
+
+    .header-main nav .dropdown-content a:hover,
+    .site-nav .site-dropdown-content a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffd700 !important;
+        transform: none;
+    }
+}

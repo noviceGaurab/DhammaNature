@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vendor Studio - Dhamma Nature</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; line-height: 1.6; }
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2, .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc, .part3-desc { padding-top: 20px; padding-left: 20px; font-weight: normal; }
+        .part2-desc a, .part3-desc a { color: #fff; text-decoration: none; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .part1, .part2, .part3 { padding-left: 0; } }
+
+        .studio-wrap { max-width: 1080px; margin: 0 auto; padding: 46px 24px 30px; }
+        .studio-hero { text-align: center; margin-bottom: 34px; }
+        .studio-hero .eyebrow { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #9e2b25; font-weight: 700; }
+        .studio-hero h1 { font-size: 34px; color: #1d1a16; margin: 6px 0 8px; }
+        .studio-hero p { color: #666; font-size: 15.5px; max-width: 640px; margin: 0 auto; }
+        .msg-ok, .msg-err { text-align: center; padding: 13px 18px; border-radius: 10px; margin-bottom: 26px; font-size: 14.5px; }
+        .msg-ok { background: #e6f4ea; color: #006015; }
+        .msg-err { background: #fdecea; color: #7e211d; }
+
+        .studio-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 26px; align-items: start; }
+        @media (max-width: 860px) { .studio-grid { grid-template-columns: 1fr; } }
+
+        .card { background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 26px; box-shadow: 0 6px 20px rgba(0,0,0,.06); }
+        .card h2 { font-size: 20px; color: #1d1a16; display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .card h2 i { color: #008000; }
+        .card .sub { font-size: 13.5px; color: #777; margin-bottom: 18px; }
+
+        .vs-badge { display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+        .vs-badge.ok { background: #e6f4ea; color: #006015; }
+        .vs-badge.warn { background: #fff3cd; color: #8a6d1a; }
+        .vendor-name { font-size: 18px; font-weight: 800; color: #1d1a16; margin: 10px 0 4px; }
+        .vendor-meta { font-size: 13.5px; color: #777; margin-bottom: 14px; }
+        .status-note { font-size: 13.5px; color: #555; background: #f8f9fa; border: 1px dashed #ddd; border-radius: 10px; padding: 12px 14px; }
+
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+        @media (max-width: 520px) { .stats-row { grid-template-columns: 1fr; } }
+        .stat { background: #f8f9fa; border: 1px solid #eee; border-radius: 12px; padding: 14px 8px; text-align: center; }
+        .stat b { font-size: 22px; color: #1d1a16; display: block; line-height: 1.2; }
+        .stat span { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: .5px; }
+
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 6px; }
+        @media (max-width: 860px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+        .step { background: #f8f9fa; border: 1px solid #eee; border-radius: 12px; padding: 18px; }
+        .step .step-num { font-size: 11px; font-weight: 800; color: #008000; text-transform: uppercase; letter-spacing: .4px; }
+        .step i { font-size: 20px; color: #9e2b25; margin: 8px 0; display: block; }
+        .step b { font-size: 15px; color: #1d1a16; display: block; margin-bottom: 4px; }
+        .step p { font-size: 13px; color: #666; }
+
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+        .btn-green { background: #008000; color: #fff; }
+        .btn-green:hover { background: #006015; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,128,0,.25); }
+        .btn-gold { background: #ffd700; color: #1d1a16; }
+        .btn-gold:hover { background: #ffe14d; transform: translateY(-1px); }
+        .btn-block { width: 100%; justify-content: center; }
+        .btn[disabled] { opacity: .6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        .apply-form { display: flex; flex-direction: column; gap: 12px; }
+        .apply-row { display: flex; flex-direction: column; gap: 4px; }
+        .apply-row label { font-size: 12.5px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .4px; }
+        .apply-row input { padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
+        .apply-row input:focus { border-color: #008000; box-shadow: 0 0 0 3px rgba(0,128,0,.08); }
+        .apply-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 4px 0 16px; }
+        @media (max-width: 860px) { .apply-steps { grid-template-columns: repeat(2, 1fr); } }
+        .apply-steps .step-mini { background: #f8f9fa; border: 1px solid #eee; border-radius: 10px; padding: 10px; font-size: 12.5px; color: #444; text-align: center; }
+        .apply-steps .step-mini .step-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #008000; color: #fff; font-size: 11px; font-weight: 800; margin: 0 5px 0 0; }
+        .apply-divider { display: flex; align-items: center; gap: 10px; margin-top: 6px; padding-bottom: 4px; border-bottom: 1px solid #eee; font-weight: 800; color: #1d1a16; font-size: 15px; }
+        .apply-divider i { color: #008000; }
+        .doc-row { display: flex; align-items: flex-start; gap: 8px; border: 1px dashed #cfd6cf; border-radius: 12px; padding: 12px; background: #fbfdfb; }
+        .doc-fields { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+        .doc-fields select, .doc-fields input.doc-note { padding: 9px 11px; border: 1px solid #ddd; border-radius: 9px; font-size: 13px; font-family: inherit; outline: none; }
+        .doc-fields select:focus, .doc-fields input.doc-note:focus { border-color: #008000; }
+        .doc-file-btn { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid #008000; border-radius: 24px; color: #006015; font-size: 13px; font-weight: 700; cursor: pointer; background: #e6f4ea; transition: background .2s; max-width: 100%; }
+        .doc-file-btn:hover { background: #cdebd4; }
+        .doc-file-btn input[type="file"] { display: none; }
+        .doc-file-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .doc-remove { flex: 0 0 auto; width: 30px; height: 30px; border: none; background: #fdecea; color: #8f2a23; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+        .doc-remove:hover { background: #f8d9d6; }
+        .doc-list { display: flex; flex-direction: column; gap: 10px; }
+        .doc-empty { font-size: 13px; color: #777; background: #f8f9fa; border: 1px dashed #ddd; border-radius: 10px; padding: 10px 12px; }
+        .doc-status-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid #e7efe7; border-radius: 10px; background: #fbfdfb; margin-top: 6px; }
+        .doc-chip { display: inline-flex; align-items: center; gap: 6px; background: #e6f4ea; color: #006015; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+        .doc-name { font-size: 12.5px; color: #555; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+        .prod-card { border: 1px solid #eee; border-radius: 14px; overflow: hidden; background: #fff; transition: transform .2s, box-shadow .2s; }
+        .prod-card:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.1); }
+        .prod-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+        .prod-card .pc-body { padding: 14px; }
+        .prod-card .pc-name { font-weight: 700; font-size: 15px; color: #1d1a16; }
+        .prod-card .pc-cat { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #008000; font-weight: 700; margin: 3px 0 6px; }
+        .prod-card .pc-genre { font-size: 12px; color: #9e2b25; font-style: italic; margin: 2px 0 6px; }
+        .prod-card .pc-price { font-weight: 800; color: #006015; }
+        .prod-card .pc-stock { font-size: 12px; color: #888; margin-top: 2px; }
+        .prod-card .pc-actions { display: flex; gap: 8px; padding: 8px 12px 14px; }
+        .prod-card .pc-actions a, .prod-card .pc-actions button {
+            flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 8px 10px; border-radius: 24px; font-size: 12.5px; font-weight: 700;
+            text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: background .2s, transform .2s;
+        }
+        .prod-card .pc-actions .btn-edit { background: #e6f4ea; color: #006015; }
+        .prod-card .pc-actions .btn-edit:hover { background: #cdebd4; transform: translateY(-1px); }
+        .prod-card .pc-actions .btn-del { background: #fdecea; color: #8f2a23; }
+        .prod-card .pc-actions .btn-del:hover { background: #f8d9d6; transform: translateY(-1px); }
+        .empty-prods { text-align: center; color: #888; font-size: 14px; padding: 26px 10px; border: 1px dashed #ddd; border-radius: 12px; background: #fff; }
+        .count-chip { font-size: 12px; font-weight: 700; color: #006015; background: #e6f4ea; padding: 2px 10px; border-radius: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Vendor Studio">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">VENDOR STUDIO</h1>
+                <p>Sell authentic Dhamma products to the community</p>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+    <main class="studio-wrap">
+        <div class="studio-hero">
+            <div class="eyebrow">Seller dashboard</div>
+            <h1>Vendor Studio</h1>
+            <p>Apply to sell, track your application, and manage the products you list for the Dhamma community.</p>
+        </div>
+        <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
+        <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+
+        /* Not a vendor yet */
+        <section class="card" th:if="${vendor == null}">
+            <h2><i class="fa-solid fa-store"></i> Become a vendor</h2>
+            <p class="sub">List authentic Dhamma products - prayer beads, incense, books, statues, meditation accessories and handicrafts. Applications are reviewed by an administrator.</p>
+
+            <div class="apply-steps">
+                <div class="step-mini"><span class="step-num">1</span> Tell us about your shop</div>
+                <div class="step-mini"><span class="step-num">2</span> Upload proof &amp; evidence</div>
+                <div class="step-mini"><span class="step-num">3</span> Admin verifies you</div>
+                <div class="step-mini"><span class="step-num">4</span> Your products go live</div>
+            </div>
+
+            <form class="apply-form" method="post" action="/vendor/studio/apply" enctype="multipart/form-data">
+                <div class="apply-row">
+                    <label for="vendorName">Shop / vendor name *</label>
+                    <input type="text" id="vendorName" name="vendorName" placeholder="e.g. Bodhi Handcrafts" required>
+                </div>
+                <div class="apply-row">
+                    <label for="contactDetails">Contact details</label>
+                    <input type="text" id="contactDetails" name="contactDetails" placeholder="Email or phone customers can reach you at">
+                </div>
+                <div class="apply-row">
+                    <label for="address">Address / city</label>
+                    <input type="text" id="address" name="address" placeholder="Physical shop location, if any">
+                </div>
+
+                <div class="apply-divider">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Evidence documents</span>
+                </div>
+                <p class="sub" style="margin-top:2px;">To keep the marketplace trustworthy, please upload documents that prove your shop is genuine - for example a business registration, tax identification (TIN), a lease or utility bill for your shop location, your government ID, or photos of past work. At least one document is required.</p>
+
+                <div class="doc-list" id="docList">
+                    <div class="doc-row" data-doc-index="0">
+                        <div class="doc-fields">
+                            <select name="docTypes" class="doc-type">
+                                <option value="BUSINESS_REGISTRATION">Business registration</option>
+                                <option value="TAX_ID">Tax identification / TIN</option>
+                                <option value="SHOP_LOCATION">Shop location proof (lease, utility bill)</option>
+                                <option value="IDENTITY">Government ID of the owner</option>
+                                <option value="PAST_WORK">Past work / portfolio / references</option>
+                                <option value="OTHER">Other supporting evidence</option>
+                            </select>
+                            <input type="text" name="docNotes" class="doc-note" placeholder="Short note (optional) - what does this file prove?">
+                            <label class="doc-file-btn">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <span class="doc-file-label">Choose file...</span>
+                                <input type="file" name="documents" class="doc-input" accept="image/*,.pdf">
+                            </label>
+                        </div>
+                        <button type="button" class="doc-remove" title="Remove document"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-gold btn-block" id="addDocBtn" style="margin-bottom:10px;"><i class="fa-solid fa-plus"></i> Add another document</button>
+
+                <div class="doc-hint" id="docHint" style="display:none; color:#7e211d; font-size:13px; margin-bottom:10px;">Please upload at least one evidence document.</div>
+
+                <button type="submit" class="btn btn-green btn-block"><i class="fa-solid fa-paper-plane"></i> Submit application</button>
+            </form>
+        </section>
+
+        <!-- Vendor dashboard -->
+        <div class="studio-grid" th:if="${vendor != null}">
+            <!-- Seller overview -->
+            <section class="card">
+                <h2><i class="fa-solid fa-user-shield"></i> Seller overview</h2>
+                <p class="sub">Your shop identity and account standing.</p>
+                <span class="vs-badge ok" th:if="${vendor.verified}"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                <span class="vs-badge warn" th:unless="${vendor.verified}"><i class="fa-solid fa-clock"></i> Pending verification</span>
+                <div class="vendor-name" th:text="${vendor.vendorName}">Vendor</div>
+                <div class="vendor-meta">
+                    <span th:text="${vendor.contactDetails != null ? vendor.contactDetails : ''}"></span>
+                    <span th:if="${vendor.address != null}" th:text="' · ' + ${vendor.address}"></span>
+                </div>
+                <div class="stats-row">
+                    <div class="stat"><b th:text="${productCount}">0</b><span>Products</span></div>
+                    <div class="stat"><b th:text="${categoryCount}">0</b><span>Categories</span></div>
+                    <div class="stat"><b th:text="${totalStock}">0</b><span>Items in stock</span></div>
+                </div>
+                <p class="status-note" th:unless="${vendor.verified}">
+                    <i class="fa-solid fa-circle-info"></i>
+                    An administrator is reviewing your application. <b>Listing unlocks once your account is verified.</b>
+                </p>
+                <p class="status-note" th:if="${vendor.verified}">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Your shop is live - products you add are visible to the whole community on the marketplace.
+                </p>
+
+                <div class="vendor-docs" th:if="${!vendor.verified}">
+                    <h3 style="font-size:15px; color:#1d1a16; display:flex; align-items:center; gap:8px; margin:14px 0 8px;">
+                        <i class="fa-solid fa-folder-open" style="color:#008000;"></i> Submitted evidence
+                    </h3>
+                    <p th:if="${#lists.isEmpty(myDocuments)}" class="doc-empty">
+                        No documents uploaded yet. If you submitted your application before the evidence form was added, please note that the admin may contact you for proof.
+                    </p>
+                    <div class="doc-status-row" th:each="d : ${myDocuments}">
+                        <span class="doc-chip"><i class="fa-solid fa-file-circle-check"></i><span th:text="${d.docType.displayName}">Document</span></span>
+                        <span class="doc-name" th:text="${d.originalName}">file.pdf</span>
+                    </div>
+                    <a class="btn btn-gold btn-block" style="margin-top:10px;" href="/vendor/studio" th:title="Documents can be viewed by the administrator">
+                        <i class="fa-solid fa-eye"></i> Review my documents
+                    </a>
+                </div>
+            </section>
+
+            <!-- Catalogue -->
+            <section class="card">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
+                    <h2 style="margin:0;"><i class="fa-solid fa-tags"></i> Your catalogue</h2>
+                    <span class="count-chip" th:text="${productCount} + ' product(s)'">0 products</span>
+                </div>
+                <p class="sub" style="margin-top:4px;"><span th:text="${vendor.vendorName}">Vendor</span> - items you sell, with a photo, price, category and genre.</p>
+
+                <p class="empty-prods" th:if="${#lists.isEmpty(myProducts)}" style="margin-bottom:18px;">No products yet - use "Add a product" once your shop is verified.</p>
+                <div class="prod-grid" th:unless="${#lists.isEmpty(myProducts)}" style="margin-bottom:18px;">
+                    <article class="prod-card" th:each="p : ${myProducts}">
+                        <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}">
+                        <img th:unless="${p.imageData != null}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" th:alt="${p.productName}">
+                        <div class="pc-body">
+                            <div class="pc-name" th:text="${p.productName}">Product name</div>
+                            <div class="pc-cat" th:text="${p.category.displayName}">Category</div>
+                            <div class="pc-genre" th:if="${p.genre}" th:text="${p.genre}">Genre</div>
+                            <div class="pc-price" th:text="'$' + ${#numbers.formatDecimal(p.price, 1, 2)}">$0.00</div>
+                            <div class="pc-stock" th:text="${p.stockQuantity} + ' in stock'">0 in stock</div>
+                        </div>
+                        <div class="pc-actions">
+                            <a th:href="@{'/vendor/studio/products/' + ${p.id} + '/edit'}" class="btn-edit" title="Edit product"><i class="fa-solid fa-pen"></i> Edit</a>
+                            <form method="post" th:action="@{'/vendor/studio/products/' + ${p.id} + '/delete'}"
+                                  onsubmit="return confirm('Delete this product from your catalogue? This cannot be undone.');">
+                                <button type="submit" class="btn-del" title="Delete product"><i class="fa-solid fa-trash-can"></i> Delete</button>
+                            </form>
+                        </div>
+                    </article>
+                </div>
+
+                <a th:if="${vendor.verified}" href="/vendor/studio/products/add" class="btn btn-green btn-block"><i class="fa-solid fa-plus"></i> Add a product</a>
+                <button type="button" class="btn btn-green btn-block" th:unless="${vendor.verified}" disabled title="Available once your vendor account is verified"><i class="fa-solid fa-lock"></i> Add a product (unlocks after approval)</button>
+            </section>
+        </div>
+
+        <!-- How selling works -->
+        <section class="card" th:if="${vendor != null}" style="margin-top:26px;">
+            <h2><i class="fa-solid fa-circle-question"></i> How selling works</h2>
+            <p class="sub">Four simple steps from application to your first sale.</p>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-num">Step 1</span>
+                    <i class="fa-solid fa-file-pen"></i>
+                    <b>Apply</b>
+                    <p>Submit your vendor application with your shop name and contact details. Applications are reviewed by an administrator.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">Step 2</span>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <b>Get verified</b>
+                    <p>You'll see your status right here. Once approved, your shop goes live on the marketplace.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">Step 3</span>
+                    <i class="fa-solid fa-box-open"></i>
+                    <b>List products</b>
+                    <p>Add items with a photo, price, category, genre and description. Manage them all from your catalogue.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">Step 4</span>
+                    <i class="fa-solid fa-gem"></i>
+                    <b>Sell &amp; earn</b>
+                    <p>The community buys from your shop and earns reward points. Track stock and grow your catalogue over time.</p>
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align:center; margin-top:28px;">
+            <a href="/marketplace" class="btn btn-gold"><i class="fa-solid fa-store"></i> View marketplace</a>
+            <a href="/profile" class="btn btn-gold" style="margin-left:10px;"><i class="fa-solid fa-user"></i> Back to profile</a>
+        </div>
+    </main>
+
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+        <div class="part3">
+            <h2>HELP &amp; SUPPORT</h2>
+            <div class="part3-desc">
+                <h4><a href="/contact">Contact Us</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-sec2">
+        <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+            <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+                <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+                <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+                    }, 0);
+                });
+            }
+
+            // ===== Vendor application - document upload rows =====
+            var docList = document.getElementById('docList');
+            var addBtn = document.getElementById('addDocBtn');
+            if (docList && addBtn) {
+                function updateFileLabel(input) {
+                    var label = input.closest('.doc-file-btn').querySelector('.doc-file-label');
+                    if (label) label.textContent = input.files.length ? input.files[0].name : 'Choose file...';
+                }
+                function attachRow(row) {
+                    var input = row.querySelector('.doc-input');
+                    if (input) input.addEventListener('change', function () { updateFileLabel(input); });
+                    var remove = row.querySelector('.doc-remove');
+                    if (remove) remove.addEventListener('click', function () {
+                        var count = docList.querySelectorAll('.doc-row').length;
+                        if (count > 1 || confirm('Remove this document?')) row.remove();
+                    });
+                }
+                docList.querySelectorAll('.doc-row').forEach(attachRow);
+
+                addBtn.addEventListener('click', function () {
+                    var template = docList.querySelector('.doc-row');
+                    if (!template) return;
+                    var idx = docList.querySelectorAll('.doc-row').length;
+                    var clone = template.cloneNode(true);
+                    clone.querySelector('.doc-input').value = '';
+                    clone.querySelector('.doc-note').value = '';
+                    clone.querySelector('.doc-file-label').textContent = 'Choose file...';
+                    clone.querySelector('.doc-type').selectedIndex = 0;
+                    attachRow(clone);
+                    docList.appendChild(clone);
+                });
+            }
+
+            // Enforce at least one document before submitting
+            var applyForm = document.querySelector('form.apply-form');
+            if (applyForm && docList) {
+                applyForm.addEventListener('submit', function (e) {
+                    var anyFile = Array.from(docList.querySelectorAll('.doc-input')).some(function (i) { return i.files.length > 0; });
+                    if (!anyFile) {
+                        e.preventDefault();
+                        var hint = document.getElementById('docHint');
+                        if (hint) hint.style.display = 'block';
+                        docList.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

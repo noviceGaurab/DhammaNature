@@ -29,6 +29,21 @@ public class VolunteerRegistration {
     @Builder.Default
     private VolunteerStatus status = VolunteerStatus.REGISTERED;
 
+    @Column(length = 100)
+    private String studentIdNumber;
+
+    @Column(length = 255)
+    private String studentIdImage;
+
+    @Column(length = 255)
+    private String collegeApprovalImage;
+
+    @Column(length = 150)
+    private String collegeName;
+
+    @Builder.Default
+    private boolean warningsAccepted = false;
+
     @Column(updatable = false)
     private LocalDateTime registeredAt;
 

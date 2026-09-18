@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="pagination(pageBase, page, totalPages)">
+  <nav class="pag-nav" th:if="${totalPages > 1}" aria-label="Pagination">
+    <a class="pag-link" th:if="${page > 1}" th:href="@{${pageBase}(page=${page - 1})}">
+      <i class="fas fa-chevron-left"></i> Prev
+    </a>
+    <a class="pag-link"
+       th:each="n : ${#numbers.sequence(1, totalPages)}"
+       th:href="@{${pageBase}(page=${n})}"
+       th:text="${n}"
+       th:classappend="${n == page} ? ' active'">1</a>
+    <a class="pag-link" th:if="${page < totalPages}" th:href="@{${pageBase}(page=${page + 1})}">
+      Next <i class="fas fa-chevron-right"></i>
+    </a>
+  </nav>
+</th:block>
+</body>
+</html>

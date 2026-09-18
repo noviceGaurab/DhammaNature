@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Volunteers</title>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('volunteers')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('Volunteer Verification', 'Verify each applicant is a genuine student before a seat is held - review the student ID and the college approval letter.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Volunteers</h2>
+                    <p>Only verified students are given a volunteer seat. Check the student ID card and the college approval letter - the official college logo / stamp is what proves a document is genuine and cannot be typed up by anyone.</p>
+                </div>
+            </div>
+
+            <section class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon warn"><i class="fa-solid fa-clock"></i></div>
+                    <h3 th:text="${pendingCount}">0</h3>
+                    <p>Pending Verification</p>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon ok"><i class="fa-solid fa-circle-check"></i></div>
+                    <h3 th:text="${confirmedCount}">0</h3>
+                    <p>Confirmed</p>
+                </div>
+            </section>
+
+            <div class="admin-card" th:if="${#lists.isEmpty(pendingVerifications)}">
+                <div class="admin-card-body">
+                    <div class="admin-empty">
+                        <i class="fa-solid fa-hands-holding-circle"></i>
+                        <p>No volunteer applications waiting for verification.</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="admin-card" th:each="r : ${pendingVerifications}" th:unless="${#lists.isEmpty(pendingVerifications)}">
+                <div class="admin-card-header vendor-card-header">
+                    <h3>
+                        <i class="fa-solid fa-id-badge"></i>
+                        <span th:text="${r.user.fullName} + ' - ' + ${r.opportunity.title}">Volunteer</span>
+                    </h3>
+                    <div class="vendor-header-right">
+                        <span class="admin-badge warning"><i class="fa-solid fa-clock"></i> Pending verification</span>
+                        <span class="admin-badge info" th:text="${#temporals.format(r.registeredAt, 'dd MMM yyyy HH:mm')}">Date</span>
+                    </div>
+                </div>
+
+                <div class="admin-card-body">
+                    <div class="vendor-meta-grid">
+                        <div><span class="meta-label">Student ID</span><span th:text="${r.studentIdNumber}">ID</span></div>
+                        <div><span class="meta-label">College</span><span th:text="${r.collegeName != null ? r.collegeName : 'Not provided'}">College</span></div>
+                        <div><span class="meta-label">Opportunity</span><span th:text="${r.opportunity.title} + ' (' + ${r.opportunity.opportunityDate} + ')'">Opportunity</span></div>
+                        <div><span class="meta-label">Location</span><span th:text="${r.opportunity.location != null ? r.opportunity.location : r.opportunity.meditationCenter.name}">Location</span></div>
+                    </div>
+
+                    <div class="vendor-doc-grid" style="grid-template-columns:1fr 1fr;">
+                        <div class="vdoc">
+                            <div class="vdoc-top">
+                                <span class="admin-badge info">Student ID card</span>
+                                <span class="admin-badge success" th:if="${r.studentIdImage != null}"><i class="fa-solid fa-circle-check"></i> Uploaded</span>
+                            </div>
+                            <div class="vdoc-file is-image" th:if="${r.studentIdImage != null}">
+                                <a th:href="@{'/uploads/' + ${r.studentIdImage}}" target="_blank">
+                                    <img th:src="@{'/uploads/' + ${r.studentIdImage}}" alt="Student ID" style="max-width:100%; border-radius:8px;">
+                                </a>
+                            </div>
+                            <div class="admin-empty small" th:if="${r.studentIdImage == null}">
+                                <p>No student ID uploaded.</p>
+                            </div>
+                        </div>
+                        <div class="vdoc">
+                            <div class="vdoc-top">
+                                <span class="admin-badge info">College approval letter</span>
+                                <span class="admin-badge success" th:if="${r.collegeApprovalImage != null}"><i class="fa-solid fa-circle-check"></i> Uploaded</span>
+                            </div>
+                            <div class="vdoc-file is-image" th:if="${r.collegeApprovalImage != null}">
+                                <a th:href="@{'/uploads/' + ${r.collegeApprovalImage}}" target="_blank">
+                                    <img th:src="@{'/uploads/' + ${r.collegeApprovalImage}}" alt="College approval letter" style="max-width:100%; border-radius:8px;">
+                                </a>
+                            </div>
+                            <div class="admin-empty small" th:if="${r.collegeApprovalImage == null}">
+                                <p>No college approval letter uploaded.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vendor-scam-banner">
+                        <div class="scam-title"><i class="fa-solid fa-shield-heart"></i> Verification checklist</div>
+                        <p class="scam-copy">
+                            Does the student ID show the applicant's name and a plausible institution? Does the approval letter carry the <strong>college logo / letterhead / official stamp</strong> (a plain typed note with no logo can be forged by anyone) and mention this specific opportunity or volunteering in general? Does the applicant match the account name? Red flags: no logo, mismatched name on the card vs. the account, blurry or screenshot-only files.
+                        </p>
+                    </div>
+
+                    <div class="vendor-actions">
+                        <form method="post" th:action="@{'/admin/volunteers/' + ${r.id} + '/approve'}">
+                            <button type="submit" class="admin-btn success">
+                                <i class="fa-solid fa-check"></i> Verify &amp; confirm seat
+                            </button>
+                        </form>
+                        <form method="post" th:action="@{'/admin/volunteers/' + ${r.id} + '/reject'}"
+                              onsubmit="return confirm('Reject this volunteer\'s documents? The seat will not be held and the applicant can re-apply.');">
+                            <button type="submit" class="admin-btn danger">
+                                <i class="fa-solid fa-user-slash"></i> Reject
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

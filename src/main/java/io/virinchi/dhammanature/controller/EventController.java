@@ -2,7 +2,6 @@ package io.virinchi.dhammanature.controller;
 
 import io.virinchi.dhammanature.config.SessionUserResolver;
 import io.virinchi.dhammanature.model.enums.PaymentMethod;
-import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.SessionMode;
 import io.virinchi.dhammanature.service.BookingService;
 import io.virinchi.dhammanature.service.EventService;
@@ -13,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /** FR-04: Event Management + FR-03/NFR-02: booking with hybrid session mode. */
@@ -56,15 +58,68 @@ public class EventController {
     public String book(@PathVariable Integer id,
                         @RequestParam(defaultValue = "PHYSICAL") SessionMode mode,
                         @RequestParam(defaultValue = "1") int attendees,
-                        @RequestParam(required = false) PaymentMethod paymentMethod,
-                        @RequestParam(defaultValue = "0") int pointsToUse,
-                        HttpSession session, RedirectAttributes redirectAttributes) {
+                        HttpSession session, Model model) {
         return sessionUserResolver.resolve(session)
                 .map(user -> {
-                    var booking = bookingService.book(user, id, mode, attendees,
-                            paymentMethod, pointsToUse);
-                    redirectAttributes.addFlashAttribute("bookingId", booking.getId());
-                    return "redirect:/events/confirmed";
+                    var event = eventService.get(id);
+                    model.addAttribute("event", event);
+                    model.addAttribute("mode", mode);
+                    model.addAttribute("attendees", attendees);
+                    model.addAttribute("relatedEvents", eventService.upcoming().stream()
+                            .filter(e -> !e.getId().equals(id))
+                            .limit(3)
+                            .toList());
+                    return "event-booking";
+                })
+                .orElse("redirect:/login");
+    }
+
+    @PostMapping("/events/{id}/book/confirm")
+    public String bookConfirm(@PathVariable Integer id,
+                              @RequestParam(defaultValue = "PHYSICAL") SessionMode mode,
+                              @RequestParam(defaultValue = "1") int attendees,
+                              @RequestParam(required = false) PaymentMethod paymentMethod,
+                              @RequestParam(defaultValue = "0") int pointsToUse,
+                              @RequestParam(required = false) String[] items,
+                              @RequestParam(required = false) String itemsOther,
+                              @RequestParam(required = false) String credential,
+                              @RequestParam(required = false) String agreement,
+                              HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        return sessionUserResolver.resolve(session)
+                .map(user -> {
+                    var event = eventService.get(id);
+                    model.addAttribute("event", event);
+                    model.addAttribute("mode", mode);
+                    model.addAttribute("attendees", attendees);
+                    model.addAttribute("paymentMethod", paymentMethod);
+                    model.addAttribute("pointsToUse", pointsToUse);
+                    model.addAttribute("credential", credential);
+                    model.addAttribute("otherItems", itemsOther);
+                    model.addAttribute("relatedEvents", eventService.upcoming().stream()
+                            .filter(e -> !e.getId().equals(id))
+                            .limit(3)
+                            .toList());
+                    if (credential == null || credential.isBlank()) {
+                        model.addAttribute("error", "Please provide a proper credential (e.g. student or member ID) before booking.");
+                        return "event-booking";
+                    }
+                    if (agreement == null || !"on".equalsIgnoreCase(agreement)) {
+                        model.addAttribute("error", "Please accept the etiquette and rules agreement to attend this event.");
+                        return "event-booking";
+                    }
+                    List<String> allItems = new ArrayList<>();
+                    if (items != null) allItems.addAll(Arrays.asList(items));
+                    if (itemsOther != null && !itemsOther.isBlank()) allItems.add(itemsOther.trim());
+                    String itemsToBring = allItems.isEmpty() ? null : String.join(", ", allItems);
+                    try {
+                        var booking = bookingService.book(user, id, mode, attendees,
+                                paymentMethod, pointsToUse, itemsToBring, credential, true);
+                        redirectAttributes.addFlashAttribute("bookingId", booking.getId());
+                        return "redirect:/events/confirmed";
+                    } catch (IllegalStateException e) {
+                        model.addAttribute("error", e.getMessage());
+                        return "event-booking";
+                    }
                 })
                 .orElse("redirect:/login");
     }

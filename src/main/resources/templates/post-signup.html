@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're In - Dhamma Nature</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; line-height: 1.7; background: #f9fafb; }
+        .success-wrap { max-width: 1150px; margin: 0 auto; padding: 50px 24px 20px; }
+        .success-hero { background: linear-gradient(120deg, #7e211d, #9e2b25); color: #fff; text-align: center; padding: 46px 24px; border-radius: 16px; margin-bottom: 34px; }
+        .success-hero .badge { display: inline-block; background: #ffd700; color: #fff; font-weight: 800; letter-spacing: 1px; font-size: 12px; padding: 6px 18px; border-radius: 30px; margin-bottom: 14px; }
+        .success-hero h2 { font-family: 'Gentium Plus', serif; font-size: 32px; margin-bottom: 8px; }
+        .success-hero p { font-size: 16px; opacity: .92; }
+        .success-hero .cta-row { margin-top: 22px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .btn-cta { display: inline-block; padding: 13px 28px; border-radius: 40px; font-weight: 800; text-decoration: none; background: #ffd700; color: #fff; border: 2px solid #ffd700; transition: all .25s; text-transform: uppercase; font-size: 12px; letter-spacing: .6px; }
+        .btn-cta.outline { background: transparent; }
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+        .steps-wrap h2 { text-align: center; font-family: 'Gentium Plus', serif; font-size: 34px; color: #1d1a16; margin-bottom: 8px; }
+        .steps-wrap .sub { text-align: center; color: #888; margin-bottom: 40px; }
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .step { background: #fffdf9; border: 1px solid #f5efe3; border-radius: 16px; padding: 28px; transition: transform .25s, box-shadow .25s; }
+        .step:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(40,35,25,.12); }
+        .step .num { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #ffd700; color: #fff; font-weight: 900; margin-bottom: 14px; }
+        .step h3 { font-size: 19px; color: #1d1a16; margin-bottom: 8px; }
+        .step p { color: #666; font-size: 15px; line-height: 1.65; }
+        .step a { color: #ffd700; font-weight: 700; text-decoration: none; display: inline-block; margin-top: 10px; }
+        .step a:hover { text-decoration: underline; }
+        .center-cta { text-align: center; padding: 30px 0 60px; }
+        .center-cta a { color: #9e2b25; font-weight: 700; text-decoration: none; }
+        .center-cta a:hover { text-decoration: underline; }
+        /* Footer (matches home / blog layout) */
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .part3-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part3-desc a:hover { color: #ffd700; }
+        @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .part1-desc { width: auto; } .part2, .part3 { padding-left: 0; } .part2-desc a, .part3-desc a { display: inline-block; margin: 2px 6px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Dhamma Nature">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">YOU'RE ALL SET</h1>
+                <p>Your account is ready &mdash; begin your journey today</p>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="success-wrap">
+            <section class="success-hero">
+                <span class="badge">ACCOUNT CREATED</span>
+                <h2>Welcome to the Dhamma Nature community!</h2>
+                <p>Your account is ready. Now that you're in, here's what to do next to get the most out of your journey.</p>
+                <div class="cta-row">
+                    <a href="/login" class="btn-cta">Log in to your account</a>
+                    <a href="/" class="btn-cta outline">Explore the home page</a>
+                </div>
+            </section>
+            <section class="steps-wrap">
+                <h2>What to do next</h2>
+                <p class="sub">Simple steps to begin, learn and grow with us.</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="num">1</div>
+                        <h3>Log in to your account</h3>
+                        <p>Your profile lets you save your wishlist, track reward points, view your event bookings and manage your details in one place.</p>
+                        <a href="/login">Go to login &rarr;</a>
+                    </div>
+                    <div class="step">
+                        <div class="num">2</div>
+                        <h3>Complete your profile</h3>
+                        <p>Add your details and preferences in My Profile so we can tailor events, sermons and marketplace suggestions to you.</p>
+                        <a href="/profile">Open my profile &rarr;</a>
+                    </div>
+                    <div class="step">
+                        <div class="num">3</div>
+                        <h3>Find your starting point</h3>
+                        <p>Take a Dhamma quiz to check your understanding, then browse sermons and teachings to connect with the paths that call to you.</p>
+                        <a href="/quiz">Take a quiz &rarr;</a>
+                    </div>
+                    <div class="step">
+                        <div class="num">4</div>
+                        <h3>Join an event or volunteer</h3>
+                        <p>Attend upcoming events and retreats at our meditation centers, or lend a hand as a volunteer and earn reward points for every booking.</p>
+                        <a href="/events">See upcoming events &rarr;</a>
+                    </div>
+                    <div class="step">
+                        <div class="num">5</div>
+                        <h3>Shop &amp; give back</h3>
+                        <p>Visit the marketplace for books, malas and mindful goods, and support our charity campaigns when you can.</p>
+                        <a href="/marketplace">Visit the marketplace &rarr;</a>
+                    </div>
+                    <div class="step">
+                        <div class="num">6</div>
+                        <h3>Stay connected</h3>
+                        <p>Read the blog, join community discussions and follow us on social media to keep the practice alive between visits.</p>
+                        <a href="/blog">Read the blog &rarr;</a>
+                    </div>
+                </div>
+            </section>
+            <div class="center-cta">
+                <p>Need help getting started? <a href="/contact">Contact us</a> &middot; <a href="/login">Log in now</a></p>
+            </div>
+        </div>
+    </main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+        <div class="part3">
+            <h2>HELP &amp; SUPPORT</h2>
+            <div class="part3-desc">
+                <h4><a href="/contact">Contact Us</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-sec2">
+        <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+            <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+                <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+                <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Recursive comment node for a blog article (top-level comments + nested replies). -->
+<div class="comment" th:fragment="blogCommentNode(c, postId)">
+    <div class="meta">
+        <span class="comment-avatar" th:classappend="${c.profileImage != null} ? 'has-img' : ''">
+            <img th:if="${c.profileImage}" th:src="${c.profileImage}" alt="avatar"/>
+            <span th:unless="${c.profileImage}" th:text="${c.authorInitial}">N</span>
+        </span>
+        <strong th:text="${c.authorName}">Name</strong>
+        <span th:text="${#temporals.format(c.createdAt, 'dd MMM yyyy, HH:mm')}">Date</span>
+        <span class="comment-tag" th:if="${c.authorId != null}">sangha member</span>
+        <span class="comment-tag" th:if="${c.authorId == null}">guest</span>
+    </div>
+    <h4 class="comment-title" th:if="${c.title}" th:text="${c.title}">Title</h4>
+    <p class="comment-body" th:id="'body-' + ${c.id}" th:utext="${c.contentHtml}">Comment content</p>
+    <div th:if="${currentUser != null and c.authorId != null and c.authorId == currentUser.id}" class="comment-owner-actions">
+        <button type="button" class="mini-btn edit-cmt-btn" th:attr="data-cid=${c.id}" title="Edit your comment"><i class="fa-solid fa-pen"></i> Edit</button>
+        <form class="inline-del" method="post" th:action="@{'/blog/comment/' + ${c.id} + '/delete'}"
+              onsubmit="return confirm('Delete this comment? This cannot be undone.');">
+            <input type="hidden" name="postId" th:value="${postId}"/>
+            <button type="submit" class="mini-btn danger" title="Delete your comment"><i class="fa-solid fa-trash-can"></i> Delete</button>
+        </form>
+    </div>
+    <form class="edit-form" th:attr="data-cid=${c.id}" method="post" th:action="@{'/blog/comment/' + ${c.id} + '/edit'}">
+        <input type="hidden" name="postId" th:value="${postId}"/>
+        <textarea name="content" rows="3" required th:text="${c.rawContent}">Comment content</textarea>
+        <div class="edit-form-actions">
+            <button type="submit" class="mini-btn primary"><i class="fa-solid fa-floppy-disk"></i> Save changes</button>
+            <button type="button" class="mini-btn edit-cancel-btn" th:attr="data-cid=${c.id}"><i class="fa-solid fa-xmark"></i> Cancel</button>
+        </div>
+    </form>
+    <div class="comment-actions">
+        <button type="button" class="reply-toggle" th:attr="data-cid=${c.id}"><i class="fa-solid fa-reply"></i> Reply</button>
+    </div>
+    <form class="reply-form" method="post" th:action="@{'/blog/' + ${postId} + '/comment'}" th:attr="data-cid=${c.id}">
+        <input type="hidden" name="parentId" th:value="${c.id}"/>
+        <input type="text" name="name" placeholder="Your name" th:if="${currentUser == null}"/>
+        <input type="email" name="email" placeholder="Your email (optional)" th:if="${currentUser == null}"/>
+        <input type="text" name="title" placeholder="Title (optional)"/>
+        <textarea name="content" rows="2" placeholder="Write your reply..." required></textarea>
+        <button type="submit"><i class="fa-solid fa-paper-plane"></i> Reply</button>
+    </form>
+    <div class="comment-replies" th:if="${!#lists.isEmpty(c.replies)}">
+        <th:block th:each="r : ${c.replies}">
+            <div th:replace="~{fragments/blog-comment :: blogCommentNode(${r}, ${postId})}"></div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

@@ -75,7 +75,8 @@ public class VendorService {
     }
 
     @Transactional
-    public void verify(Integer vendorId) {
+    public void verify(Integer vendorId, User admin) {
+        requireAdmin(admin);
         vendorRepository.findById(vendorId).ifPresent(v -> {
             v.setVerified(true);
             vendorRepository.save(v);
@@ -83,10 +84,18 @@ public class VendorService {
     }
 
     @Transactional
-    public void reject(Integer vendorId) {
+    public void reject(Integer vendorId, User admin) {
+        requireAdmin(admin);
         vendorRepository.findById(vendorId).ifPresent(v -> {
             v.setVerified(false);
             vendorRepository.save(v);
         });
+    }
+
+    /** Only an ADMIN may approve or reject a vendor's evidence documents. */
+    private void requireAdmin(User admin) {
+        if (admin == null || admin.getRole() != Role.ADMIN) {
+            throw new IllegalStateException("Only an administrator may verify or reject vendor documents.");
+        }
     }
 }

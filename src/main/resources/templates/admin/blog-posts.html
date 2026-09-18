@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Blog Posts</title>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('blog')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('Blog Posts', 'Review and approve articles submitted by community members.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Blog Posts</h2>
+                    <p>User-submitted articles stay hidden until you approve them.</p>
+                </div>
+            </div>
+
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h3>
+                        <i class="fa-solid fa-pen-nib"></i>
+                        Article Records
+                    </h3>
+                    <span class="admin-badge warning" th:text="${pendingCount} + ' pending'">0 pending</span>
+                </div>
+
+                <div class="admin-card-body">
+                    <div class="admin-empty" th:if="${#lists.isEmpty(blogPosts)}">
+                        <i class="fa-regular fa-newspaper"></i>
+                        <p>No articles yet.</p>
+                    </div>
+
+                    <div class="admin-table-wrap" th:unless="${#lists.isEmpty(blogPosts)}">
+                        <table class="admin-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Category</th>
+                                <th>Submitted</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="p : ${blogPosts}">
+                                <td th:text="${p.id}">1</td>
+                                <td>
+                                    <strong th:text="${p.title}">Article title</strong>
+                                    <div style="font-size:12px;color:#667085;margin-top:4px;max-width:340px;" th:text="${#strings.abbreviate(p.content, 120)}"></div>
+                                </td>
+                                <td th:text="${p.author != null ? p.author.fullName : (p.authorName != null ? p.authorName : '-')}">Author</td>
+                                <td th:text="${#strings.capitalize(p.category)}">Meditation</td>
+                                <td th:text="${#temporals.format(p.createdAt, 'dd MMM yyyy HH:mm')}">01 Jan 2024 10:00</td>
+                                <td>
+                                    <span class="admin-badge warning" th:if="${p.status.name() == 'PENDING'}">
+                                        <i class="fa-solid fa-clock"></i>
+                                        Pending
+                                    </span>
+                                    <span class="admin-badge success" th:if="${p.status.name() == 'APPROVED'}">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Approved
+                                    </span>
+                                    <span class="admin-badge danger" th:if="${p.status.name() == 'REJECTED'}">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                        Rejected
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                        <form th:if="${p.status.name() != 'APPROVED'}" method="post" th:action="@{'/admin/blog/' + ${p.id} + '/approve'}">
+                                            <button type="submit" class="admin-btn success">
+                                                <i class="fa-solid fa-check"></i>
+                                                Approve
+                                            </button>
+                                        </form>
+                                        <form th:if="${p.status.name() != 'REJECTED'}" method="post" th:action="@{'/admin/blog/' + ${p.id} + '/reject'}">
+                                            <button type="submit" class="admin-btn danger">
+                                                <i class="fa-solid fa-xmark"></i>
+                                                Reject
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

@@ -346,6 +346,18 @@
                             <span th:if="${!p.afk and !p.guest}"><i class="fa-solid fa-circle" style="font-size:8px; vertical-align:middle;"></i> Active in the community</span>
                             <span th:if="${p.guest}"><i class="fa-solid fa-user-shield"></i> Guest participant (not registered)</span>
                         </span>
+                        <div class="p-actions" th:if="${!p.guest}">
+                            <button type="button" class="p-act" th:attr="data-message-id=${p.id}, data-message-name=${p.name}" title="Send a private message">
+                                <i class="fa-solid fa-envelope"></i> Message
+                            </button>
+                            <button type="button" class="p-act" th:attr="data-proof-id=${p.id}, data-proof-name=${p.name}" title="Send a Dhamma teaching">
+                                <i class="fa-solid fa-leaf"></i> Dhamma teaching
+                            </button>
+                            <div class="p-message-box" th:attr="data-mbox-id=${p.id}">
+                                <textarea rows="2" placeholder="Write a personal note or teaching to send..."></textarea>
+                                <button type="button" class="p-send">Send</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -426,6 +438,53 @@
             });
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') overlay.classList.remove('open');
+            });
+
+            initParticipantActions();
+        }
+
+        // ===== Direct message / Dhamma teaching buttons on participant cards =====
+        function initParticipantActions() {
+            document.querySelectorAll('[data-proof-id]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    if (CURRENT_USER_ID === -1) {
+                        showToast('Please log in to send a Dhamma teaching.');
+                        return;
+                    }
+                    var id = btn.getAttribute('data-proof-id');
+                    var name = btn.getAttribute('data-proof-name');
+                    postAction('/discuss/quote', { participantId: id })
+                        .then(function () { showToast('A Dhamma teaching was sent to ' + name + '.'); });
+                });
+            });
+            document.querySelectorAll('[data-message-id]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    if (CURRENT_USER_ID === -1) {
+                        showToast('Please log in to message this participant.');
+                        return;
+                    }
+                    var box = document.querySelector('.p-message-box[data-mbox-id="' + btn.getAttribute('data-message-id') + '"]');
+                    if (box) box.classList.toggle('open');
+                });
+            });
+            document.querySelectorAll('.p-send').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var box = btn.closest('.p-message-box');
+                    var id = box.getAttribute('data-mbox-id');
+                    var ta = box.querySelector('textarea');
+                    var nameEl = document.querySelector('button[data-message-id="' + id + '"]');
+                    var name = nameEl ? nameEl.getAttribute('data-message-name') : 'this participant';
+                    if (!ta.value.trim()) {
+                        showToast('Write something before sending.');
+                        return;
+                    }
+                    postAction('/discuss/message', { participantId: id, message: ta.value })
+                        .then(function () {
+                            ta.value = '';
+                            box.classList.remove('open');
+                            showToast('Your message was sent to ' + name + '.');
+                        });
+                });
             });
         }
 

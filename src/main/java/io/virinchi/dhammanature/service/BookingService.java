@@ -30,8 +30,24 @@ public class BookingService {
     @Transactional
     public Booking book(User user, Integer eventId, SessionMode attendanceMode, int attendees,
                         PaymentMethod paymentMethod, int pointsToUse) {
+        return book(user, eventId, attendanceMode, attendees, paymentMethod, pointsToUse,
+                null, null, false);
+    }
+
+    /** Full booking: requires a credential and acceptance of the etiquette &amp; rules agreement. */
+    @Transactional
+    public Booking book(User user, Integer eventId, SessionMode attendanceMode, int attendees,
+                        PaymentMethod paymentMethod, int pointsToUse,
+                        String itemsToBring, String credential, boolean etiquetteAgreed) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoSuchElementException("Event not found"));
+
+        if (credential == null || credential.isBlank()) {
+            throw new IllegalStateException("Please provide a proper credential (e.g. student or member ID) before booking.");
+        }
+        if (!etiquetteAgreed) {
+            throw new IllegalStateException("You must accept the etiquette and rules agreement to attend this event.");
+        }
 
         if (event.getCapacity() != null) {
             long already = bookingRepository.countByEvent_Id(eventId);
@@ -67,7 +83,9 @@ public class BookingService {
         Booking booking = bookingRepository.save(Booking.builder()
                 .user(user).event(event).attendanceMode(attendanceMode)
                 .numberOfAttendees(attendees).status(BookingStatus.CONFIRMED)
-                .paymentMethod(paymentMethod).pointsUsed(pointsToUse).build());
+                .paymentMethod(paymentMethod).pointsUsed(pointsToUse)
+                .itemsToBring(itemsToBring).credential(credential.trim())
+                .etiquetteAgreed(etiquetteAgreed).build());
 
         rewardService.awardPoints(user, 5, "Booked \"" + event.getTitle() + "\"");
         notificationService.notifyUser(user, "Booking confirmed: " + event.getTitle(),

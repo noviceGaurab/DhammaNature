@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="'Order Confirmed - ' + ${order.product.productName}">Order Confirmed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; }
+        .confirm-main { max-width: 860px; margin: 0 auto; padding: 50px 24px 20px; }
+        .success-hero { text-align: center; margin-bottom: 30px; }
+        .success-hero .tick { width: 86px; height: 86px; border-radius: 50%; background: #e6f4ea; color: #008000; font-size: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; box-shadow: 0 6px 20px rgba(8,130,60,.18); }
+        .success-hero h1 { font-size: 36px; color: #006015; margin-bottom: 8px; }
+        .success-hero p { color: #666; font-size: 17px; max-width: 560px; margin: 0 auto; }
+        .accent-line { width: 70px; height: 4px; background: #008000; border: none; margin: 18px auto 0; border-radius: 2px; }
+        .receipt { background: #fff; border-radius: 16px; box-shadow: 0 6px 24px rgba(0,0,0,.08); overflow: hidden; margin-bottom: 26px; }
+        .receipt-head { background: linear-gradient(120deg, #006015, #008000); color: #fff; padding: 20px 26px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .receipt-head h2 { font-family: 'Gentium Plus', serif; font-size: 22px; }
+        .receipt-head .ref { font-size: 13px; opacity: .92; letter-spacing: .4px; }
+        .receipt-body { padding: 24px 26px; }
+        .product-line { display: flex; gap: 16px; align-items: center; padding-bottom: 18px; margin-bottom: 6px; border-bottom: 1px solid #f0f1f3; }
+        .product-line img { width: 74px; height: 74px; object-fit: cover; border-radius: 12px; border: 1px solid #ededed; }
+        .product-line .p-name { font-size: 17px; font-weight: 800; color: #1d1a16; }
+        .product-line .p-vendor { font-size: 13px; color: #888; margin-top: 3px; }
+        .r-row { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #f0f1f3; flex-wrap: wrap; }
+        .r-row:last-child { border-bottom: none; }
+        .r-row .k { color: #888; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+        .r-row .v { font-weight: 700; color: #333; text-align: right; font-size: 15px; }
+        .r-row .v.green { color: #008000; }
+        .points-note { display: flex; align-items: center; gap: 12px; background: #f5efe3; border: 1px solid #e8dcc6; border-radius: 12px; padding: 14px 18px; margin-bottom: 26px; font-size: 15px; color: #704223; }
+        .points-note i { color: #ffd700; font-size: 22px; }
+        .next-steps h2 { font-size: 24px; color: #333; margin-bottom: 6px; }
+        .next-underline { width: 50px; height: 3px; background: #008000; border: none; margin: 8px 0 22px; border-radius: 2px; }
+        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 30px; }
+        .step-card { background: #fff; border-radius: 14px; padding: 22px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+        .step-card .ic { width: 52px; height: 52px; border-radius: 50%; background: #e6f4ea; color: #008000; font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+        .step-card h3 { font-size: 15px; margin-bottom: 6px; color: #333; }
+        .step-card p { font-size: 13px; color: #777; line-height: 1.6; }
+        .confirm-cta { background: #fff; border-radius: 16px; padding: 26px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        .btn { display: inline-block; padding: 13px 30px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s, background .2s; margin: 6px; }
+        .btn-primary { background: #008000; color: #fff; box-shadow: 0 4px 14px rgba(8,130,60,.3); }
+        .btn-outline { border: 2px solid #008000; color: #008000; background: #fff; }
+        .btn:hover { transform: translateY(-2px); }
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
+        .line { width: 100%; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        .copyright { display: flex; flex-direction: row; justify-content: space-between; padding: 20px 240px; margin-bottom: 40px; font-size: 14px; }
+        .copyright-sub { display: flex; gap: 40px; }
+        .copyright-sub h4 { transition: color .3s; font-size: 14px; }
+        .copyright-sub h4:hover { color: #ffd700; }
+        .copyright a { color: #fff; text-decoration: none; }
+        .copyright a:hover { color: #ffd700; }
+        @media (max-width: 900px) { .steps-grid { grid-template-columns: 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .part1, .part2, .part3 { padding-left: 0; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; padding: 0; } }
+        @media (max-width: 576px) { .success-hero h1 { font-size: 28px; } .part1-desc { width: auto; } .product-line { flex-direction: column; text-align: center; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Order">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">ORDER CONFIRMED</h1>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+<main class="confirm-main">
+    <div class="success-hero">
+        <div class="tick"><i class="fas fa-check"></i></div>
+        <h1>Thank you for your order!</h1>
+        <p>Please note, <strong th:text="${order.user.fullName}">your name</strong>. Your order for <strong th:text="${order.product.productName}">product</strong> is confirmed and <span th:text="${pointsEarned}">1</span> reward point(s) have been added to your account.</p>
+        <hr class="accent-line">
+    </div>
+    <div class="receipt">
+        <div class="receipt-head">
+            <h2><i class="fas fa-receipt"></i> Order Receipt</h2>
+            <span class="ref">Ref: DN-<span th:text="${order.id}">000</span></span>
+        </div>
+        <div class="receipt-body">
+            <div class="product-line">
+                <img th:if="${order.product.imageUrl}" th:src="@{'/assets/images/' + ${order.product.imageUrl}}" th:alt="${order.product.productName}">
+                <img th:unless="${order.product.imageUrl}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" th:alt="${order.product.productName}">
+                <div>
+                    <div class="p-name" th:text="${order.product.productName}">Product name</div>
+                    <div class="p-vendor" th:text="'Sold by ' + ${order.product.vendor.vendorName}">Sold by Vendor</div>
+                </div>
+            </div>
+            <div class="r-row"><span class="k">Category</span><span class="v" th:text="${order.product.category.displayName}">Category</span></div>
+            <div class="r-row" th:if="${order.product.genre}"><span class="k">Genre</span><span class="v" th:text="${order.product.genre}">Genre</span></div>
+            <div class="r-row"><span class="k">Unit price</span><span class="v" th:text="'$' + ${#numbers.formatDecimal(order.product.price, 1, 2)}">$0.00</span></div>
+            <div class="r-row"><span class="k">Quantity</span><span class="v" th:text="${order.quantity}">1</span></div>
+            <div class="r-row"><span class="k">Order total</span><span class="v" th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 1, 2)}">$0.00</span></div>
+            <div class="r-row"><span class="k">Placed on</span><span class="v" th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy - HH:mm')}">Date</span></div>
+            <div class="r-row"><span class="k">Payment method</span><span class="v" th:text="${order.paymentMethod != null ? order.paymentMethod.displayName : 'eSewa'}">eSewa</span></div>
+            <div class="r-row" th:if="${order.pointsUsed > 0}"><span class="k">Paid with points</span><span class="v green">-<span th:text="${order.pointsUsed}">0</span> pts</span></div>
+            <div class="r-row"><span class="k">Status</span><span class="v green" th:text="${order.status}">Placed</span></div>
+            <div class="r-row"><span class="k">Points earned</span><span class="v green">+<span th:text="${pointsEarned}">1</span> pts</span></div>
+        </div>
+    </div>
+    <div class="points-note">
+        <i class="fas fa-star"></i>
+        <span>You earned <strong>+<span th:text="${pointsEarned}">1</span> reward point(s)</strong> with this purchase. Your order is now being prepared and will ship shortly -- track its status any time from your profile.</span>
+    </div>
+    <section class="next-steps">
+        <h2>What happens next</h2>
+        <hr class="next-underline">
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="ic"><i class="fas fa-boxes"></i></div>
+                <h3>We pack your order</h3>
+                <p>The seller gets your order details right away and prepares your item for dispatch.</p>
+            </div>
+            <div class="step-card">
+                <div class="ic"><i class="fas fa-truck"></i></div>
+                <h3>It ships to you</h3>
+                <p>Once sent, your order moves to "shipped" - most deliveries arrive within a few working days.</p>
+            </div>
+            <div class="step-card">
+                <div class="ic"><i class="fas fa-door-open"></i></div>
+                <h3>Delivered &amp; enjoyed</h3>
+                <p>Your item arrives at your door. May every article support your practice and journey.</p>
+            </div>
+        </div>
+    </section>
+    <div class="confirm-cta">
+        <a href="/marketplace" class="btn btn-primary"><i class="fas fa-store"></i> Browse more products</a>
+        <a href="/profile" class="btn btn-outline"><i class="fas fa-user"></i> View my profile</a>
+        <a href="/rewards" class="btn btn-outline"><i class="fas fa-star"></i> See rewards</a>
+    </div>
+</main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+            <div class="part3">
+                <h2>HELP &amp; SUPPORT</h2>
+                <div class="part3-desc">
+                    <h4><a href="/contact">Contact Us</a></h4>
+                                        <h4><a href="/volunteer">Volunteer</a></h4>
+                    <h4><a href="/charity">Charity</a></h4>
+                    <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                    <h4><a href="#privacy">Privacy Policy</a></h4>
+                </div>
+            </div>
+</div>
+
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+                    }, 0);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

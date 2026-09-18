@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - New Quiz</title>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('quizzes')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('New Quiz', 'Publish a Dhamma quiz on the live site.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Create Quiz</h2>
+                    <p>Members earn reward points for attempting and acing your quiz. You must add at least one question.</p>
+                </div>
+                <a href="/admin/quizzes" class="admin-btn secondary">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Quizzes
+                </a>
+            </div>
+
+            <div class="alert alert-danger" th:if="${param.error != null}" role="alert">
+                Please add at least one complete question before publishing the quiz.
+            </div>
+
+            <form method="post" th:action="@{/admin/quizzes/create}">
+                <section class="admin-card mb-4">
+                    <div class="admin-card-header">
+                        <h3>
+                            <i class="fa-solid fa-circle-info"></i>
+                            Quiz Details
+                        </h3>
+                    </div>
+
+                    <div class="admin-card-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold">Quiz Title *</label>
+                                <input type="text" name="title" class="admin-form-control"
+                                       placeholder="e.g. The Four Noble Truths" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Reward Points</label>
+                                <input type="number" name="rewardPoints" class="admin-form-control" min="0"
+                                       value="10">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Description</label>
+                                <textarea name="description" rows="2" class="admin-form-control"
+                                          placeholder="Short intro shown on the quiz card"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="mb-0" style="font-weight:850;">
+                        <i class="fa-solid fa-list-check"></i>
+                        Questions
+                    </h3>
+                    <span class="admin-badge info">At least 1 required</span>
+                </div>
+
+                <section class="admin-card mb-4">
+                    <div class="admin-card-body">
+                        <div class="row g-3" th:each="i : ${#numbers.sequence(1, 5)}">
+                            <div class="col-12">
+                                <label class="form-label fw-bold" th:text="'Question ' + ${i}">Question 1</label>
+                                <input type="text" th:name="'q' + ${i} + 'text'" class="admin-form-control"
+                                       th:placeholder="'Type question ' + ${i} + ' here'">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Option A *</label>
+                                <input type="text" th:name="'q' + ${i} + 'a'" class="admin-form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Option B *</label>
+                                <input type="text" th:name="'q' + ${i} + 'b'" class="admin-form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Option C</label>
+                                <input type="text" th:name="'q' + ${i} + 'c'" class="admin-form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Option D</label>
+                                <input type="text" th:name="'q' + ${i} + 'd'" class="admin-form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Correct Answer *</label>
+                                <select th:name="'q' + ${i} + 'correct'" class="admin-form-control">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </div>
+                            <hr th:if="${i < 5}" class="my-3">
+                        </div>
+                    </div>
+                </section>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="admin-btn success">
+                        <i class="fa-solid fa-check"></i>
+                        Publish Quiz
+                    </button>
+                    <a href="/admin/quizzes" class="admin-btn secondary">Cancel</a>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

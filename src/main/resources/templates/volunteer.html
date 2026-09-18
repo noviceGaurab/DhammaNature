@@ -125,8 +125,8 @@
     <section class="v-stats">
         <div class="v-stat"><div class="num">6+</div><div class="lbl">Volunteer Areas</div></div>
         <div class="v-stat"><div class="num">4</div><div class="lbl">Meditation Centers</div></div>
-        <div class="v-stat"><div class="num">15 pts</div><div class="lbl">Reward per Signup</div></div>
-        <div class="v-stat"><div class="num">100%</div><div class="lbl">Open to Beginners</div></div>
+        <div class="v-stat"><div class="num">15 pts</div><div class="lbl">Reward after Verification</div></div>
+        <div class="v-stat"><div class="num">100%</div><div class="lbl">Verified Students Welcome</div></div>
     </section>
     <div class="v-section-title">
         <h2>How it works</h2>
@@ -134,19 +134,19 @@
     </div>
     <section class="v-steps">
         <div class="v-step">
-            <div class="ic"><i class="fas fa-list-check"></i></div>
-            <h3>1. Browse opportunities</h3>
-            <p>Explore upcoming volunteering dates below, each hosted at one of our partner meditation centers.</p>
+            <div class="ic"><i class="fas fa-book-open"></i></div>
+            <h3>1. Read the commitment</h3>
+            <p>See what future opportunities you unlock and the no-show rules (give prior email notice, or you lose your perks).</p>
         </div>
         <div class="v-step">
-            <div class="ic"><i class="fas fa-user-check"></i></div>
-            <h3>2. Sign up in one click</h3>
-            <p>Registered members can join directly. Signing up earns 15 reward points automatically.</p>
+            <div class="ic"><i class="fas fa-id-card"></i></div>
+            <h3>2. Verify you're a student</h3>
+            <p>Upload your student ID card and a college approval letter on official letterhead with the college logo. A coordinator verifies them before your seat is held.</p>
         </div>
         <div class="v-step">
             <div class="ic"><i class="fas fa-heart"></i></div>
             <h3>3. Show up &amp; serve</h3>
-            <p>Arrive at the listed time, follow the coordinator's lead, and enjoy the joy that service brings.</p>
+            <p>Once verified you're confirmed for the date - arrive on time, follow the coordinator's lead, and enjoy the joy of service. Emailing ahead if plans change keeps you in good standing.</p>
         </div>
     </section>
     <div class="v-section-title">
@@ -189,9 +189,9 @@
                 <small th:text="${o.description}"></small><br>
                 <small>Hosted by <span th:text="${o.meditationCenter.name}"></span></small>
             </div>
-            <form method="post" th:action="@{'/volunteer/' + ${o.id} + '/register'}">
-                <button type="submit" class="btn btn-primary">Sign up</button>
-            </form>
+            <form method="get" th:action="@{'/volunteer/' + ${o.id} + '/register'}">
+                    <button type="submit" class="btn btn-primary">Sign up</button>
+                </form>
         </div>
     </section>
     <section class="v-quotes">

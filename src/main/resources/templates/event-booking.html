@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="'Booking - ' + ${event.title}">Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; }
+        .bk-main { max-width: 1020px; margin: 0 auto; padding: 50px 24px 20px; }
+        .bk-crumbs { font-size: 13px; color: #888; margin-bottom: 18px; }
+        .bk-crumbs a { color: #006015; text-decoration: none; }
+        .bk-head { margin-bottom: 26px; }
+        .bk-badge { display: inline-flex; align-items: center; gap: 6px; background: #f5efe3; color: #006015; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
+        .bk-head h1 { font-family: 'Gentium Plus', serif; font-size: 32px; line-height: 1.25; color: #2e2e2e; }
+        .bk-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+        .bk-meta span { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid #eee; border-radius: 24px; padding: 7px 16px; font-size: 13px; color: #555; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+        .bk-meta i { color: #006015; }
+        .msg-err { color: #7e211d; background: #fdecea; padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-weight: 600; }
+        .bk-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 26px; align-items: start; }
+        .bk-card { background: #fff; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,.06); overflow: hidden; margin-bottom: 22px; }
+        .bk-card .hd { padding: 18px 24px; border-bottom: 1px solid #f0f1f3; }
+        .bk-card .hd h2 { font-family: 'Gentium Plus', serif; font-size: 20px; color: #006015; }
+        .bk-card .bd { padding: 20px 24px; }
+        .bk-card .bd p { font-size: 16px; line-height: 1.85; color: #454545; }
+        .bk-form label { display: block; margin-top: 14px; font-weight: 700; font-size: 13px; color: #555; }
+        .bk-form select, .bk-form input[type="text"], .bk-form input[type="email"], .bk-form input[type="number"], .bk-form input[type="password"], .bk-form textarea { padding: 10px 12px; width: 100%; margin-top: 5px; border: 1px solid #ddd; border-radius: 10px; background: #fcfcfd; font-size: 15px; }
+        .bk-form select:focus, .bk-form input:focus, .bk-form textarea:focus { outline: 2px solid #00601533; border-color: #006015; }
+        .bk-form textarea { resize: vertical; }
+        .chk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 6px; }
+        .chk-grid label { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; color: #444; margin-top: 4px; cursor: pointer; }
+        .agree-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; padding: 14px 16px; background: #f5efe3; border: 1px solid #e8dcc6; border-radius: 12px; }
+        .agree-row input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+        .agree-row span { font-size: 14px; color: #704223; line-height: 1.6; }
+        .btn { display: inline-block; padding: 12px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s, background .2s; border: none; cursor: pointer; }
+        .btn-primary { background: #008000; color: #fff; box-shadow: 0 4px 14px rgba(27,110,45,.3); }
+        .btn-primary:hover { background: #006015; transform: translateY(-2px); }
+        .btn-outline { background: #fff; color: #006015; border: 2px solid #006015; }
+        .btn-outline:hover { background: #e6f4ea; transform: translateY(-2px); }
+        .punch { border-left: 4px solid #006015; background: #e6f4ea; padding: 12px 16px; border-radius: 0 10px 10px 0; font-size: 14px; color: #2e5b37; margin-top: 14px; line-height: 1.7; }
+        .side-card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,.06); margin-bottom: 18px; }
+        .side-card h3 { font-size: 15px; color: #006015; text-transform: uppercase; letter-spacing: .5px; padding-bottom: 10px; border-bottom: 2px solid #006015; margin-bottom: 12px; }
+        .side-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f6f6f6; flex-wrap: wrap; }
+        .side-row:last-child { border-bottom: none; }
+        .side-row .k { color: #888; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+        .side-row .v { font-weight: 600; color: #333; font-size: 15px; text-align: right; }
+        .pm-group { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+        .pm-opt { display: flex; align-items: center; gap: 10px; border: 1px solid #e4e4e4; border-radius: 12px; padding: 11px 14px; cursor: pointer; transition: border-color .2s, background .2s; }
+        .pm-opt.selected { border-color: #006015; background: #f3faf4; }
+        .pm-opt input { width: 16px; height: 16px; flex-shrink: 0; }
+        .pm-opt .pm-ic { width: 34px; height: 34px; border-radius: 50%; background: #e6f4ea; color: #006015; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pm-opt .pm-name { font-size: 14px; font-weight: 800; color: #333; }
+        .bk-cta { background: #fff; border-radius: 16px; padding: 20px 24px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+        @media (max-width: 900px) { .bk-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 576px) { .bk-head h1 { font-size: 26px; } .chk-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Booking">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">BOOKING DETAILS</h1>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+<main class="bk-main">
+    <div class="bk-crumbs">
+        <a href="/">Home</a> &rarr; <a href="/events">Events</a> &rarr; <a th:href="@{'/events/' + ${event.id}}"><span th:text="${event.title}">Event title</span></a> &rarr; <strong>Booking details</strong>
+    </div>
+    <div class="bk-head">
+        <span class="bk-badge"><i class="fas fa-calendar"></i> Almost there</span>
+        <h1 th:text="${event.title}">Event title</h1>
+        <div class="bk-meta">
+            <span><i class="far fa-calendar-alt"></i> <span th:text="${#temporals.format(event.eventDate, 'dd MMM yyyy')}">Date</span></span>
+            <span><i class="far fa-clock"></i> <span th:text="${#temporals.format(event.eventDate, 'HH:mm')}">Time</span></span>
+            <span><i class="fas fa-signal"></i> <span th:text="${mode}">Mode</span></span>
+        </div>
+    </div>
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+    <form class="bk-grid" method="post" th:action="@{'/events/' + ${event.id} + '/book/confirm'}">
+        <div>
+            <div class="bk-card">
+                <div class="hd"><h2><i class="fas fa-clipboard-check"></i> Confirm attendance</h2></div>
+                <div class="bd bk-form">
+                    <input type="hidden" name="mode" th:value="${mode}"/>
+                    <input type="hidden" name="attendees" th:value="${attendees}"/>
+                    <label>What items will you bring?</label>
+                    <div class="chk-grid">
+                        <label><input type="checkbox" name="items" value="Meditation cushion"/> Meditation cushion</label>
+                        <label><input type="checkbox" name="items" value="Water bottle"/> Water bottle</label>
+                        <label><input type="checkbox" name="items" value="Notebook &amp; pen"/> Notebook &amp; pen</label>
+                        <label><input type="checkbox" name="items" value="Offering (flowers / incense)"/> Offering (flowers / incense)</label>
+                        <label><input type="checkbox" name="items" value="Meditation shawl"/> Meditation shawl</label>
+                        <label><input type="checkbox" name="items" value="Snacks for the community"/> Snacks for the community</label>
+                    </div>
+                    <input type="text" name="itemsOther" placeholder="Other items (comma separated) - e.g. prayer beads, journal..."
+                           th:value="${otherItems}">
+
+                    <label>Proper credential *</label>
+                    <input type="text" name="credential" placeholder="Student ID / membership reference number"
+                           th:value="${credential}" required maxlength="200">
+                    <p class="punch"><i class="fas fa-id-card"></i> Please provide a verifiable credential (for example your student or membership ID). We also hold a copy on file so your spot is reserved for you and not for someone pretending to be a student.</p>
+
+                    <div class="agree-row">
+                        <input type="checkbox" id="agreement" name="agreement" value="on" required>
+                        <label for="agreement" style="margin:0; font-weight:400; color:#704223; font-size:14px;">
+                            I agree to follow the <strong>etiquette and rules</strong> of the meditation center during this session, to arrive on time, and to keep my phone silent. I understand that attendance is monitored so genuine students can be given the seat.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="bk-card">
+                <div class="hd"><h2><i class="fas fa-star"></i> Etiquette before you book</h2></div>
+                <div class="bd">
+                    <p>Please ask the center about what you should bring and be comfortable sitting in silence. Do not book a seat unless you can genuinely attend - seats are limited and a no-show may prevent a real student from joining.</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="side-card">
+                <h3><i class="fas fa-info-circle"></i> Session details</h3>
+                <div class="side-row"><span class="k">Date</span><span class="v" th:text="${#temporals.format(event.eventDate, 'dd MMM yyyy')}">Date</span></div>
+                <div class="side-row"><span class="k">Time</span><span class="v" th:text="${#temporals.format(event.eventDate, 'HH:mm')}">Time</span></div>
+                <div class="side-row"><span class="k">Mode</span><span class="v" th:text="${mode}">Mode</span></div>
+                <div class="side-row"><span class="k">Attendees</span><span class="v" th:text="${attendees}">1</span></div>
+                <div class="side-row" th:if="${event.price != null and event.price > 0}"><span class="k">Price per seat</span><span class="v" th:text="'$' + ${#numbers.formatDecimal(event.price, 1, 2)}">$0.00</span></div>
+            </div>
+            <div class="side-card" th:if="${event.price != null and event.price > 0}">
+                <h3><i class="fas fa-credit-card"></i> Payment</h3>
+                <div class="pm-group">
+                    <label class="pm-opt selected" th:each="m : ${T(io.virinchi.dhammanature.model.enums.PaymentMethod).values()}">
+                        <input type="radio" name="paymentMethod" th:value="${m}" th:checked="${m.name() == 'ESEWA'}"
+                               th:disabled="${m.name() == 'REDEEMED_POINTS' and (currentUser == null or currentUser.rewardPoints &lt; 0)}">
+                        <span class="pm-ic">
+                            <i th:if="${m.name() == 'ESEWA'}" class="fas fa-mobile-alt"></i>
+                            <i th:if="${m.name() == 'CARD'}" class="fas fa-credit-card"></i>
+                            <i th:if="${m.name() == 'REDEEMED_POINTS'}" class="fas fa-star"></i>
+                            <i th:if="${m.name() == 'CASH_ON_DELIVERY'}" class="fas fa-money-bill-wave"></i>
+                        </span>
+                        <span><span class="pm-name" th:text="${m.displayName}">Method</span></span>
+                    </label>
+                </div>
+                <label>Redeem reward points</label>
+                <input type="number" name="pointsToUse" min="0" max="${currentUser != null ? currentUser.rewardPoints : 0}" value="0">
+                <p class="punch"><i class="fas fa-star"></i> 1 point = $0.50 toward your seats. Redeem only if you have enough balance.</p>
+            </div>
+            <div class="bk-cta">
+                <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-check-circle"></i> Confirm booking</button>
+                <div style="text-align:center; margin-top:12px;">
+                    <a th:href="@{'/events/' + ${event.id}}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to event</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+        <div class="part3">
+            <h2>HELP &amp; SUPPORT</h2>
+            <div class="part3-desc">
+                <h4><a href="/contact">Contact Us</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+            </div>
+        </div>
+    </div>
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+                    }, 0);
+                });
+            }
+            var pmOpts = document.querySelectorAll('.pm-opt');
+            pmOpts.forEach(function (opt) {
+                var radio = opt.querySelector('input[type="radio"]');
+                opt.addEventListener('click', function (e) {
+                    if (e.target.tagName !== 'INPUT' && !radio.disabled) { radio.checked = true; }
+                    pmOpts.forEach(function (o) { o.classList.toggle('selected', o.querySelector('input').checked); });
+                });
+                if (radio && radio.checked) { opt.classList.add('selected'); }
+            });
+        });
+    </script>
+</body>
+</html>

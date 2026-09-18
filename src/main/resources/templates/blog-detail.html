@@ -43,17 +43,47 @@
         .comments-section { background: #fff; border-radius: 16px; padding: 28px 34px; box-shadow: 0 6px 22px rgba(0,0,0,.07); margin-top: 24px; }
         .comments-section h2 { font-size: 22px; color: #333; margin-bottom: 18px; }
         .comment-count { color: #9e2b25; font-weight: 800; }
-        .add-comment-btn { background: #9e2b25; color: #fff; border: none; padding: 11px 22px; border-radius: 30px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; cursor: pointer; transition: transform .2s; margin-bottom: 18px; }
-        .add-comment-btn:hover { transform: translateY(-2px); }
-        .comment-list { list-style: none; }
-        .comment-list li { border-bottom: 1px solid #f3f4f6; padding: 18px 0; }
-        .comment-list li:last-child { border-bottom: none; }
-        .comment-author { font-weight: 700; color: #9e2b25; margin-bottom: 4px; }
-        .comment-author .cdate { font-weight: 400; font-size: 12px; color: #999; margin-left: 10px; }
-        .comment-list p { font-size: 15px; color: #555; margin-bottom: 4px; }
-        .reply-email { font-size: 12px; color: #aaa; }
-        .reply-btn { background: none; border: 1px solid #9e2b25; color: #9e2b25; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 6px; transition: background .2s; }
-        .reply-btn:hover { background: #fdecea; }
+        .msg-ok { color: #006015; background: #e6f4ea; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; }
+        .msg-err { color: #7e211d; background: #fdecea; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; }
+        .comment-tree-wrap { margin-top: 20px; display: block; }
+        .comment-form input, .comment-form textarea { width: 100%; padding: 10px 12px; margin-top: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
+        .comment-form textarea { resize: vertical; }
+        .comment-form input:focus, .comment-form textarea:focus { outline: none; border-color: #006015; box-shadow: 0 0 5px rgba(0,96,21,.3); }
+        .post-cmt-btn { background: #9e2b25; color: #fff; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; cursor: pointer; transition: transform .2s; margin-top: 10px; }
+        .post-cmt-btn:hover { transform: translateY(-2px); }
+        .comment { border: 1px solid #eee; border-radius: 8px; padding: 16px; margin-bottom: 14px; background: #fdfdfd; }
+        .comment:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .comment-replies { margin-left: 22px; padding-left: 18px; border-left: 2px solid #dce7dd; margin-top: 8px; display: flex; flex-direction: column; gap: 10px; }
+        .comment-replies .comment { background: #fbfcfb; }
+        .comment-replies .comment-replies { margin-left: 20px; }
+        .comment .meta { display: flex; align-items: center; gap: 10px; color: #888; font-size: 13px; margin-bottom: 8px; flex-wrap: wrap; }
+        .comment-avatar { flex: 0 0 38px; height: 38px; width: 38px; border-radius: 50%; background: #006015; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; text-transform: uppercase; overflow: hidden; }
+        .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .comment-tag { background: #e6f4ea; color: #006015; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+        .comment-title { font-size: 16px; color: #006015; margin: 2px 0 4px; }
+        .comment-body { color: #444; line-height: 1.6; font-size: 15px; white-space: pre-wrap; word-break: break-word; }
+        .mention { background: #e6f4ea; color: #006015; padding: 1px 6px; border-radius: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .comment-actions { margin-top: 8px; }
+        .reply-toggle { background: none; border: 1px solid #cfe3d4; color: #006015; font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: background .2s, border-color .2s; }
+        .reply-toggle:hover { background: #e6f4ea; border-color: #006015; }
+        .comment-owner-actions { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+        .mini-btn { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #cfe3d4; color: #006015; font-size: 12.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
+        .mini-btn:hover { background: #e6f4ea; }
+        .mini-btn.danger { border-color: #f5c2bd; color: #8f2a23; }
+        .mini-btn.danger:hover { background: #fdecea; border-color: #8f2a23; }
+        .mini-btn.primary { background: #006015; border-color: #006015; color: #fff; }
+        .mini-btn.primary:hover { background: #005012; }
+        .inline-del { display: inline-flex; margin: 0; }
+        .edit-form { display: none; margin-top: 10px; padding: 12px; border: 1px solid #b9d8c0; border-radius: 8px; background: #fbfefb; }
+        .edit-form.open { display: block; }
+        .edit-form textarea { width: 100%; padding: 9px 11px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; resize: vertical; font-family: inherit; min-height: 70px; }
+        .edit-form textarea:focus { outline: none; border-color: #006015; box-shadow: 0 0 5px rgba(0,96,21,.3); }
+        .edit-form-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .reply-form { display: none; margin-top: 10px; padding: 12px; border: 1px dashed #b9d8c0; border-radius: 8px; background: #fbfefb; }
+        .reply-form.open { display: block; }
+        .reply-form input, .reply-form textarea { width: 100%; padding: 8px 10px; margin-top: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .reply-form input:focus, .reply-form textarea:focus { outline: none; border-color: #006015; box-shadow: 0 0 5px rgba(0,96,21,.3); }
+        .reply-form button[type="submit"] { margin-top: 8px; background: #006015; color: #fff; border: none; padding: 7px 18px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; }
         .like-btn { background: #fff; border: 1px solid #e0245e; color: #e0245e; padding: 10px 22px; border-radius: 30px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; cursor: pointer; transition: background .2s; }
         .like-btn:hover { background: #fdecef; }
         .like-btn.liked { background: #e0245e; color: #fff; cursor: default; }
@@ -153,7 +183,7 @@
                 <div class="article-meta">
                     <span><i class="far fa-calendar-alt"></i> <span th:text="${#temporals.format(post.createdAt, 'MMMM dd, yyyy')}">August 28, 2025</span></span>
                     <span><i class="far fa-user"></i> <span th:text="${post.author != null ? post.author.fullName : post.authorName}">Ajahn Brahm</span></span>
-                    <span><i class="far fa-comment-dots"></i> <span class="comment-count" id="commentCount">2</span> comments</span>
+                    <span><i class="far fa-comment-dots"></i> <span class="comment-count" th:text="${commentCount}">2</span> comments</span>
                     <span><i class="fas fa-heart" style="color:#e0245e;"></i> <span id="likeCount" th:text="${post.likeCount}">0</span> likes</span>
                 </div>
                 <img class="hero-img" th:src="@{'/assets/images/' + ${post.imageUrl}}" th:alt="${post.title}" src="/assets/images/pexels-ajaybhargavguduru-939700.jpg">
@@ -173,22 +203,22 @@
                 </form>
             </article>
             <section class="comments-section">
-                <h2><span class="comment-count" id="commentCount2">2</span> Comments</h2>
-                <button class="add-comment-btn" onclick="openCommentModal()"><i class="fas fa-comment"></i> Add Comment</button>
-                <ul id="commentList" class="comment-list">
-                    <li>
-                        <div class="comment-author">John Doe <span class="cdate"><i class="far fa-clock"></i> August 28, 2025 03:21 PM</span></div>
-                        <p>Great article! Really helpful insights into building a healthy lifestyle.</p>
-                        <p class="reply-email">Posted by: john.doe@example.com</p>
-                        <button class="reply-btn" onclick="openCommentModal()"><i class="fas fa-reply"></i> Reply</button>
-                    </li>
-                    <li>
-                        <div class="comment-author">Jane Smith <span class="cdate"><i class="far fa-clock"></i> August 28, 2025 03:22 PM</span></div>
-                        <p>Thank you for sharing such valuable tips. Looking forward to more!</p>
-                        <p class="reply-email">Posted by: jane.smith@example.com</p>
-                        <button class="reply-btn" onclick="openCommentModal()"><i class="fas fa-reply"></i> Reply</button>
-                    </li>
-                </ul>
+                <h2><span class="comment-count" th:text="${commentCount}">0</span> Comments</h2>
+                <p class="msg-ok" th:if="${success}" th:text="${success}"></p>
+                <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+                <form class="comment-form" method="post" th:action="@{'/blog/' + ${post.id} + '/comment'}">
+                    <input type="text" name="title" placeholder="Title - what is this thought about? (optional)"/>
+                    <input type="text" name="name" placeholder="Your name" th:if="${currentUser == null}">
+                    <input type="email" name="email" placeholder="Your email (optional)" th:if="${currentUser == null}">
+                    <textarea name="content" rows="3" placeholder="Share a kind reflection on this article..." required></textarea>
+                    <button type="submit" class="post-cmt-btn"><i class="fas fa-comment"></i> Post comment</button>
+                </form>
+                <p th:if="${#lists.isEmpty(commentTree)}" style="text-align:center; color:#666; padding:26px 0 6px;">No comments yet - be the first to share a thought.</p>
+                <div th:if="${!#lists.isEmpty(commentTree)}" class="comment-tree-wrap">
+                    <th:block th:each="c : ${commentTree}">
+                        <div th:replace="~{fragments/blog-comment :: blogCommentNode(${c}, ${post.id})}"></div>
+                    </th:block>
+                </div>
             </section>
         </div>
         <aside class="sidebar">
@@ -261,21 +291,6 @@
     </div>
     </div>
 
-    <div class="modal" id="commentModal">
-        <div class="modal-box">
-            <h3><i class="fas fa-pen"></i> Leave a Comment</h3>
-            <label for="cName">Name *</label>
-            <input type="text" id="cName" placeholder="Your name">
-            <label for="cEmail">Email *</label>
-            <input type="email" id="cEmail" placeholder="Your email">
-            <label for="cText">Comment *</label>
-            <textarea id="cText" placeholder="Write your comment here..."></textarea>
-            <div class="modal-btns">
-                <button class="btn-submit" onclick="submitComment()"><i class="fas fa-check"></i> Post Comment</button>
-                <button class="btn-cancel" onclick="closeCommentModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var hamburger = document.querySelector('.hamburger');
@@ -288,50 +303,60 @@
                     }, 0);
                 });
             }
+            initReplyForms();
+            initCommentEdit();
         });
-        function openCommentModal() {
-            document.getElementById('commentModal').classList.add('show');
+
+        // ===== Reply forms =====
+        function initReplyForms() {
+            document.querySelectorAll('.reply-toggle').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var form = document.querySelector('.reply-form[data-cid="' + btn.getAttribute('data-cid') + '"]');
+                    if (form) {
+                        form.classList.toggle('open');
+                        if (form.classList.contains('open')) {
+                            var ta = form.querySelector('textarea');
+                            if (ta) ta.focus();
+                        }
+                    }
+                });
+            });
         }
-        function closeCommentModal() {
-            document.getElementById('commentModal').classList.remove('show');
-        }
-        function submitComment() {
-            var name = document.getElementById('cName').value.trim();
-            var email = document.getElementById('cEmail').value.trim();
-            var text = document.getElementById('cText').value.trim();
-            if (!name || !email || !text) { alert('Please fill in all fields before posting.'); return; }
-            var now = new Date();
-            var stamp = now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-            var list = document.getElementById('commentList');
-            var li = document.createElement('li');
-            var div = document.createElement('div');
-            div.className = 'comment-author';
-            div.textContent = name;
-            var cdate = document.createElement('span');
-            cdate.className = 'cdate';
-            cdate.innerHTML = ' <i class="far fa-clock"></i> ' + stamp;
-            div.appendChild(cdate);
-            var p = document.createElement('p');
-            p.textContent = text;
-            var pe = document.createElement('p');
-            pe.className = 'reply-email';
-            pe.textContent = 'Posted by: ' + email;
-            var btn = document.createElement('button');
-            btn.className = 'reply-btn';
-            btn.innerHTML = '<i class="fas fa-reply"></i> Reply';
-            btn.onclick = openCommentModal;
-            li.appendChild(div);
-            li.appendChild(p);
-            li.appendChild(pe);
-            li.appendChild(btn);
-            list.appendChild(li);
-            var count = parseInt(document.getElementById('commentCount').textContent, 10) + 1;
-            document.getElementById('commentCount').textContent = count;
-            document.getElementById('commentCount2').textContent = count;
-            document.getElementById('cName').value = '';
-            document.getElementById('cEmail').value = '';
-            document.getElementById('cText').value = '';
-            closeCommentModal();
+
+        // ===== Author-only comment edit (inline form toggle) =====
+        function initCommentEdit() {
+            document.querySelectorAll('.edit-cmt-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var comment = btn.closest('.comment');
+                    if (!comment) return;
+                    var form = comment.querySelector('.edit-form');
+                    var body = comment.querySelector('.comment-body');
+                    var ownerActions = comment.querySelector('.comment-owner-actions');
+                    if (form) {
+                        var open = form.classList.toggle('open');
+                        if (open && body) body.style.display = 'none';
+                        if (open && ownerActions) ownerActions.style.display = 'none';
+                        if (open) {
+                            var ta = form.querySelector('textarea');
+                            if (ta) ta.focus();
+                        }
+                    } else {
+                        btn.form && btn.form.submit();
+                    }
+                });
+            });
+            document.querySelectorAll('.edit-cancel-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var comment = btn.closest('.comment');
+                    if (!comment) return;
+                    var form = comment.querySelector('.edit-form');
+                    var body = comment.querySelector('.comment-body');
+                    var ownerActions = comment.querySelector('.comment-owner-actions');
+                    if (form) form.classList.remove('open');
+                    if (body) body.style.display = '';
+                    if (ownerActions) ownerActions.style.display = '';
+                });
+            });
         }
     </script>
 </body>

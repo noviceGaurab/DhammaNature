@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="'Volunteer Sign Up - ' + ${opportunity.title}">Volunteer Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Devanagari:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site-header.css">
+    <link rel="stylesheet" href="/css/nav-dropdown.css">
+    <script defer src="/JS/nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Lato', 'Arial', sans-serif; color: #333; background: #f9fafb; }
+        .vr-main { max-width: 960px; margin: 0 auto; padding: 50px 24px 20px; }
+        .vr-crumbs { font-size: 13px; color: #888; margin-bottom: 18px; }
+        .vr-crumbs a { color: #006015; text-decoration: none; }
+        .vr-head { margin-bottom: 24px; }
+        .vr-step-pill { display: inline-flex; align-items: center; gap: 6px; background: #005c15; color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
+        .vr-head h1 { font-family: 'Gentium Plus', serif; font-size: 32px; line-height: 1.25; color: #2e2e2e; }
+        .vr-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+        .vr-meta span { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid #eee; border-radius: 24px; padding: 7px 16px; font-size: 13px; color: #555; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+        .vr-meta i { color: #006015; }
+        .msg-err { color: #7e211d; background: #fdecea; padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-weight: 600; }
+        .vr-card { background: #fff; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,.06); overflow: hidden; margin-bottom: 20px; }
+        .vr-card .hd { padding: 18px 24px; border-bottom: 1px solid #f0f1f3; }
+        .vr-card .hd h2 { font-family: 'Gentium Plus', serif; font-size: 20px; color: #006015; }
+        .vr-card .bd { padding: 20px 24px; }
+        .warn { display: flex; gap: 14px; padding: 15px 18px; border-radius: 12px; margin-bottom: 12px; align-items: flex-start; }
+        .warn i { font-size: 20px; margin-top: 3px; }
+        .warn h4 { font-size: 16px; margin-bottom: 4px; }
+        .warn p { font-size: 14px; line-height: 1.65; }
+        .warn.gold { background: #f5efe3; border: 1px solid #e8dcc6; }
+        .warn.gold i, .warn.gold h4 { color: #8a5a17; }
+        .warn.red { background: #fdecea; border: 1px solid #f5c6c2; }
+        .warn.red i, .warn.red h4 { color: #7e211d; }
+        .warn.blue { background: #eaf2fb; border: 1px solid #c9dcf0; }
+        .warn.blue i, .warn.blue h4 { color: #1d4e7e; }
+        .agree-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; padding: 14px 16px; background: #f5efe3; border: 1px solid #e8dcc6; border-radius: 12px; }
+        .agree-row input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+        .agree-row span { font-size: 14px; color: #704223; line-height: 1.6; }
+        .vr-form label { display: block; margin-top: 14px; font-weight: 700; font-size: 13px; color: #555; }
+        .vr-form input[type="text"], .vr-form input[type="file"], .vr-form input[type="number"] { padding: 10px 12px; width: 100%; margin-top: 5px; border: 1px solid #ddd; border-radius: 10px; background: #fcfcfd; font-size: 15px; }
+        .vr-form input[type="file"] { padding: 9px 12px; }
+        .file-hint { font-size: 12px; color: #888; margin-top: 5px; line-height: 1.5; }
+        .upload-box { margin-top: 16px; }
+        .vr-cta { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+        .btn { display: inline-block; padding: 12px 28px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .5px; transition: transform .2s, background .2s; border: none; cursor: pointer; }
+        .btn-primary { background: #008000; color: #fff; box-shadow: 0 4px 14px rgba(27,110,45,.3); }
+        .btn-primary:hover { background: #006015; transform: translateY(-2px); }
+        .btn-outline { background: #fff; color: #006015; border: 2px solid #006015; }
+        .btn-outline:hover { background: #e6f4ea; transform: translateY(-2px); }
+        .step-note { font-size: 13px; color: #704223; background: #f5efe3; padding: 10px 14px; border-radius: 10px; margin-top: 12px; }
+        .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
+        .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
+        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 img { padding-top: 20px; width: 260px; height: 190px; }
+        .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
+        .part2 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part2 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part2-desc { padding-top: 20px; font-weight: normal; }
+        .part2-desc a { color: #fff; text-decoration: none; transition: color .3s; }
+        .part2-desc a:hover { color: #ffd700; }
+        .part3 { display: flex; flex-direction: column; padding-left: 50px; }
+        .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
+        .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
+        @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .vr-head h1 { font-size: 26px; } .part1, .part2, .part3 { padding-left: 0; align-items: center; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-img" id="hero">
+            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Volunteer Sign Up">
+            <div class="hero">
+                <h2>WELCOME TO DHAMMA NATURE</h2>
+                <h1 style="margin:0;">VOLUNTEER SIGN UP</h1>
+            </div>
+            <div class="header-main">
+                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <nav>
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/about" class="nav-link">About</a>
+                    <div class="dropdown"><a href="/upcoming-sermons" class="nav-link">Sermons</a><div class="dropdown-content"><a href="/upcoming-sermons">Upcoming Sermons</a><a href="/teachings">Teachings</a></div></div>
+                    <div class="dropdown"><a href="/events" class="nav-link">Events</a><div class="dropdown-content"><a href="/events">Upcoming Events</a><a href="/centers">Meditation Centers</a></div></div>
+                    <div class="dropdown"><a href="/marketplace" class="nav-link">Explore</a><div class="dropdown-content"><a href="/marketplace">Marketplace</a><a href="/gallery">Gallery</a><a href="/quiz">Quizzes</a><a href="/rewards">Rewards</a><a href="/volunteer">Volunteer</a><a href="/charity">Charity</a><a href="/community">Community</a><a href="/discuss">Discuss</a></div></div>
+                    <a href="/blog" class="nav-link">Blog</a>
+                </nav><div class="header-right"><a href="/profile" class="profile-nav-link" title="My Profile"><i class="fas fa-user-circle"></i></a></div>
+                <a href="#" class="hamburger"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </header>
+<main class="vr-main">
+    <div class="vr-crumbs">
+        <a href="/">Home</a> &rarr; <a href="/volunteer">Volunteer</a> &rarr; <strong th:text="${opportunity.title}">Opportunity</strong>
+    </div>
+    <div class="vr-head">
+        <span class="vr-step-pill"><i class="fas fa-user-check"></i> Step 1 of 2 &middot; Commitment</span>
+        <h1 th:text="${opportunity.title}">Opportunity title</h1>
+        <div class="vr-meta">
+            <span><i class="far fa-calendar-alt"></i> <span th:text="${opportunity.opportunityDate}">Date</span></span>
+            <span th:if="${opportunity.location}"><i class="fas fa-map-marker-alt"></i> <span th:text="${opportunity.location}">Location</span></span>
+            <span><i class="fas fa-building"></i> <span th:text="${opportunity.meditationCenter.name}">Center</span></span>
+        </div>
+    </div>
+    <p class="msg-err" th:if="${error}" th:text="${error}"></p>
+    <form class="vr-form" method="post" th:action="@{'/volunteer/' + ${opportunity.id} + '/register'}" enctype="multipart/form-data">
+        <div class="vr-card">
+            <div class="hd"><h2><i class="fas fa-book-open"></i> What you commit to as a verified volunteer</h2></div>
+            <div class="bd">
+                <div class="warn gold">
+                    <i class="fas fa-trophy"></i>
+                    <div>
+                        <h4>What you unlock as a committed volunteer</h4>
+                        <p>Volunteers who show up reliably get <strong>priority access</strong> to future retreats, invitations to community gatherings, a verified &quot;Serve with Dhamma&quot; badge on your profile, written volunteering references, and <strong>15 reward points added after your documents are verified</strong> - not before.</p>
+                    </div>
+                </div>
+                <div class="warn red">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <h4>No-show consequence</h4>
+                        <p>Every seat at our centers is given to a genuine student. If you <strong>sign up and do not appear</strong> without giving <strong>prior notice to our email contact</strong> at least <strong>24 hours ahead</strong>, you will be flagged as a no-show: your volunteer &quot;Serve with Dhamma&quot; badge is removed, you lose access to priority volunteering and retreat perks, and repeated no-shows may suspend your volunteer account.</p>
+                    </div>
+                </div>
+                <div class="warn blue">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>How to cancel without a penalty</h4>
+                        <p>Email <strong>contact@dhammnature.example</strong> or use your profile at least 24 hours in advance with the opportunity name. Notices given before the deadline keep your record clean and your future opportunities open.</p>
+                    </div>
+                </div>
+                <div class="agree-row">
+                    <input type="checkbox" id="warningsAccepted" name="warningsAccepted" value="on" required>
+                    <label for="warningsAccepted" style="margin:0; font-weight:400; color:#704223; font-size:14px;">
+                        I have read and accept the commitment rules above, including the <strong>future opportunities</strong> I unlock and the <strong>no-show consequences</strong> if I do not appear or email prior notice.
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="vr-card">
+            <div class="hd"><h2><i class="fas fa-id-card"></i> Step 2 - Prove you're a genuine student</h2></div>
+            <div class="bd">
+                <label>Student ID number *</label>
+                <input type="text" name="studentIdNumber" placeholder="e.g. 2023BSCS1234" required maxlength="100">
+                <label>College / University name</label>
+                <input type="text" name="collegeName" placeholder="e.g. Tribhuvan University" maxlength="150">
+                <div class="upload-box">
+                    <label>Student ID card (photo) *</label>
+                    <input type="file" name="studentIdImage" accept="image/*" required>
+                    <p class="file-hint">A clear photo of your student ID card so our coordinator can confirm you are a student (JPG, PNG, WEBP - max 10MB).</p>
+                </div>
+                <div class="upload-box">
+                    <label>College approval letter (photo) *</label>
+                    <input type="file" name="collegeApprovalImage" accept="image/*" required>
+                    <p class="file-hint">A document on <strong>official letterhead showing your college logo / stamp</strong> approving you as a student volunteer. The visible logo and official stamp prove it is genuine and cannot be forged like a plain typed note.</p>
+                </div>
+            </div>
+        </div>
+        <div class="vr-cta">
+            <a th:href="@{'/volunteer'}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to opportunities</a>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit for verification</button>
+        </div>
+        <p class="step-note"><i class="fas fa-shield-alt"></i> Your documents are seen only by our coordinators to verify your student status. Your seat is held for you <strong>after verification</strong> - never before.</p>
+    </form>
+</main>
+    <div class="footer">
+        <div class="part1">
+            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
+        </div>
+        <div class="part2">
+            <h2>QUICK LINKS</h2>
+            <div class="part2-desc"><h4><a href="/">Home</a></h4><h4><a href="/about">About</a></h4><h4><a href="/upcoming-sermons">Sermons</a></h4><h4><a href="/events">Events</a></h4><h4><a href="/centers">Centers</a></h4><h4><a href="/marketplace">Marketplace</a></h4><h4><a href="/gallery">Gallery</a></h4><h4><a href="/quiz">Quizzes</a></h4><h4><a href="/rewards">Rewards</a></h4><h4><a href="/volunteer">Volunteer</a></h4><h4><a href="/charity">Charity</a></h4><h4><a href="/blog">Blog</a></h4><h4><a href="/discuss">Discuss</a></h4><h4><a href="/contact">Contact</a></h4><h4><a href="/profile">My Profile</a></h4></div>
+        </div>
+        <div class="part3">
+            <h2>HELP &amp; SUPPORT</h2>
+            <div class="part3-desc">
+                <h4><a href="/contact">Contact Us</a></h4>
+                <h4><a href="/volunteer">Volunteer</a></h4>
+                <h4><a href="/charity">Charity</a></h4>
+                <h4><a href="#terms">Terms &amp; Conditions</a></h4>
+                <h4><a href="#privacy">Privacy Policy</a></h4>
+            </div>
+        </div>
+    </div>
+<div class="footer-sec2">
+    <div class="footer-bottom" style="background:rgba(0,0,0,.32); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:22px 6vw;">
+        <h4 style="margin:0; color:#fff; font-weight:400; font-size:15px; letter-spacing:.4px;">Copyright@2024 Dhamma Nature, All Rights Reserved</h4>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="https://www.facebook.com" target="_blank" title="Facebook" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://www.twitter.com" target="_blank" title="Twitter" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+            <a href="https://www.instagram.com" target="_blank" title="Instagram" style="color:#fff; width:38px; height:38px; display:inline-flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.45); border-radius:50%; text-decoration:none; transition:background .2s;"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
+        </div>
+    </div>
+</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hamburger = document.querySelector('.hamburger');
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    setTimeout(function () {
+                        var icon = hamburger.querySelector('i');
+                        var open = hamburger.parentElement && hamburger.parentElement.querySelector('nav');
+                        if (icon) { icon.classList.toggle('fa-bars', !(open && open.classList.contains('active'))); icon.classList.toggle('fa-times', open && open.classList.contains('active')); }
+                    }, 0);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
