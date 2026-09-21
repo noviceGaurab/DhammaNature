@@ -92,7 +92,7 @@ public class DiscussionService {
         List<ParticipantView> views = new ArrayList<>();
         commentRepository.findDistinctRegisteredParticipants().forEach(u ->
                 views.add(new ParticipantView(u.getId(), u.getFullName(), u.getBio(),
-                        imageUrl(u.getProfileImage()), u.getRole().name(), false,
+                        profileImageUrl(u), u.getRole().name(), false,
                         u.getLastSeenAt() == null || u.getLastSeenAt().isBefore(now.minusDays(AFK_THRESHOLD_DAYS)),
                         daysAway(u.getLastSeenAt(), now), u.getLastSeenAt(), initial(u.getFullName()),
                         blocked.contains(u.getId()))));
@@ -289,7 +289,7 @@ public class DiscussionService {
             }
         }
         return new CommentView(c.getId(), c.getTitle(), renderMentions(c.getContent(), names),
-                c.getContent(), name, initial(name), imageUrl(author != null ? author.getProfileImage() : null),
+                c.getContent(), name, initial(name), profileImageUrl(author),
                 author != null ? author.getId() : null, c.getCreatedAt(),
                 c.getParent() == null ? null : c.getParent().getId(), replyViews);
     }
@@ -318,8 +318,8 @@ public class DiscussionService {
         return sb.toString();
     }
 
-    private String imageUrl(String profileImage) {
-        return profileImage == null || profileImage.isBlank() ? null : "/uploads/" + profileImage;
+    private String profileImageUrl(User user) {
+        return user == null || user.getProfileImageData() == null ? null : "/users/" + user.getId() + "/image";
     }
 
     private String initial(String name) {

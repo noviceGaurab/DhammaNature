@@ -25,7 +25,6 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         return;
     }
 
-    console.log('Form valid, submitting to server:', { email, password, acceptTerms });
     // Form submits to action="signup" if validation passes
 });
 

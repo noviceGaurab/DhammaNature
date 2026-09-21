@@ -203,10 +203,10 @@
             </div>
         </div>
         <div class="search-filter">
-            <form class="sf-form" method="get" action="/centers">
+            <form class="sf-form" method="get" action="/centers" id="centerSearchForm">
                 <div class="sf-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" name="q" placeholder="Search centres by name or location..." th:value="${q}">
+                    <input type="text" name="q" id="centerSearch" placeholder="Search centres by name or location..." th:value="${q}">
                 </div>
                 <button type="submit" class="sf-btn">Search</button>
             </form>
@@ -217,8 +217,8 @@
                 <button class="ff-tab" data-f="physical">Physical only</button>
             </div>
         </div>
-        <p class="empty-msg" th:if="${#lists.isEmpty(centers)}">No meditation centres match your search - try a different keyword or check back soon.</p>
-        <div class="center-grid" th:if="${!#lists.isEmpty(centers)}">
+        <p class="empty-msg" id="centersEmpty" th:if="${#lists.isEmpty(centers)}">No meditation centres match your search - try a different keyword or check back soon.</p>
+        <div class="center-grid" id="centerGrid" th:if="${!#lists.isEmpty(centers)}">
             <div class="center-card" th:each="c : ${centers}"
                  th:attr="data-mode=${(c.supportsOnlineSessions and c.supportsPhysicalSessions) ? 'hybrid' : (c.supportsOnlineSessions ? 'online' : 'physical')}">
                 <img th:if="${c.coverImageUrl}" th:src="@{/site-assets/{name}/image(name=${c.coverImageUrl})}" alt="cover"/>
@@ -336,16 +336,94 @@
                     }, 0);
                 });
             }
+
+            var grid = document.getElementById('centerGrid');
+            var emptyMsg = document.getElementById('centersEmpty');
+            var activeFilter = 'all';
+
+            function esc(v) {
+                return String(v == null ? '' : v)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            function modeOf(c) {
+                return (c.supportsOnlineSessions && c.supportsPhysicalSessions) ? 'hybrid'
+                    : (c.supportsOnlineSessions ? 'online' : 'physical');
+            }
+            function badgeHtml(c) {
+                var html = '';
+                if (c.supportsOnlineSessions && c.supportsPhysicalSessions) {
+                    html += '<span class="badge badge-hybrid"><i class="fas fa-check-double"></i> Hybrid</span>';
+                } else if (c.supportsOnlineSessions) {
+                    html += '<span class="badge badge-online"><i class="fas fa-wifi"></i> Online only</span>';
+                } else if (c.supportsPhysicalSessions) {
+                    html += '<span class="badge badge-physical"><i class="fas fa-home"></i> Physical only</span>';
+                }
+                if (c.verified) {
+                    html += '<span class="badge badge-verified"><i class="fas fa-check-circle"></i> Verified</span>';
+                }
+                return html;
+            }
+            function cardHtml(c) {
+                var cover = c.coverImageUrl
+                    ? '/site-assets/' + encodeURIComponent(c.coverImageUrl) + '/image?name=' + encodeURIComponent(c.coverImageUrl)
+                    : '/site-assets/pexels-tkirkgoz-15277853/image?name=pexels-tkirkgoz-15277853';
+                var location = c.location ? '<div class="cc-location"><i class="fas fa-map-marker-alt"></i> <span>' + esc(c.location) + '</span></div>' : '';
+                var desc = c.description ? '<p class="cc-desc">' + esc(c.description) + '</p>' : '';
+                var contact = '';
+                if (c.contactNumber) contact += '<span><i class="fas fa-phone"></i> <a href="tel:' + esc(c.contactNumber) + '">' + esc(c.contactNumber) + '</a></span>';
+                if (c.contactEmail) contact += '<span><i class="fas fa-envelope"></i> <a href="mailto:' + esc(c.contactEmail) + '">' + esc(c.contactEmail) + '</a></span>';
+                if (c.website) contact += '<span><i class="fas fa-globe"></i> <a href="' + esc(c.website) + '" target="_blank">Website</a></span>';
+                return '<div class="center-card" data-mode="' + modeOf(c) + '">'
+                    + '<img src="' + cover + '" alt="cover">'
+                    + '<div class="cc-body">'
+                    + '<div class="cc-badges">' + badgeHtml(c) + '</div>'
+                    + '<h3>' + esc(c.name) + '</h3>'
+                    + location
+                    + desc
+                    + (contact ? '<div class="cc-contact">' + contact + '</div>' : '')
+                    + '<a href="/centers/' + esc(c.id) + '" class="cc-link">View profile <i class="fas fa-arrow-right"></i></a>'
+                    + '</div></div>';
+            }
+            function render(list) {
+                var filtered = list.filter(function (c) {
+                    return activeFilter === 'all' || modeOf(c) === activeFilter;
+                });
+                grid.innerHTML = filtered.map(cardHtml).join('');
+                var empty = filtered.length === 0;
+                emptyMsg.style.display = empty ? '' : 'none';
+                grid.style.display = empty ? 'none' : '';
+            }
+
+            var searchInput = document.getElementById('centerSearch');
+            var searchForm = document.getElementById('centerSearchForm');
+            var debounce = null;
+            function runSearch() {
+                clearTimeout(debounce);
+                debounce = setTimeout(function () {
+                    var q = searchInput.value.trim();
+                    history.replaceState(null, '', q ? '/centers?q=' + encodeURIComponent(q) : '/centers');
+                    fetch('/api/centers?q=' + encodeURIComponent(q), { headers: { 'Accept': 'application/json' } })
+                        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+                        .then(function (data) { render(data); })
+                        .catch(function () {
+                            window.location.href = q ? '/centers?q=' + encodeURIComponent(q) : '/centers';
+                        });
+                }, 350);
+            }
+            if (searchForm) searchForm.addEventListener('submit', function (e) { e.preventDefault(); runSearch(); });
+            if (searchInput) searchInput.addEventListener('input', runSearch);
+
             var tabs = document.querySelectorAll('.ff-tab');
-            var cards = document.querySelectorAll('.center-card');
+            var cards = grid.querySelectorAll('.center-card');
             tabs.forEach(function (t) {
                 t.addEventListener('click', function () {
                     tabs.forEach(function (x) { x.classList.remove('active'); });
                     t.classList.add('active');
-                    var f = t.getAttribute('data-f');
-                    cards.forEach(function (c) {
+                    activeFilter = t.getAttribute('data-f');
+                    grid.querySelectorAll('.center-card').forEach(function (c) {
                         var mode = c.getAttribute('data-mode');
-                        c.style.display = (f === 'all' || mode === f) ? '' : 'none';
+                        c.style.display = (activeFilter === 'all' || mode === activeFilter) ? '' : 'none';
                     });
                 });
             });

@@ -20,13 +20,13 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"bookings", "donations", "comments", "rewardTransactions",
-        "volunteerRegistrations", "orders", "quizAttempts", "notifications", "wishlist", "followedCenters"})
-@EqualsAndHashCode(of = "id")
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Integer id;
 
     @Column(nullable = false)
@@ -37,6 +37,7 @@ public class User {
 
     @Column(nullable = false)
     @JsonIgnore
+    @ToString.Exclude
     private String passwordHash;
 
     private String phoneNumber;
@@ -46,8 +47,14 @@ public class User {
     /** Kept as free text, matching the original Signup form's "clarify gender/pronoun" field. */
     private String genderIdentity;
 
-    /** Filename of the user's profile photo, stored under /uploads. */
-    private String profileImage;
+    /** Raw bytes of the user's profile photo, stored in the database and served from /users/{id}/image. */
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    @ToString.Exclude
+    private byte[] profileImageData;
+
+    /** MIME type of {@link #profileImageData} (e.g. image/png). */
+    private String profileImageContentType;
 
     /** Short personal description shown to other participants in the discuss section. */
     private String bio;
@@ -86,34 +93,42 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<Booking> bookings = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<Donation> donations = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<Comment> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<RewardTransaction> rewardTransactions = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<VolunteerRegistration> volunteerRegistrations = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<ProductOrder> orders = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<QuizAttempt> quizAttempts = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<Notification> notifications = new HashSet<>();
 
     /** Field-validated "Save to Wishlist" extension (Section 4.3). */
@@ -122,6 +137,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     @Builder.Default
+    @ToString.Exclude
     private Set<Product> wishlist = new HashSet<>();
 
     /** Lets a user follow/bookmark meditation centers they're interested in. */
@@ -130,5 +146,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "center_id"))
     @Builder.Default
+    @ToString.Exclude
     private Set<MeditationCenter> followedCenters = new HashSet<>();
 }

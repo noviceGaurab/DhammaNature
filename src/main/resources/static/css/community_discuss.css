@@ -968,6 +968,14 @@
 .report-dialog { width: min(520px, 100%); }
 .report-body { padding: 20px 22px; }
 .report-intro { font-size: 14px; color: #444; margin-bottom: 14px; line-height: 1.5; }
+.report-reasons { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.report-option {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid #e2e2e2;
+    border-radius: 10px; font-size: 14px; color: #333; cursor: pointer; transition: border-color .2s, background .2s;
+}
+.report-option:hover { background: #fafafa; border-color: #cfcfcf; }
+.report-option input[type="radio"] { accent-color: #a12; width: 16px; height: 16px; margin: 0; flex: none; }
+.report-option:has(input:checked) { border-color: #a12; background: #fdecea; }
 .report-body textarea {
     width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;
     resize: vertical; font-family: inherit;

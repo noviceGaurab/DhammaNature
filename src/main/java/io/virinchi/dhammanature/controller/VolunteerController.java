@@ -1,7 +1,7 @@
 package io.virinchi.dhammanature.controller;
 
 import io.virinchi.dhammanature.config.SessionUserResolver;
-import io.virinchi.dhammanature.config.StorageConfig;
+import io.virinchi.dhammanature.config.ImageRules;
 import io.virinchi.dhammanature.service.VolunteerService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class VolunteerController {
 
     private final VolunteerService volunteerService;
-    private final StorageConfig storageConfig;
     private final SessionUserResolver sessionUserResolver;
 
     @GetMapping("/volunteer")
@@ -70,10 +69,13 @@ public class VolunteerController {
                         return "volunteer-register";
                     }
                     try {
-                        String studentIdImageName = saveImage(studentIdImage, "Student ID card photo");
-                        String approvalImageName = saveImage(collegeApprovalImage, "College approval letter (with official logo/letterhead)");
-                        volunteerService.registerVerified(user, id, studentIdNumber, studentIdImageName,
-                                approvalImageName, collegeName);
+                        String studentIdType = ImageRules.requireContentType(studentIdImage, "student ID card photo");
+                        byte[] studentIdBytes = ImageRules.bytes(studentIdImage);
+                        String approvalType = ImageRules.requireContentType(collegeApprovalImage,
+                                "college approval letter (with official logo/letterhead)");
+                        byte[] approvalBytes = ImageRules.bytes(collegeApprovalImage);
+                        volunteerService.registerVerified(user, id, studentIdNumber, studentIdBytes, studentIdType,
+                                approvalBytes, approvalType, collegeName);
                         redirectAttributes.addFlashAttribute("success",
                                 "Application sent! A coordinator will verify your student ID and college approval letter before your seat is confirmed.");
                     } catch (IllegalArgumentException | IllegalStateException e) {
@@ -84,12 +86,5 @@ public class VolunteerController {
                     return "redirect:/volunteer";
                 })
                 .orElse("redirect:/login");
-    }
-
-    private String saveImage(MultipartFile file, String label) {
-        if (file == null || file.isEmpty()) {
-            throw new IllegalArgumentException("Please upload the " + label + ".");
-        }
-        return storageConfig.saveImage(file);
     }
 }

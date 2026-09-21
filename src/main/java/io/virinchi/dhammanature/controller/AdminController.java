@@ -8,15 +8,20 @@ import io.virinchi.dhammanature.model.QuizQuestion;
 import io.virinchi.dhammanature.model.User;
 import io.virinchi.dhammanature.model.Vendor;
 import io.virinchi.dhammanature.model.enums.SessionMode;
-import io.virinchi.dhammanature.repository.*;
 import io.virinchi.dhammanature.service.AdminService;
 import io.virinchi.dhammanature.service.BookingService;
 import io.virinchi.dhammanature.service.CommunitySafetyService;
+import io.virinchi.dhammanature.service.DiscussionService;
+import io.virinchi.dhammanature.service.GalleryService;
+import io.virinchi.dhammanature.service.MeditationCenterService;
 import io.virinchi.dhammanature.service.QuizService;
 import io.virinchi.dhammanature.service.VendorService;
-import io.virinchi.dhammanature.service.DiscussionService;
+import io.virinchi.dhammanature.service.BlogService;
+import io.virinchi.dhammanature.service.EventService;
+import io.virinchi.dhammanature.service.VolunteerService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +37,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 /**
  * Admin dashboard - carries over admin.jsp / admin_donations.jsp / admin_comments.jsp /
@@ -44,22 +48,16 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final UserRepository userRepository;
-    private final DonationRepository donationRepository;
-    private final CommentRepository commentRepository;
-    private final GalleryRepository galleryRepository;
-    private final MeditationCenterRepository meditationCenterRepository;
-    private final VendorRepository vendorRepository;
     private final AdminService adminService;
     private final VendorService vendorService;
-    private final io.virinchi.dhammanature.service.DiscussionService discussionService;
-    private final io.virinchi.dhammanature.service.GalleryService galleryService;
-    private final io.virinchi.dhammanature.service.BlogService blogService;
-    private final io.virinchi.dhammanature.service.EventService eventService;
+    private final DiscussionService discussionService;
+    private final GalleryService galleryService;
+    private final BlogService blogService;
+    private final EventService eventService;
+    private final MeditationCenterService meditationCenterService;
     private final BookingService bookingService;
     private final QuizService quizService;
-    private final QuizAttemptRepository quizAttemptRepository;
-    private final io.virinchi.dhammanature.service.VolunteerService volunteerService;
+    private final VolunteerService volunteerService;
     private final SessionUserResolver sessionUserResolver;
     private final CommunitySafetyService communitySafetyService;
 
@@ -79,19 +77,20 @@ public class AdminController {
 
     @GetMapping
     public String users(@org.springframework.web.bind.annotation.RequestParam(defaultValue = "1") int page, Model model) {
-        var all = userRepository.findAll();
         int pageSize = 10;
-        int totalPages = Math.max(1, (int) Math.ceil(all.size() / (double) pageSize));
-        int current = Math.max(1, Math.min(page, totalPages));
-        model.addAttribute("userData", all.stream()
-                .skip((current - 1) * (long) pageSize).limit(pageSize).toList());
+        var paged = adminService.pagedUsers(PageRequest.of(Math.max(0, page - 1), pageSize));
+        int current = coercePage(page, paged.getTotalPages());
+        if (current != Math.max(1, page)) {
+            paged = adminService.pagedUsers(PageRequest.of(current - 1, pageSize));
+        }
+        model.addAttribute("userData", paged.getContent());
         model.addAttribute("totalUsers", adminService.totalUsers());
         model.addAttribute("totalCenters", adminService.totalCenters());
         model.addAttribute("totalDonations", adminService.totalDonations());
         model.addAttribute("totalBookings", adminService.totalBookings());
         model.addAttribute("totalOrders", adminService.totalOrders());
         model.addAttribute("page", current);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("pageBase", "/admin");
         return "admin/users";
     }
@@ -114,13 +113,13 @@ public class AdminController {
             usersByMonth.put(ym.toString(), 0L);
             donationsByMonth.put(ym.toString(), 0L);
         }
-        userRepository.findAll().forEach(u -> {
+        adminService.allUsers().forEach(u -> {
             if (u.getCreatedAt() != null) {
                 String key = java.time.YearMonth.from(u.getCreatedAt().toLocalDate()).toString();
                 if (usersByMonth.containsKey(key)) usersByMonth.replace(key, usersByMonth.get(key) + 1);
             }
         });
-        donationRepository.findAll().forEach(d -> {
+        adminService.allDonations().forEach(d -> {
             if (d.getDonationDate() != null) {
                 String key = java.time.YearMonth.from(d.getDonationDate().toLocalDate()).toString();
                 if (donationsByMonth.containsKey(key)) donationsByMonth.replace(key, donationsByMonth.get(key) + 1);
@@ -133,13 +132,13 @@ public class AdminController {
 
         // Role distribution (doughnut)
         java.util.LinkedHashMap<String, Long> roles = new java.util.LinkedHashMap<>();
-        userRepository.findAll().forEach(u -> roles.merge(u.getRole() != null ? u.getRole().name() : "USER", 1L, Long::sum));
+        adminService.allUsers().forEach(u -> roles.merge(u.getRole() != null ? u.getRole().name() : "USER", 1L, Long::sum));
         model.addAttribute("roleLabels", new ArrayList<>(roles.keySet()));
         model.addAttribute("roleValues", new ArrayList<>(roles.values()));
 
         // Donation amounts per month (last 6 months, ascending) - the "donation chart"
         java.util.LinkedHashMap<String, java.math.BigDecimal> donationAmountByMonth = new java.util.LinkedHashMap<>();
-        donationRepository.findAll().forEach(d -> {
+        adminService.allDonations().forEach(d -> {
             if (d.getDonationDate() != null) {
                 String key = java.time.YearMonth.from(d.getDonationDate().toLocalDate()).toString();
                 if (donationAmountByMonth.containsKey(key)) {
@@ -154,7 +153,7 @@ public class AdminController {
 
         // Donations by campaign (bar) - top 8 campaigns by donated amount
         java.util.LinkedHashMap<String, java.math.BigDecimal> byCampaign = new java.util.LinkedHashMap<>();
-        donationRepository.findAll().forEach(d -> {
+        adminService.allDonations().forEach(d -> {
             String c = d.getCampaign() != null && d.getCampaign().getTitle() != null
                     ? d.getCampaign().getTitle() : "General";
             byCampaign.merge(c, d.getAmount() != null ? d.getAmount() : java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
@@ -170,7 +169,7 @@ public class AdminController {
 
         // Comment activity by topic (horizontal bar) - top 8 topics
         java.util.LinkedHashMap<String, Long> topics = new java.util.LinkedHashMap<>();
-        commentRepository.findAllByOrderByCreatedAtDesc().forEach(c -> {
+        adminService.allComments().forEach(c -> {
             String t = c.getTopic() != null ? c.getTopic().getTitle() : "General";
             topics.merge(t, 1L, Long::sum);
         });
@@ -184,7 +183,7 @@ public class AdminController {
         model.addAttribute("topicValues", topicValues);
 
         model.addAttribute("donationTotal",
-                donationRepository.findAll().stream()
+                adminService.allDonations().stream()
                         .map(io.virinchi.dhammanature.model.Donation::getAmount)
                         .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
         return "admin/reports";
@@ -192,13 +191,13 @@ public class AdminController {
 
     @GetMapping("/donations")
     public String donations(Model model) {
-        model.addAttribute("donationData", donationRepository.findAllByOrderByDonationDateDesc());
+        model.addAttribute("donationData", adminService.recentDonations());
         return "admin/donations";
     }
 
     @GetMapping("/comments")
     public String comments(Model model) {
-        var all = commentRepository.findAllByOrderByCreatedAtDesc();
+        var all = adminService.allComments();
         long hidden = all.stream().filter(Comment::isHidden).count();
         model.addAttribute("interactionData", all);
         model.addAttribute("totalComments", all.size());
@@ -231,7 +230,7 @@ public class AdminController {
 
     @GetMapping("/gallery")
     public String gallery(Model model) {
-        model.addAttribute("galleryData", galleryRepository.findAll());
+        model.addAttribute("galleryData", galleryService.all());
         return "admin/gallery";
     }
 
@@ -254,7 +253,7 @@ public class AdminController {
 
     @GetMapping("/centers")
     public String centers(Model model) {
-        model.addAttribute("centers", meditationCenterRepository.findAll());
+        model.addAttribute("centers", adminService.allCenters());
         return "admin/centers";
     }
 
@@ -266,7 +265,7 @@ public class AdminController {
 
     @GetMapping("/vendors")
     public String vendors(Model model) {
-        var all = vendorRepository.findAll();
+        var all = adminService.allVendors();
         model.addAttribute("vendors", all);
         model.addAttribute("pendingCount", all.stream().filter(v -> !v.isVerified()).count());
         model.addAttribute("verifiedCount", all.stream().filter(Vendor::isVerified).count());
@@ -322,7 +321,7 @@ public class AdminController {
 
     @GetMapping("/events/new")
     public String newEvent(Model model) {
-        model.addAttribute("centers", meditationCenterRepository.findAll());
+        model.addAttribute("centers", meditationCenterService.all());
         model.addAttribute("modes", SessionMode.values());
         return "admin/event-add";
     }
@@ -335,8 +334,7 @@ public class AdminController {
                               @RequestParam SessionMode mode,
                               @RequestParam(required = false) String capacity,
                               @RequestParam Integer centerId) {
-        MeditationCenter center = meditationCenterRepository.findById(centerId)
-                .orElseThrow(() -> new NoSuchElementException("Meditation center not found"));
+        MeditationCenter center = meditationCenterService.get(centerId);
         Integer cap = (capacity == null || capacity.isBlank()) ? null : Integer.valueOf(capacity);
         Event event = Event.builder()
                 .title(title)
@@ -354,7 +352,7 @@ public class AdminController {
     public String quizzes(Model model) {
         var quizzes = quizService.all();
         java.util.Map<Integer, Long> attemptCounts = new java.util.HashMap<>();
-        quizzes.forEach(q -> attemptCounts.put(q.getId(), quizAttemptRepository.countByQuiz_Id(q.getId())));
+        quizzes.forEach(q -> attemptCounts.put(q.getId(), adminService.quizAttemptCount(q.getId())));
         model.addAttribute("quizzes", quizzes);
         model.addAttribute("attemptCounts", attemptCounts);
         return "admin/quizzes";
@@ -423,5 +421,9 @@ public class AdminController {
     public String rejectVolunteer(@PathVariable Integer id, HttpSession session) {
         volunteerService.reject(id, sessionUserResolver.require(session));
         return "redirect:/admin/volunteers";
+    }
+
+    private int coercePage(int requested, int totalPages) {
+        return Math.max(1, Math.min(requested, Math.max(1, totalPages)));
     }
 }

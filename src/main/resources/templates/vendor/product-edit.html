@@ -153,7 +153,7 @@
                     </div>
                 </div>
                 <div class="img-preview">
-                    <img id="pImgPreview" th:if="${product.imageUrl}" th:src="@{'/assets/images/' + ${product.imageUrl}}" alt="Product preview">
+                    <img id="pImgPreview" th:if="${product.imageUrl}" th:src="@{/site-assets/{name}/image(name=${product.imageUrl})}" alt="Product preview">
                 </div>
                 <div class="field">
                     <label for="pDesc">Description</label>
@@ -226,7 +226,7 @@
                 function update() {
                     var v = imgInput.value.trim();
                     if (!v) { preview.style.display = 'none'; preview.removeAttribute('src'); return; }
-                    preview.src = v.indexOf('/assets/images/') === 0 || v.indexOf('http') === 0 ? v : '/assets/images/' + v.replace(/^\//, '');
+                    preview.src = v.indexOf('/site-assets/') === 0 || v.indexOf('http') === 0 ? v : '/site-assets/' + v.replace(/^\//, '') + '/image';
                     preview.style.display = 'block';
                 }
                 imgInput.addEventListener('input', update);

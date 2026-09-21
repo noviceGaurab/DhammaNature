@@ -20,7 +20,7 @@
             <div class="admin-page-header">
                 <div class="admin-page-title">
                     <h2>Reports &amp; Incidents</h2>
-                    <p>Members can report a participant straight from the discuss hover menu. Resolve reports here once you have reviewed them, and take further action (blocking a user) directly in the Users list.</p>
+                    <p>Members can report a participant with a preset reason from the discuss page's Report button or hover menu. Resolve reports here once you have reviewed them, and take further action (blocking a user) directly in the Users list.</p>
                 </div>
             </div>
 
@@ -46,7 +46,7 @@
                 <div class="admin-card-body">
                     <div class="admin-empty" th:if="${#lists.isEmpty(reports)}">
                         <i class="fa-regular fa-flag"></i>
-                        <p>No reports yet. Members can report a participant from the discuss page's hover menu.</p>
+                        <p>No reports yet. Members can report a participant from the discuss page's Report button or hover menu.</p>
                     </div>
 
                     <div class="comment-list" th:unless="${#lists.isEmpty(reports)}">

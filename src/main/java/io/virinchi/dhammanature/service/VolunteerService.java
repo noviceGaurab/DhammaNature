@@ -43,7 +43,8 @@ public class VolunteerService {
      */
     @Transactional
     public VolunteerRegistration registerVerified(User user, Integer opportunityId, String studentIdNumber,
-                                                  String studentIdImage, String collegeApprovalImage,
+                                                  byte[] studentIdImageData, String studentIdImageContentType,
+                                                  byte[] collegeApprovalImageData, String collegeApprovalImageContentType,
                                                   String collegeName) {
         VolunteerOpportunity opportunity = opportunityRepository.findById(opportunityId)
                 .orElseThrow(() -> new NoSuchElementException("Volunteer opportunity not found"));
@@ -60,18 +61,20 @@ public class VolunteerService {
         if (studentIdNumber == null || studentIdNumber.isBlank()) {
             throw new IllegalStateException("Please provide your student ID number so we can verify you as a student.");
         }
-        if (studentIdImage == null || studentIdImage.isBlank()) {
+        if (studentIdImageData == null || studentIdImageData.length == 0) {
             throw new IllegalStateException("Please upload a photo of your student ID card.");
         }
-        if (collegeApprovalImage == null || collegeApprovalImage.isBlank()) {
+        if (collegeApprovalImageData == null || collegeApprovalImageData.length == 0) {
             throw new IllegalStateException("Please upload the signed college approval letter (with the college logo / letterhead).");
         }
 
         VolunteerRegistration registration = registrationRepository.save(VolunteerRegistration.builder()
                 .user(user).opportunity(opportunity).status(VolunteerStatus.PENDING_VERIFICATION)
                 .studentIdNumber(studentIdNumber.trim())
-                .studentIdImage(studentIdImage)
-                .collegeApprovalImage(collegeApprovalImage)
+                .studentIdImageData(studentIdImageData)
+                .studentIdImageContentType(studentIdImageContentType)
+                .collegeApprovalImageData(collegeApprovalImageData)
+                .collegeApprovalImageContentType(collegeApprovalImageContentType)
                 .collegeName(collegeName == null || collegeName.isBlank() ? null : collegeName.trim())
                 .warningsAccepted(true)
                 .build());

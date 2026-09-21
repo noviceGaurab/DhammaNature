@@ -2,7 +2,7 @@ package io.virinchi.dhammanature.controller;
 
 import io.virinchi.dhammanature.config.SessionUserResolver;
 import io.virinchi.dhammanature.config.GlobalModelAttributes;
-import io.virinchi.dhammanature.config.StorageConfig;
+import io.virinchi.dhammanature.config.ImageRules;
 import io.virinchi.dhammanature.model.User;
 import io.virinchi.dhammanature.repository.UserRepository;
 import io.virinchi.dhammanature.service.*;
@@ -34,7 +34,6 @@ public class ProfileController {
     private final QuizService quizService;
     private final BlogService blogService;
     private final NudgeService nudgeService;
-    private final StorageConfig storageConfig;
 
     @GetMapping("/profile")
     public String profile(HttpSession session, Model model) {
@@ -79,7 +78,7 @@ public class ProfileController {
         return "profile";
     }
 
-    /** Uploads a new profile photo (served from /uploads/**). */
+    /** Uploads a new profile photo (stored as a BLOB, served from /users/{id}/image). */
     @PostMapping("/profile/image")
     public String uploadImage(@RequestParam("image") MultipartFile image,
                               HttpSession session, RedirectAttributes redirectAttributes) {
@@ -92,9 +91,10 @@ public class ProfileController {
             return "redirect:/profile";
         }
         try {
-            String filename = storageConfig.saveImage(image);
+            String contentType = ImageRules.requireContentType(image, "profile photo");
             User user = userOpt.get();
-            user.setProfileImage(filename);
+            user.setProfileImageData(ImageRules.bytes(image));
+            user.setProfileImageContentType(contentType);
             userRepository.save(user);
             redirectAttributes.addFlashAttribute("success", "Profile photo updated. It will appear across the site.");
         } catch (IllegalArgumentException e) {

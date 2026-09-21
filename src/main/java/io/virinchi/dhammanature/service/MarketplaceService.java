@@ -7,6 +7,8 @@ import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.ProductCategory;
 import io.virinchi.dhammanature.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,19 @@ public class MarketplaceService {
 
     public List<Product> browseAvailable() {
         return productRepository.findByVendor_VerifiedTrue();
+    }
+
+    /** Database-paginated view of the available catalogue, optionally filtered by category. */
+    public Page<Product> pagedAvailable(ProductCategory category, Pageable pageable) {
+        return category == null
+                ? productRepository.findByVendor_VerifiedTrue(pageable)
+                : productRepository.findByVendor_VerifiedTrueAndCategory(category, pageable);
+    }
+
+    public long countAvailable(ProductCategory category) {
+        return category == null
+                ? productRepository.countByVendor_VerifiedTrue()
+                : productRepository.countByVendor_VerifiedTrueAndCategory(category);
     }
 
     /** Products grouped by category in enum display order; empty categories are omitted. */

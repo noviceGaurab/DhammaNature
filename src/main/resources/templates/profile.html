@@ -69,8 +69,8 @@
     <section class="profile-hero">
         <div class="profile-identity">
             <div class="avatar avatar-wrap">
-                <img th:if="${currentUser.profileImage}" th:src="@{'/uploads/' + ${currentUser.profileImage}}" alt="Profile photo"/>
-                <span th:unless="${currentUser.profileImage}" th:text="${#strings.isEmpty(currentUser.fullName) ? 'U' : #strings.substring(currentUser.fullName,0,1)}">U</span>
+                        <img th:if="${currentUser.profileImageData != null}" th:src="@{/users/{id}/image(id=${currentUser.id})}" alt="Profile photo"/>
+                        <span th:unless="${currentUser.profileImageData != null}" th:text="${#strings.isEmpty(currentUser.fullName) ? 'U' : #strings.substring(currentUser.fullName,0,1)}">U</span>
             </div>
             <div>
                 <p class="eyebrow">Welcome back</p>
@@ -146,7 +146,7 @@
         <p class="empty-note" th:if="${#sets.isEmpty(wishlist)}">No saved items yet. Tap "Save to wishlist" on any product.</p>
         <div class="wish-grid" th:unless="${#sets.isEmpty(wishlist)}">
             <article class="wish-card" th:each="p : ${wishlist}">
-                <img th:if="${p.imageUrl}" th:src="@{'/assets/images/' + ${p.imageUrl}}" th:alt="${p.productName}"/>
+                <img th:if="${p.imageUrl}" th:src="@{/site-assets/{name}/image(name=${p.imageUrl})}" th:alt="${p.productName}"/>
                 <img th:unless="${p.imageUrl}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="product"/>
                 <div><h3 th:text="${p.productName}">Product</h3><p th:text="'$' + ${#numbers.formatDecimal(p.price, 1, 2)}">$0</p><a th:href="@{'/marketplace/' + ${p.id}}" class="btn btn-sm">View</a></div>
             </article>

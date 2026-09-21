@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +30,7 @@ public class EmailService {
     @Value("${app.notify-email:}")
     private String notifyEmail;
 
+    @Async("mailExecutor")
     public void send(String to, String subject, String text) {
         if (to == null || to.isBlank()) {
             return;
@@ -47,6 +49,7 @@ public class EmailService {
         }
     }
 
+    @Async("mailExecutor")
     public void sendToUser(User user, String subject, String text) {
         if (user != null) {
             send(user.getEmail(), subject, text);
@@ -54,6 +57,7 @@ public class EmailService {
     }
 
     /** Site alert emailed to the owner's inbox (defaults to the mail account). */
+    @Async("mailExecutor")
     public void sendSiteAlert(String subject, String text) {
         String target = notifyEmail.isBlank() ? mailFrom : notifyEmail;
         send(target, subject, text);

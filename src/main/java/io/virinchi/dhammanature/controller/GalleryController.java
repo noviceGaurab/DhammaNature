@@ -2,6 +2,7 @@ package io.virinchi.dhammanature.controller;
 
 import io.virinchi.dhammanature.service.GalleryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +16,20 @@ public class GalleryController {
 
     @GetMapping("/gallery")
     public String gallery(@RequestParam(defaultValue = "1") int page, Model model) {
-        var images = galleryService.all();
         int pageSize = 12;
-        int totalPages = Math.max(1, (int) Math.ceil(images.size() / (double) pageSize));
-        int current = Math.max(1, Math.min(page, totalPages));
-        model.addAttribute("images", images.stream()
-                .skip((current - 1) * (long) pageSize).limit(pageSize).toList());
+        var paged = galleryService.pagedAll(PageRequest.of(Math.max(0, page - 1), pageSize));
+        int current = coercePage(page, paged.getTotalPages());
+        if (current != Math.max(1, page)) {
+            paged = galleryService.pagedAll(PageRequest.of(current - 1, pageSize));
+        }
+        model.addAttribute("images", paged.getContent());
         model.addAttribute("page", current);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("pageBase", "/gallery");
         return "gallery";
+    }
+
+    private int coercePage(int requested, int totalPages) {
+        return Math.max(1, Math.min(requested, Math.max(1, totalPages)));
     }
 }

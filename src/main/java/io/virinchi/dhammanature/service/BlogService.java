@@ -5,6 +5,8 @@ import io.virinchi.dhammanature.model.User;
 import io.virinchi.dhammanature.model.enums.BlogStatus;
 import io.virinchi.dhammanature.repository.BlogPostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,10 @@ public class BlogService {
 
     public List<BlogPost> published() {
         return blogPostRepository.findByStatusOrderByCreatedAtDesc(BlogStatus.APPROVED);
+    }
+
+    public Page<BlogPost> pagedPublished(Pageable pageable) {
+        return blogPostRepository.findByStatusOrderByCreatedAtDesc(BlogStatus.APPROVED, pageable);
     }
 
     public Optional<BlogPost> publishedById(Integer id) {

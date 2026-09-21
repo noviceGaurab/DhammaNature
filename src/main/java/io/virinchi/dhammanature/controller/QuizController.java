@@ -6,6 +6,7 @@ import io.virinchi.dhammanature.model.QuizAttempt;
 import io.virinchi.dhammanature.service.QuizService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,12 @@ public class QuizController {
     public String list(@RequestParam(defaultValue = "1") int page, Model model) {
         List<Quiz> quizzes = quizService.all();
         int pageSize = 8;
-        int totalPages = Math.max(1, (int) Math.ceil(quizzes.size() / (double) pageSize));
-        int current = Math.max(1, Math.min(page, totalPages));
-        model.addAttribute("quizzes", quizzes.stream()
-                .skip((current - 1) * (long) pageSize).limit(pageSize).toList());
+        var paged = quizService.pagedAll(PageRequest.of(Math.max(0, page - 1), pageSize));
+        int current = coercePage(page, paged.getTotalPages());
+        if (current != Math.max(1, page)) {
+            paged = quizService.pagedAll(PageRequest.of(current - 1, pageSize));
+        }
+        model.addAttribute("quizzes", paged.getContent());
         model.addAttribute("quizCount", quizzes.size());
         int totalQuestions = quizzes.stream()
                 .mapToInt(q -> q.getQuestions() == null ? 0 : q.getQuestions().size())
@@ -39,7 +42,7 @@ public class QuizController {
         model.addAttribute("totalPoints", totalPoints);
         model.addAttribute("leaderboard", quizService.leaderboard());
         model.addAttribute("page", current);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("pageBase", "/quiz");
         return "quiz";
     }
@@ -68,5 +71,9 @@ public class QuizController {
                     return "quiz-result";
                 })
                 .orElse("redirect:/login");
+    }
+
+    private int coercePage(int requested, int totalPages) {
+        return Math.max(1, Math.min(requested, Math.max(1, totalPages)));
     }
 }

@@ -148,7 +148,7 @@
         </div>
         <div class="receipt-body">
             <div class="product-line">
-                <img th:if="${order.product.imageUrl}" th:src="@{'/assets/images/' + ${order.product.imageUrl}}" th:alt="${order.product.productName}">
+                <img th:if="${order.product.imageUrl}" th:src="@{/site-assets/{name}/image(name=${order.product.imageUrl})}" th:alt="${order.product.productName}">
                 <img th:unless="${order.product.imageUrl}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" th:alt="${order.product.productName}">
                 <div>
                     <div class="p-name" th:text="${order.product.productName}">Product name</div>

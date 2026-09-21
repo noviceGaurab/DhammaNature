@@ -4,6 +4,8 @@ import io.virinchi.dhammanature.model.Event;
 import io.virinchi.dhammanature.model.MeditationCenter;
 import io.virinchi.dhammanature.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,14 @@ public class EventService {
 
     public List<Event> upcoming() {
         return eventRepository.findByEventDateAfterOrderByEventDateAsc(LocalDateTime.now());
+    }
+
+    public Page<Event> pagedUpcoming(Pageable pageable) {
+        return eventRepository.findByEventDateAfterOrderByEventDateAsc(LocalDateTime.now(), pageable);
+    }
+
+    public long countUpcoming() {
+        return eventRepository.countByEventDateAfter(LocalDateTime.now());
     }
 
     public List<Event> all() {

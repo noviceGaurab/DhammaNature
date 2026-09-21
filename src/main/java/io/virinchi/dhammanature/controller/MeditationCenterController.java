@@ -51,10 +51,4 @@ public class MeditationCenterController {
         model.addAttribute("opportunityCount", opportunities.size());
         return "center-detail";
     }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public String handleMissing(NoSuchElementException ex, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("error", ex.getMessage() + " - please choose a center from the directory.");
-        return "redirect:/centers";
-    }
 }

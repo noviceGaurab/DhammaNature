@@ -9,6 +9,7 @@ import io.virinchi.dhammanature.service.EmailService;
 import io.virinchi.dhammanature.service.NotificationService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,19 +62,20 @@ public class BlogController {
     @GetMapping("/blog")
     public String blog(@RequestParam(name = "submitted", required = false) String submitted,
                        @RequestParam(defaultValue = "1") int page, Model model) {
-        var published = blogService.published();
         int pageSize = 6;
-        int totalPages = Math.max(1, (int) Math.ceil(published.size() / (double) pageSize));
-        int current = Math.max(1, Math.min(page, totalPages));
-        model.addAttribute("posts", published.stream()
-                .skip((current - 1) * (long) pageSize).limit(pageSize).toList());
-        model.addAttribute("recentPosts", published.stream().limit(4).toList());
+        var paged = blogService.pagedPublished(PageRequest.of(Math.max(0, page - 1), pageSize));
+        int current = coercePage(page, paged.getTotalPages());
+        if (current != Math.max(1, page)) {
+            paged = blogService.pagedPublished(PageRequest.of(current - 1, pageSize));
+        }
+        model.addAttribute("posts", paged.getContent());
+        model.addAttribute("recentPosts", blogService.published().stream().limit(4).toList());
         if ("1".equals(submitted)) {
             model.addAttribute("success",
                     "Your article has been submitted and will be published after an admin approves it.");
         }
         model.addAttribute("page", current);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("pageBase", "/blog");
         return "blog";
     }
@@ -215,5 +217,9 @@ public class BlogController {
         }
         blogService.submit(title, category, imageUrl, content, author);
         return "redirect:/blog?submitted=1";
+    }
+
+    private int coercePage(int requested, int totalPages) {
+        return Math.max(1, Math.min(requested, Math.max(1, totalPages)));
     }
 }

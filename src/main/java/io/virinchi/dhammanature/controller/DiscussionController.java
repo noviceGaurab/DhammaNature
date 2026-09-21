@@ -199,6 +199,7 @@ public class DiscussionController {
     public String reportParticipant(@RequestParam(defaultValue = DEFAULT_SLUG) String topic,
                                     @RequestParam Integer participantId,
                                     @RequestParam String reason,
+                                    @RequestParam(required = false) String details,
                                     HttpSession session, RedirectAttributes redirectAttributes) {
         var actor = sessionUserResolver.resolve(session).orElse(null);
         if (actor == null) {
@@ -206,7 +207,7 @@ public class DiscussionController {
             return "redirect:/discuss?topic=" + topic;
         }
         try {
-            communitySafetyService.report(actor, participantId, reason);
+            communitySafetyService.report(actor, participantId, reason, details);
             redirectAttributes.addFlashAttribute("success", "Your report was submitted. An administrator will review it.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());

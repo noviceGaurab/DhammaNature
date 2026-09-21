@@ -6,15 +6,12 @@ import io.virinchi.dhammanature.model.Vendor;
 import io.virinchi.dhammanature.model.enums.ProductCategory;
 import io.virinchi.dhammanature.repository.ProductRepository;
 import io.virinchi.dhammanature.repository.VendorRepository;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +20,7 @@ public class ProductRestController {
 
     private final ProductRepository productRepository;
     private final VendorRepository vendorRepository;
+    private final ApiAuth apiAuth;
 
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
@@ -31,26 +29,18 @@ public class ProductRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable("id") Integer id) {
-        return productRepository.findById(id)
-                .map(product -> ResponseEntity.ok((Object) ApiViews.product(product)))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(error("Product " + id + " not found")));
+        Product product = productRepository.findById(id).orElseThrow(
+                () -> ApiException.notFound("Product " + id + " not found"));
+        return ResponseEntity.ok(ApiViews.product(product));
     }
 
+    /** Admin only: lists a new product. */
     @PostMapping
-    public ResponseEntity<?> saveProduct(@RequestBody ProductCreateRequest request) {
-        if (request.name() == null || request.name().isBlank()) {
-            return ResponseEntity.badRequest().body(error("A product name is required."));
-        }
-        if (request.price() == null || request.price().compareTo(BigDecimal.ZERO) <= 0) {
-            return ResponseEntity.badRequest().body(error("Price must be greater than zero."));
-        }
-
-        Vendor vendor = vendorRepository.findByVerifiedTrue().stream().findFirst().orElse(null);
-        if (vendor == null) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body(error("No verified vendor available to list this product."));
-        }
+    public ResponseEntity<?> saveProduct(@Valid @RequestBody ProductCreateRequest request, HttpSession session) {
+        apiAuth.requireAdmin(session);
+        Vendor vendor = vendorRepository.findByVerifiedTrue().stream().findFirst().orElseThrow(
+                () -> new ApiException(HttpStatus.SERVICE_UNAVAILABLE,
+                        "No verified vendor available to list this product."));
 
         Product product = Product.builder()
                 .vendor(vendor)
@@ -62,17 +52,7 @@ public class ProductRestController {
                 .category(ProductCategory.HANDICRAFTS)
                 .build();
 
-        try {
-            Product saved = productRepository.save(product);
-            return ResponseEntity.status(HttpStatus.CREATED).body(ApiViews.product(saved));
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body(error("Could not save product - invalid data."));
-        }
-    }
-
-    private Map<String, Object> error(String message) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", message);
-        return body;
+        Product saved = productRepository.save(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiViews.product(saved));
     }
 }

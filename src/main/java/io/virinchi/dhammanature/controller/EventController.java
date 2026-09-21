@@ -7,6 +7,7 @@ import io.virinchi.dhammanature.service.BookingService;
 import io.virinchi.dhammanature.service.EventService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +31,17 @@ public class EventController {
     public String list(@RequestParam(defaultValue = "1") int page, Model model) {
         var events = eventService.upcoming();
         int pageSize = 6;
-        int totalPages = Math.max(1, (int) Math.ceil(events.size() / (double) pageSize));
-        int current = Math.max(1, Math.min(page, totalPages));
-        model.addAttribute("events", events.stream()
-                .skip((current - 1) * (long) pageSize).limit(pageSize).toList());
+        var paged = eventService.pagedUpcoming(PageRequest.of(Math.max(0, page - 1), pageSize));
+        int current = coercePage(page, paged.getTotalPages());
+        if (current != Math.max(1, page)) {
+            paged = eventService.pagedUpcoming(PageRequest.of(current - 1, pageSize));
+        }
+        model.addAttribute("events", paged.getContent());
         model.addAttribute("eventCount", events.size());
         model.addAttribute("onlineCount", events.stream().filter(e -> e.getMode() != null && e.getMode().name().contains("ONLINE")).count());
         model.addAttribute("physicalCount", events.stream().filter(e -> e.getMode() != null && e.getMode().name().contains("PHYSICAL")).count());
         model.addAttribute("page", current);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("pageBase", "/events");
         return "events";
     }
@@ -162,9 +165,7 @@ public class EventController {
         return "booking-confirm";
     }
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public String handleMissing(NoSuchElementException ex, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("error", ex.getMessage() + " - please choose an event from the list.");
-        return "redirect:/events";
+    private int coercePage(int requested, int totalPages) {
+        return Math.max(1, Math.min(requested, Math.max(1, totalPages)));
     }
 }

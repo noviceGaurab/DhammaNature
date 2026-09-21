@@ -67,28 +67,28 @@
                         <div class="vdoc">
                             <div class="vdoc-top">
                                 <span class="admin-badge info">Student ID card</span>
-                                <span class="admin-badge success" th:if="${r.studentIdImage != null}"><i class="fa-solid fa-circle-check"></i> Uploaded</span>
+                                <span class="admin-badge success" th:if="${r.studentIdImageData != null}"><i class="fa-solid fa-circle-check"></i> Uploaded</span>
                             </div>
-                            <div class="vdoc-file is-image" th:if="${r.studentIdImage != null}">
-                                <a th:href="@{'/uploads/' + ${r.studentIdImage}}" target="_blank">
-                                    <img th:src="@{'/uploads/' + ${r.studentIdImage}}" alt="Student ID" style="max-width:100%; border-radius:8px;">
+                            <div class="vdoc-file is-image" th:if="${r.studentIdImageData != null}">
+                                <a th:href="@{/volunteer-registrations/{id}/student-id/image(id=${r.id})}" target="_blank">
+                                    <img th:src="@{/volunteer-registrations/{id}/student-id/image(id=${r.id})}" alt="Student ID" style="max-width:100%; border-radius:8px;">
                                 </a>
                             </div>
-                            <div class="admin-empty small" th:if="${r.studentIdImage == null}">
+                            <div class="admin-empty small" th:if="${r.studentIdImageData == null}">
                                 <p>No student ID uploaded.</p>
                             </div>
                         </div>
                         <div class="vdoc">
                             <div class="vdoc-top">
                                 <span class="admin-badge info">College approval letter</span>
-                                <span class="admin-badge success" th:if="${r.collegeApprovalImage != null}"><i class="fa-solid fa-circle-check"></i> Uploaded</span>
+                                <span class="admin-badge success" th:if="${r.collegeApprovalImageData != null}"><i class="fa-solid fa-circle-check"></i> Uploaded</span>
                             </div>
-                            <div class="vdoc-file is-image" th:if="${r.collegeApprovalImage != null}">
-                                <a th:href="@{'/uploads/' + ${r.collegeApprovalImage}}" target="_blank">
-                                    <img th:src="@{'/uploads/' + ${r.collegeApprovalImage}}" alt="College approval letter" style="max-width:100%; border-radius:8px;">
+                            <div class="vdoc-file is-image" th:if="${r.collegeApprovalImageData != null}">
+                                <a th:href="@{/volunteer-registrations/{id}/college-approval/image(id=${r.id})}" target="_blank">
+                                    <img th:src="@{/volunteer-registrations/{id}/college-approval/image(id=${r.id})}" alt="College approval letter" style="max-width:100%; border-radius:8px;">
                                 </a>
                             </div>
-                            <div class="admin-empty small" th:if="${r.collegeApprovalImage == null}">
+                            <div class="admin-empty small" th:if="${r.collegeApprovalImageData == null}">
                                 <p>No college approval letter uploaded.</p>
                             </div>
                         </div>

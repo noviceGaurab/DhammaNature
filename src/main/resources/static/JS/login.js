@@ -8,7 +8,6 @@
       return;
     }
 
-    console.log('Login attempt:', { email, password });
     window.location.href = 'home.html'; // Replace 'dashboard.html' with the URL or path of the target pag
   }
 

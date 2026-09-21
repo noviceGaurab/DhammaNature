@@ -10,6 +10,7 @@ import io.virinchi.dhammanature.service.PointValue;
 import io.virinchi.dhammanature.service.VendorService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,26 +36,25 @@ public class MarketplaceController {
                          @RequestParam(required = false) ProductCategory cat,
                          HttpSession session, Model model) {
         var allProducts = marketplaceService.browseAvailable();
-        var products = cat != null
-                ? allProducts.stream().filter(p -> p.getCategory() == cat).toList()
-                : allProducts;
         int pageSize = 8;
-        int totalPages = Math.max(1, (int) Math.ceil(products.size() / (double) pageSize));
-        int current = Math.max(1, Math.min(page, totalPages));
-        model.addAttribute("products", products.stream()
-                .skip((current - 1) * (long) pageSize).limit(pageSize).toList());
+        var paged = marketplaceService.pagedAvailable(cat, PageRequest.of(Math.max(0, page - 1), pageSize));
+        int current = coercePage(page, paged.getTotalPages());
+        if (current != Math.max(1, page)) {
+            paged = marketplaceService.pagedAvailable(cat, PageRequest.of(current - 1, pageSize));
+        }
+        model.addAttribute("products", paged.getContent());
         model.addAttribute("allProductCount", allProducts.size());
         model.addAttribute("productsByCategory", marketplaceService.browseGroupedByCategory());
         model.addAttribute("categories", ProductCategory.values());
         model.addAttribute("featuredProducts", allProducts.stream().limit(4).toList());
-        model.addAttribute("productCount", products.size());
+        model.addAttribute("productCount", marketplaceService.countAvailable(cat));
         model.addAttribute("vendorCount", allProducts.stream()
                 .map(p -> p.getVendor().getId())
                 .distinct()
                 .count());
         model.addAttribute("currentCategory", cat);
         model.addAttribute("page", current);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("pageBase", cat != null ? "/marketplace?cat=" + cat.name() : "/marketplace");
         model.addAttribute("purchasedIds",
                 sessionUserResolver.resolve(session).map(u -> marketplaceService.purchasedProductIds(u.getId())).orElse(List.of()));
@@ -137,12 +137,6 @@ public class MarketplaceController {
                 .orElse("redirect:/login");
     }
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public String handleMissing(NoSuchElementException ex, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("error", ex.getMessage() + " - please choose a product from the marketplace.");
-        return "redirect:/marketplace";
-    }
-
     @GetMapping("/marketplace/order-confirmed")
     public String orderConfirmed(@RequestParam(required = false) Integer orderId,
                                  HttpSession session, Model model) {
@@ -216,5 +210,9 @@ public class MarketplaceController {
                     return "redirect:/profile";
                 })
                 .orElse("redirect:/login");
+    }
+
+    private int coercePage(int requested, int totalPages) {
+        return Math.max(1, Math.min(requested, Math.max(1, totalPages)));
     }
 }

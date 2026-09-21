@@ -8,6 +8,8 @@ import io.virinchi.dhammanature.repository.QuizAttemptRepository;
 import io.virinchi.dhammanature.repository.QuizQuestionRepository;
 import io.virinchi.dhammanature.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,10 @@ public class QuizService {
 
     public List<Quiz> all() {
         return quizRepository.findAllWithQuestions();
+    }
+
+    public Page<Quiz> pagedAll(Pageable pageable) {
+        return quizRepository.findAll(pageable);
     }
 
     public Quiz get(Integer id) {

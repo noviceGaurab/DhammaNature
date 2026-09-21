@@ -213,46 +213,6 @@ nav a.donate-btn:hover {
     transform: scale(1.05);
 }
 
-.dropdown {
-    position: relative;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.95);
-    min-width: 200px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    padding: 10px 0;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.dropdown-content.active {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 10px 20px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.dropdown-content a:hover {
-    background-color: #006015;
-    color: #ffd700;
-}
-
 .hamburger {
     display: none;
     font-size: 30px;
@@ -505,14 +465,6 @@ main.result-wrap .btn { margin: 0 6px; }
         padding: 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .dropdown-content {
-        position: static;
-        background-color: rgba(255, 255, 255, 0.1);
-        box-shadow: none;
-        margin-left: 20px;
-        padding: 10px 0;
-    }
-    .dropdown-content a { font-size: 16px; padding: 8px 20px; }
     .hamburger { display: block; margin-left: auto; }
     .hero { max-width: 500px; top: 60%; }
     .hero h2 { font-size: 18px; }
