@@ -79,7 +79,7 @@
                                     <img class="admin-thumbnail"
                                          th:src="@{/gallery/{id}/image(id=${img.id})}"
                                          th:alt="${img.title}"
-                                         onerror="this.src='/assets/images/transparent_logo.png'">
+                                         onerror="this.src='/site-assets/transparent_logo/image'">
                                 </td>
                                 <td>
                                     <strong th:text="${img.title ?: 'No Title'}">No Title</strong>

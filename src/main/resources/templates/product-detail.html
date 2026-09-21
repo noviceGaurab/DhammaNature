@@ -83,7 +83,7 @@
         .pd-login-note { margin-top: 12px; }
         .footer { display: flex; flex-direction: row; justify-content: space-evenly; padding: 40px 20px; background:#000; color:#fff; }
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -107,13 +107,13 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Product">
+            <img th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" alt="Product">
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">PRODUCT DETAILS</h1>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -133,7 +133,7 @@
     <section class="pd-grid">
         <div class="pd-gallery">
             <img th:if="${product.imageData != null}" th:src="@{/products/{id}/image(id=${product.id})}" th:alt="${product.productName}"/>
-            <img th:unless="${product.imageData != null}" src="/assets/images/pexels-pixabay-236302.jpg" alt="product"/>
+            <img th:unless="${product.imageData != null}" th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" alt="product"/>
         </div>
         <div class="pd-info">
             <div>
@@ -233,7 +233,7 @@
         <div class="pd-related-grid">
             <a class="pd-related-card" th:each="rp : ${relatedProducts}" th:href="@{'/marketplace/' + ${rp.id}}">
                 <img th:if="${rp.imageData != null}" th:src="@{/products/{id}/image(id=${rp.id})}" th:alt="${rp.productName}"/>
-                <img th:unless="${rp.imageData != null}" src="/assets/images/pexels-pixabay-236302.jpg" th:alt="${rp.productName}"/>
+                <img th:unless="${rp.imageData != null}" th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" th:alt="${rp.productName}"/>
                 <div class="body">
                     <span class="cat" th:text="${rp.category}"></span>
                     <h4 th:text="${rp.productName}">Product</h4>
@@ -245,7 +245,7 @@
 </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
         </div>
         <div class="part2">

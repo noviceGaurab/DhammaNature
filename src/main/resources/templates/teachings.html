@@ -109,7 +109,7 @@
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
         .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
         .line { width: 100%; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -147,14 +147,14 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-pexels-user-1493533273-27021625.jpg" alt="Teachings">
+            <img th:src="@{/site-assets/pexels-pexels-user-1493533273-27021625/image(name='pexels-pexels-user-1493533273-27021625')}" alt="Teachings">
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">TEACHINGS</h1>
                 <p>Read, listen and download the teachings of the Buddha and our guiding monks</p>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -205,7 +205,7 @@
         </div>
         <!-- Featured teaching -->
         <section class="featured-teach">
-            <img class="ft-img" src="/assets/images/pexels-ron-lach-10461522.jpg" alt="Five Aggregates Series">
+            <img class="ft-img" th:src="@{/site-assets/pexels-ron-lach-10461522/image(name='pexels-ron-lach-10461522')}" alt="Five Aggregates Series">
             <div class="ft-body">
                 <span class="chip">Featured teaching</span>
                 <div class="ft-meta"><i class="far fa-calendar-alt"></i> 09 Jul, 2024 &nbsp;&nbsp;|&nbsp;&nbsp; <i class="fas fa-user"></i> Ajahn Brahm Bhikkhu</div>
@@ -237,7 +237,7 @@
                 </div>
                 <div class="t-grid" id="teachGrid">
                     <div class="t-card" data-cat="aggregates">
-                        <img src="/assets/images/pexels-ron-lach-10461522.jpg" alt="The Five Aggregates">
+                        <img th:src="@{/site-assets/pexels-ron-lach-10461522/image(name='pexels-ron-lach-10461522')}" alt="The Five Aggregates">
                         <div class="tc-body">
                             <span class="chip">Aggregates</span>
                             <div class="tc-meta">09 Jul, 2024 &nbsp;|&nbsp; 18 min read</div>
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                     <div class="t-card" data-cat="mindfulness">
-                        <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Mindfulness in Daily Life">
+                        <img th:src="@{/site-assets/pexels-pixabay-220650/image(name='pexels-pixabay-220650')}" alt="Mindfulness in Daily Life">
                         <div class="tc-body">
                             <span class="chip">Mindfulness</span>
                             <div class="tc-meta">05 May, 2025 &nbsp;|&nbsp; 12 min read</div>
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                     <div class="t-card" data-cat="lovingkindness">
-                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="The Heart of Metta">
+                        <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="The Heart of Metta">
                         <div class="tc-body">
                             <span class="chip">Loving-Kindness</span>
                             <div class="tc-meta">18 Apr, 2025 &nbsp;|&nbsp; 15 min read</div>
@@ -270,7 +270,7 @@
                         </div>
                     </div>
                     <div class="t-card" data-cat="noblepath">
-                        <img src="/assets/images/pexels-tkirkgoz-13047288.jpg" alt="Walking the Noble Path">
+                        <img th:src="@{/site-assets/pexels-tkirkgoz-13047288/image(name='pexels-tkirkgoz-13047288')}" alt="Walking the Noble Path">
                         <div class="tc-body">
                             <span class="chip">Noble Path</span>
                             <div class="tc-meta">24 Mar, 2025 &nbsp;|&nbsp; 20 min read</div>
@@ -281,7 +281,7 @@
                         </div>
                     </div>
                     <div class="t-card" data-cat="mindfulness">
-                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="The Breath as Anchor">
+                        <img th:src="@{/site-assets/pexels-cryschanxanhy-29547000/image(name='pexels-cryschanxanhy-29547000')}" alt="The Breath as Anchor">
                         <div class="tc-body">
                             <span class="chip">Mindfulness</span>
                             <div class="tc-meta">14 Mar, 2025 &nbsp;|&nbsp; 10 min read</div>
@@ -292,7 +292,7 @@
                         </div>
                     </div>
                     <div class="t-card" data-cat="lovingkindness">
-                        <img src="/assets/images/pexels-nishantaneja-2381616.jpg" alt="Compassion Without Burnout">
+                        <img th:src="@{/site-assets/pexels-nishantaneja-2381616/image(name='pexels-nishantaneja-2381616')}" alt="Compassion Without Burnout">
                         <div class="tc-body">
                             <span class="chip">Loving-Kindness</span>
                             <div class="tc-meta">28 Feb, 2025 &nbsp;|&nbsp; 9 min read</div>
@@ -372,7 +372,7 @@
     </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
                 <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>

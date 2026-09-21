@@ -30,7 +30,7 @@
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
         .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
         .line { width: 100%; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -88,13 +88,13 @@
             <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
                 <div class="dn-track">
                     <div class="dn-slide active">
-                        <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Volunteer">
+                        <img th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" alt="Volunteer">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Community Service">
+                        <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Community Service">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Tree Plantation">
+                        <img th:src="@{/site-assets/pexels-cryschanxanhy-29547000/image(name='pexels-cryschanxanhy-29547000')}" alt="Tree Plantation">
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                 <p>Food distribution, cleaning, tree plantation, religious events</p>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -225,7 +225,7 @@
 </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
         </div>
         <div class="part2">

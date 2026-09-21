@@ -129,7 +129,7 @@
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
         .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
         .line { width: 100%; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -153,14 +153,14 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Blog">
+            <img th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" alt="Blog">
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">BLOG</h1>
                 <p>Reflections, teachings and community stories</p>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -186,10 +186,10 @@
                     <span><i class="far fa-comment-dots"></i> <span class="comment-count" th:text="${commentCount}">2</span> comments</span>
                     <span><i class="fas fa-heart" style="color:#e0245e;"></i> <span id="likeCount" th:text="${post.likeCount}">0</span> likes</span>
                 </div>
-                <img class="hero-img" th:src="@{'/assets/images/' + ${post.imageUrl}}" th:alt="${post.title}" src="/assets/images/pexels-ajaybhargavguduru-939700.jpg">
+                <img class="hero-img" th:src="@{/site-assets/{name}/image(name=${post.imageUrl})}" th:alt="${post.title}">
                 <div class="post-content" th:text="${post.content}">Small, steady habits shape a life more than grand resolutions ever do. Begin with one mindful breath before each meal, one deliberate pause before answering, and one sincere good-night. As the Buddha taught, the path is not a leap but a walk - step by step, day by day.</div>
                 <div class="author-box">
-                    <img src="/assets/images/pexels-eky-rima-nurya-ganda-174710171-15147310.jpg" alt="Author Image">
+                    <img th:src="@{/site-assets/pexels-eky-rima-nurya-ganda-174710171-15147310/image(name='pexels-eky-rima-nurya-ganda-174710171-15147310')}" alt="Author Image">
                     <div>
                         <h3 th:text="${post.author != null ? post.author.fullName : post.authorName}">Ajahn Brahm</h3>
                         <p>Written by <span th:text="${post.author != null ? post.author.fullName : post.authorName}">Ajahn Brahm</span> and shared with the Dhamma Nature community after review.</p>
@@ -261,7 +261,7 @@
 </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
         </div>
         <div class="part2">

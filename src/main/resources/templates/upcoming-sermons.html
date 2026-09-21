@@ -122,7 +122,7 @@
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
         .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
         .line { width: 100%; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -161,14 +161,14 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Sermons">
+            <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Sermons">
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">UPCOMING SERMONS</h1>
                 <p>Join live dhamma talks or explore recordings from past sessions at your own pace</p>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -284,7 +284,7 @@
     </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
                 <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>
@@ -337,23 +337,23 @@
     <script>
         (function () {
             var sermons = [
-                { date: '2025-08-24', time: 'Aug 24, 2025 @ 10:00 AM - 12:00 PM', title: 'The Five Hindrances', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-pixabay-236302.jpg', description: 'Recognising the five hindrances - and how to release them with patient awareness.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-08-31', time: 'Aug 31, 2025 @ 10:00 AM - 12:00 PM', title: 'The Path to Enlightenment', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-koithyr-1360255.jpg', description: 'A profound exploration of spiritual growth and inner peace led by renowned monk Ajahn Brahm.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-09-07', time: 'Sep 7, 2025 @ 10:00 AM - 11:30 AM', title: 'Mindfulness in Daily Life', speaker: 'Ajahn Thanissaro', image: '/assets/images/pexels-ron-lach-10461522.jpg', description: 'Practical mindfulness techniques to weave into your everyday routines, with Ajahn Thanissaro.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-09-14', time: 'Sep 14, 2025 @ 07:00 PM - 08:30 PM', title: 'Wise Speech & Right Intention', speaker: 'Bhikkhu Buddharakkhita', image: '/assets/images/pexels-tkirkgoz-13047288.jpg', description: 'How the path factors of speech and intention shape the quality of our entire day.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-09-21', time: 'Sep 21, 2025 @ 10:00 AM - 12:00 PM', title: 'Gratitude as a Practice', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-rdne-8710873.jpg', description: 'Turning a thankful heart into a disciplined, joyful daily practice.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-09-28', time: 'Sep 28, 2025 @ 07:00 PM - 09:00 PM', title: 'Letting Go of Worry', speaker: 'Venerable Sudhamma', image: '/assets/images/pexels-pixabay-50709.jpg', description: 'A gentle talk on releasing anxiety through contemplation and steady meditation.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-10-05', time: 'Oct 5, 2025 @ 10:00 AM - 12:00 PM', title: 'The Power of Intention', speaker: 'Ajahn Thanissaro', image: '/assets/images/pexels-pexels-user-1493533273-27021625.jpg', description: 'The Buddha\u2019s teaching that the heart shapes its whole world - beginning with intention.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-10-12', time: 'Oct 12, 2025 @ 10:00 AM - 11:30 AM', title: 'Anapanasati - Breath Meditation', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-nishantaneja-2381616.jpg', description: 'A guided session on the breath as a refuge for the wandering mind.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-10-19', time: 'Oct 19, 2025 @ 07:00 PM - 08:30 PM', title: 'Metta in Relationships', speaker: 'Bhikkhu Buddharakkhita', image: '/assets/images/pexels-cryschanxanhy-29547000.jpg', description: 'Extending loving-kindness to those closest to us - and to those we find hardest.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-11-02', time: 'Nov 2, 2025 @ 10:00 AM - 12:00 PM', title: 'Walking the Eightfold Path', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-rgsk97-1027821.jpg', description: 'A complete overview of the noble path, held in a single morning sitting.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-11-09', time: 'Nov 9, 2025 @ 07:00 PM - 09:00 PM', title: 'The Real Refuge', speaker: 'Venerable Sudhamma', image: '/assets/images/pexels-caleboquendo-3030090.jpg', description: 'Taking refuge in the Buddha, Dhamma and Sangha as a daily act of trust.', recorded: false, detail: '/upcoming-sermons/detail' },
-                { date: '2025-05-05', time: 'May 5, 2025 @ 10:00 AM - 12:00 PM', title: 'Dhamma Will Uplift Your Mentality', speaker: 'Bhikkhu Thanissaro', image: '/assets/images/pexels-tkirkgoz-13047288.jpg', description: 'How the dhamma can transform the way we think about suffering, joy and daily practice.', recorded: true, detail: '/upcoming-sermons/detail' },
-                { date: '2025-04-18', time: 'Apr 18, 2025 @ 06:30 PM - 08:30 PM', title: 'The Heart of Loving-Kindness', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-pixabay-45178.jpg', description: 'Exploring metta meditation as a path to genuine compassion for ourselves and others.', recorded: true, detail: '/upcoming-sermons/detail' },
-                { date: '2025-03-14', time: 'Mar 14, 2025 @ 10:00 AM - 12:00 PM', title: 'The Bliss of Stillness', speaker: 'Ajahn Brahm', image: '/assets/images/pexels-pixabay-220650.jpg', description: 'Jhana and the profound joy of a settled, unified mind.', recorded: true, detail: '/upcoming-sermons/detail' },
-                { date: '2025-02-08', time: 'Feb 8, 2025 @ 07:00 PM - 09:00 PM', title: 'Death, A Friend on the Path', speaker: 'Ajahn Thanissaro', image: '/assets/images/pexels-nishantaneja-2385606.jpg', description: 'Contemplating mortality for the urgency and gratitude it brings to practice.', recorded: true, detail: '/upcoming-sermons/detail' },
-                { date: '2025-01-12', time: 'Jan 12, 2025 @ 10:00 AM - 11:30 AM', title: 'Right View & Right Intent', speaker: 'Bhikkhu Buddharakkhita', image: '/assets/images/pexels-rgsk97-1027821.jpg', description: 'The first two factors of the eightfold path, explored in depth.', recorded: true, detail: '/upcoming-sermons/detail' },
-                { date: '2024-12-21', time: 'Dec 21, 2024 @ 07:00 PM - 08:30 PM', title: 'Upekkha - Equanimity', speaker: 'Venerable Sudhamma', image: '/assets/images/pexels-sibi-ar-3290250-4940194.jpg', description: 'Balance of mind amidst the world\u2019s ups and downs, a closing talk for the year.', recorded: true, detail: '/upcoming-sermons/detail' }
+                { date: '2025-08-24', time: 'Aug 24, 2025 @ 10:00 AM - 12:00 PM', title: 'The Five Hindrances', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-pixabay-236302/image', description: 'Recognising the five hindrances - and how to release them with patient awareness.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-08-31', time: 'Aug 31, 2025 @ 10:00 AM - 12:00 PM', title: 'The Path to Enlightenment', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-koithyr-1360255/image', description: 'A profound exploration of spiritual growth and inner peace led by renowned monk Ajahn Brahm.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-07', time: 'Sep 7, 2025 @ 10:00 AM - 11:30 AM', title: 'Mindfulness in Daily Life', speaker: 'Ajahn Thanissaro', image: '/site-assets/pexels-ron-lach-10461522/image', description: 'Practical mindfulness techniques to weave into your everyday routines, with Ajahn Thanissaro.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-14', time: 'Sep 14, 2025 @ 07:00 PM - 08:30 PM', title: 'Wise Speech & Right Intention', speaker: 'Bhikkhu Buddharakkhita', image: '/site-assets/pexels-tkirkgoz-13047288/image', description: 'How the path factors of speech and intention shape the quality of our entire day.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-21', time: 'Sep 21, 2025 @ 10:00 AM - 12:00 PM', title: 'Gratitude as a Practice', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-rdne-8710873/image', description: 'Turning a thankful heart into a disciplined, joyful daily practice.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-09-28', time: 'Sep 28, 2025 @ 07:00 PM - 09:00 PM', title: 'Letting Go of Worry', speaker: 'Venerable Sudhamma', image: '/site-assets/pexels-pixabay-50709/image', description: 'A gentle talk on releasing anxiety through contemplation and steady meditation.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-10-05', time: 'Oct 5, 2025 @ 10:00 AM - 12:00 PM', title: 'The Power of Intention', speaker: 'Ajahn Thanissaro', image: '/site-assets/pexels-pexels-user-1493533273-27021625/image', description: 'The Buddha\u2019s teaching that the heart shapes its whole world - beginning with intention.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-10-12', time: 'Oct 12, 2025 @ 10:00 AM - 11:30 AM', title: 'Anapanasati - Breath Meditation', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-nishantaneja-2381616/image', description: 'A guided session on the breath as a refuge for the wandering mind.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-10-19', time: 'Oct 19, 2025 @ 07:00 PM - 08:30 PM', title: 'Metta in Relationships', speaker: 'Bhikkhu Buddharakkhita', image: '/site-assets/pexels-cryschanxanhy-29547000/image', description: 'Extending loving-kindness to those closest to us - and to those we find hardest.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-11-02', time: 'Nov 2, 2025 @ 10:00 AM - 12:00 PM', title: 'Walking the Eightfold Path', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-rgsk97-1027821/image', description: 'A complete overview of the noble path, held in a single morning sitting.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-11-09', time: 'Nov 9, 2025 @ 07:00 PM - 09:00 PM', title: 'The Real Refuge', speaker: 'Venerable Sudhamma', image: '/site-assets/pexels-caleboquendo-3030090/image', description: 'Taking refuge in the Buddha, Dhamma and Sangha as a daily act of trust.', recorded: false, detail: '/upcoming-sermons/detail' },
+                { date: '2025-05-05', time: 'May 5, 2025 @ 10:00 AM - 12:00 PM', title: 'Dhamma Will Uplift Your Mentality', speaker: 'Bhikkhu Thanissaro', image: '/site-assets/pexels-tkirkgoz-13047288/image', description: 'How the dhamma can transform the way we think about suffering, joy and daily practice.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-04-18', time: 'Apr 18, 2025 @ 06:30 PM - 08:30 PM', title: 'The Heart of Loving-Kindness', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-pixabay-45178/image', description: 'Exploring metta meditation as a path to genuine compassion for ourselves and others.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-03-14', time: 'Mar 14, 2025 @ 10:00 AM - 12:00 PM', title: 'The Bliss of Stillness', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-pixabay-220650/image', description: 'Jhana and the profound joy of a settled, unified mind.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-02-08', time: 'Feb 8, 2025 @ 07:00 PM - 09:00 PM', title: 'Death, A Friend on the Path', speaker: 'Ajahn Thanissaro', image: '/site-assets/pexels-nishantaneja-2385606/image', description: 'Contemplating mortality for the urgency and gratitude it brings to practice.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2025-01-12', time: 'Jan 12, 2025 @ 10:00 AM - 11:30 AM', title: 'Right View & Right Intent', speaker: 'Bhikkhu Buddharakkhita', image: '/site-assets/pexels-rgsk97-1027821/image', description: 'The first two factors of the eightfold path, explored in depth.', recorded: true, detail: '/upcoming-sermons/detail' },
+                { date: '2024-12-21', time: 'Dec 21, 2024 @ 07:00 PM - 08:30 PM', title: 'Upekkha - Equanimity', speaker: 'Venerable Sudhamma', image: '/site-assets/pexels-sibi-ar-3290250-4940194/image', description: 'Balance of mind amidst the world\u2019s ups and downs, a closing talk for the year.', recorded: true, detail: '/upcoming-sermons/detail' }
             ];
             var currentView = 'upcoming';
             var currentDate = new Date(2025, 8, 1); // Sep 1 2025

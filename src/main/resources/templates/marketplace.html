@@ -22,7 +22,7 @@
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
         .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
         .line { width: 100%; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -48,13 +48,13 @@
             <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
                 <div class="dn-track">
                     <div class="dn-slide active">
-                        <img src="/assets/images/pexels-pixabay-236302.jpg" alt="Marketplace">
+                        <img th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" alt="Marketplace">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Meditation altar">
+                        <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Meditation altar">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Nature and Peace">
+                        <img th:src="@{/site-assets/pexels-pixabay-220650/image(name='pexels-pixabay-220650')}" alt="Nature and Peace">
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 <p>Authentic Dhamma products from verified vendors</p>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -119,7 +119,7 @@
             <article class="card" th:each="p : ${featuredProducts}">
                 <a class="card-media" th:href="@{'/marketplace/' + ${p.id}}">
 <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}"/>
-                    <img th:unless="${p.imageData != null}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="product"/>
+                    <img th:unless="${p.imageData != null}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="product"/>
                     <span class="badge-featured">Featured</span>
                     <span class="badge-purchased" th:if="${#lists.contains(purchasedIds, p.id)}">Already purchased</span>
                 </a>
@@ -162,7 +162,7 @@
             <article class="card" th:each="p : ${products}">
                 <a class="card-media" th:href="@{'/marketplace/' + ${p.id}}">
                     <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}"/>
-                    <img th:unless="${p.imageData != null}" src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="product"/>
+                    <img th:unless="${p.imageData != null}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="product"/>
                     <span class="badge-purchased" th:if="${#lists.contains(purchasedIds, p.id)}">Already purchased</span>
                 </a>
                 <div class="card-body">
@@ -236,7 +236,7 @@
 </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
         </div>
         <div class="part2">

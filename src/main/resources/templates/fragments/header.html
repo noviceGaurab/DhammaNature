@@ -8,7 +8,7 @@
 <body>
 <header th:fragment="siteHeader(pageTitle, pageSubtitle)">
     <div class="header-img" id="hero">
-        <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+        <img th:src="@{/site-assets/pexels-2152214764-32117889/image(name='pexels-2152214764-32117889')}" alt="Header Image">
         <div class="hero">
             <h2>WELCOME TO DHAMMA NATURE</h2>
             <h1 th:text="${pageTitle}">PAGE TITLE</h1>
@@ -17,7 +17,7 @@
         
         
         <div class="header-main">
-            <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dhamma Nature Logo" class="logo"></a>
+            <a href="/"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dhamma Nature Logo" class="logo"></a>
             <nav>
                 <a href="/" class="nav-link">Home</a>
                 <a href="/about" class="nav-link">About</a>

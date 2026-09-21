@@ -33,19 +33,22 @@
     font-weight: 400;
     letter-spacing: 1px;
     text-transform: uppercase;
+    margin-bottom: 20px;
 }
 
 .header-img > .hero h1 {
     font-size: 42px;
     font-weight: 700;
     line-height: 1.2;
+    margin-bottom: 20px;
 }
 
 .header-img > .hero p {
     max-width: 600px;
     margin: 0 auto;
     font-size: 20px;
-    line-height: 1.4;
+    line-height: 1.8;
+    letter-spacing: .5px;
 }
 
 .line-container {
@@ -457,8 +460,8 @@ body .footer {
 }
 
 body .footer .part1 {
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
 }
 
 body .footer .part1 img {

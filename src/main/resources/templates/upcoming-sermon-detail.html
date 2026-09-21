@@ -83,13 +83,13 @@
 <body>
     <header>
         <div class="header-img" id="hero">
-            <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Sermons">
+            <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Sermons">
             <div class="hero">
                 <h2>WELCOME TO DHAMMA NATURE</h2>
                 <h1 style="margin:0;">SERMON DETAILS</h1>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -117,7 +117,7 @@
         </div>
     </div>
     <div class="sd-cover">
-        <img id="sermonImage" src="/assets/images/pexels-pixabay-45178.jpg" alt="Sermon">
+        <img id="sermonImage" th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Sermon">
     </div>
     <div class="sd-grid">
         <div class="sd-card">
@@ -201,7 +201,7 @@
 </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc"><h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4></div>
         </div>
         <div class="part2">
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var dateStr = urlParams.get('date') || '';
     var time = urlParams.get('time') || 'N/A';
     var speaker = urlParams.get('speaker') || 'N/A';
-    var image = urlParams.get('image') || '/assets/images/pexels-pixabay-45178.jpg';
+    var image = urlParams.get('image') || '/site-assets/pexels-pixabay-45178/image';
     var description = urlParams.get('description') || 'No description available.';
 
     var formattedDate = dateStr ? new Date(dateStr).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';

@@ -79,7 +79,7 @@
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
         .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
         .line { width: 100%; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -119,16 +119,16 @@
             <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
                 <div class="dn-track">
                     <div class="dn-slide active">
-                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="About Dhamma Nature">
+                        <img th:src="@{/site-assets/pexels-cryschanxanhy-29547000/image(name='pexels-cryschanxanhy-29547000')}" alt="About Dhamma Nature">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Meditation Centre">
+                        <img th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="Meditation Centre">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Dhamma Teaching">
+                        <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Dhamma Teaching">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-pixabay-220650.jpg" alt="Community">
+                        <img th:src="@{/site-assets/pexels-pixabay-220650/image(name='pexels-pixabay-220650')}" alt="Community">
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                 <p>Connect, grow and serve with our community of practitioners</p>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -186,19 +186,19 @@
             <div class="dn-carousel" data-autoplay="5500" data-mode="fade" style="height:380px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.12);">
                 <div class="dn-track">
                     <div class="dn-slide active">
-                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Dhamma Nature community">
+                        <img th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="Dhamma Nature community">
                         <div class="dn-caption"><strong>Our Community</strong><span>Walking the path together in person and online</span></div>
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-cryschanxanhy-29547000.jpg" alt="Temple visit">
+                        <img th:src="@{/site-assets/pexels-cryschanxanhy-29547000/image(name='pexels-cryschanxanhy-29547000')}" alt="Temple visit">
                         <div class="dn-caption"><strong>Place of Worship</strong><span>Sermons, retreats and open Dhamma talks</span></div>
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Meditation">
+                        <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Meditation">
                         <div class="dn-caption"><strong>Meditation &amp; Mindfulness</strong><span>Training the mind toward stillness and clarity</span></div>
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-rdne-8710873.jpg" alt="Community service">
+                        <img th:src="@{/site-assets/pexels-rdne-8710873/image(name='pexels-rdne-8710873')}" alt="Community service">
                         <div class="dn-caption"><strong>Service &amp; Volunteering</strong><span>Compassion expressed through daily generosity</span></div>
                     </div>
                 </div>
@@ -263,7 +263,7 @@
             </div>
             <div class="teachers-grid">
                 <div class="teacher-card">
-                    <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Ajahn Brahm">
+                    <img th:src="@{/site-assets/pexels-2152214764-32117889/image(name='pexels-2152214764-32117889')}" alt="Ajahn Brahm">
                     <div class="tc-body">
                         <h3>Ajahn Brahm</h3>
                         <div class="role">Senior Teacher</div>
@@ -271,7 +271,7 @@
                     </div>
                 </div>
                 <div class="teacher-card">
-                    <img src="/assets/images/pexels-pexels-user-1493533273-27021625.jpg" alt="Ajahn Thanissaro">
+                    <img th:src="@{/site-assets/pexels-pexels-user-1493533273-27021625/image(name='pexels-pexels-user-1493533273-27021625')}" alt="Ajahn Thanissaro">
                     <div class="tc-body">
                         <h3>Ajahn Thanissaro</h3>
                         <div class="role">Dhamma Translator</div>
@@ -279,7 +279,7 @@
                     </div>
                 </div>
                 <div class="teacher-card">
-                    <img src="/assets/images/pexels-ron-lach-10461522.jpg" alt="Bhikkhu Buddharakkhita">
+                    <img th:src="@{/site-assets/pexels-ron-lach-10461522/image(name='pexels-ron-lach-10461522')}" alt="Bhikkhu Buddharakkhita">
                     <div class="tc-body">
                         <h3>Bhikkhu Buddharakkhita</h3>
                         <div class="role">Meditation Guide</div>
@@ -300,7 +300,7 @@
     </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
                 <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>

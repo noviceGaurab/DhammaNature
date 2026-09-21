@@ -474,11 +474,11 @@
         }
 
         .user-avatar {
-            background-image: url('/assets/images/pexels-rdne-8710873.jpg');
+            background-image: url('/site-assets/pexels-rdne-8710873/image');
         }
 
         .user-avatar-2 {
-            background-image: url('/assets/images/pexels-ajaybhargavguduru-939700.jpg');
+            background-image: url('/site-assets/pexels-ajaybhargavguduru-939700/image');
         }
 
         .user-info {
@@ -635,7 +635,7 @@
         .part1 {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .part1 img {

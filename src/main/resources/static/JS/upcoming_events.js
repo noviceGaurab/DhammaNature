@@ -112,8 +112,8 @@
         }
 
         const events = [
-            { date: '2025-09-01', time: 'Aug 25, 2025 @ 09:23 PM - Aug 27, 2025 @ 06:00 PM', title: 'Summer Dhamma Retreat', location: 'Dhamma Center, New York, NY, United States', price: '$175', image: 'assets/images/pexels-ajaybhargavguduru-939700.jpg', description: 'Join us for a serene weekend of meditation and dhamma teachings in the heart of New York.' },
-            { date: '2025-09-02', time: 'Aug 26, 2025 @ 07:00 PM - Aug 28, 2025 @ 05:00 PM', title: 'Mindfulness Workshop', location: 'Brooklyn Dhamma Hall, NY, United States', price: '$250', image: 'assets/images/pexels-caleboquendo-3030090.jpg', description: 'Explore mindfulness practices and dhamma insights at our iconic Brooklyn venue.' }
+            { date: '2025-09-01', time: 'Aug 25, 2025 @ 09:23 PM - Aug 27, 2025 @ 06:00 PM', title: 'Summer Dhamma Retreat', location: 'Dhamma Center, New York, NY, United States', price: '$175', image: '/site-assets/pexels-ajaybhargavguduru-939700/image', description: 'Join us for a serene weekend of meditation and dhamma teachings in the heart of New York.' },
+            { date: '2025-09-02', time: 'Aug 26, 2025 @ 07:00 PM - Aug 28, 2025 @ 05:00 PM', title: 'Mindfulness Workshop', location: 'Brooklyn Dhamma Hall, NY, United States', price: '$250', image: '/site-assets/pexels-caleboquendo-3030090/image', description: 'Explore mindfulness practices and dhamma insights at our iconic Brooklyn venue.' }
         ];
 
         function renderEvents() {
@@ -140,7 +140,7 @@
                         <div class="price">${event.price}</div>
                     </div>
                     <div class="event-image">
-                        <img src="${event.image}" alt="${event.title}" onerror="this.src='assets/images/transparent_logo.png'">
+                        <img src="${event.image}" alt="${event.title}" onerror="this.src='/site-assets/transparent_logo/image'">
                     </div>
                 `;
                 eventList.appendChild(eventItem);
@@ -156,7 +156,7 @@
                             time: 'Aug 25, 2025 @ 09:23 PM - Aug 27, 2025 @ 06:00 PM',
                             location: 'Dhamma Center, New York, NY, United States',
                             price: '$175',
-                            image: 'assets/images/pexels-ajaybhargavguduru-939700.jpg',
+                            image: '/site-assets/pexels-ajaybhargavguduru-939700/image',
                             description: 'Join us for a serene weekend of meditation and dhamma teachings in the heart of New York.'
                         });
                         window.location.href = `upcoming_events_descrpt.jsp?${eventParams.toString()}`;

@@ -113,7 +113,7 @@
         .footer-sec2 { display: flex; flex-direction: column; background: #000; color: #fff; }
         .white-line-footer { width: 80%; border-top: 1px solid #fff; margin: 20px auto; }
         .line { width: 100%; }
-        .part1 { display: flex; flex-direction: column; align-items: center; }
+        .part1 { display: flex; flex-direction: column; align-items: flex-start; }
         .part1 img { padding-top: 20px; width: 260px; height: 190px; }
         .part1-desc { padding: 20px; width: 400px; font-weight: normal; font-size: 16px; text-align: center; }
         .part2 { display: flex; flex-direction: column; padding-left: 50px; }
@@ -154,13 +154,13 @@
             <div class="dn-carousel dn-hero-carousel" data-autoplay="6000" data-mode="fade">
                 <div class="dn-track">
                     <div class="dn-slide active">
-                        <img src="/assets/images/pexels-2152214764-32117889.jpg" alt="Header Image">
+                        <img th:src="@{/site-assets/pexels-2152214764-32117889/image(name='pexels-2152214764-32117889')}" alt="Header Image">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-tkirkgoz-15277853.jpg" alt="Reading">
+                        <img th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="Reading">
                     </div>
                     <div class="dn-slide">
-                        <img src="/assets/images/pexels-pixabay-45178.jpg" alt="Reflection">
+                        <img th:src="@{/site-assets/pexels-pixabay-45178/image(name='pexels-pixabay-45178')}" alt="Reflection">
                     </div>
                 </div>
             </div>
@@ -170,7 +170,7 @@
                 <p>Stories, reflections and teachings from the Dhamma Nature community</p>
             </div>
             <div class="header-main">
-                <a href="/"><img src="/assets/images/transparent_logo.png" alt="Dharma Club Logo" class="logo"></a>
+                <div class="logo-ring"><img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dharma Club Logo" class="logo"></div>
                 <nav>
                     <a href="/" class="nav-link">Home</a>
                     <a href="/about" class="nav-link">About</a>
@@ -225,7 +225,7 @@
             <div class="dn-carousel featured-blog-carousel" data-autoplay="6000">
                 <div class="dn-track">
                     <div class="dn-slide active" th:each="post, postStat : ${posts}" th:if="${postStat.index < 4}">
-                        <img th:src="@{'/assets/images/' + ${post.imageUrl}}" th:alt="${post.title}" src="/assets/images/pexels-tkirkgoz-13047288.jpg">
+                        <img th:src="@{/site-assets/{name}/image(name=${post.imageUrl})}" th:alt="${post.title}">
                         <div class="dn-caption">
                             <strong th:text="${post.title}">Dhamma Will Uplift Your Mentality</strong>
                             <span th:text="${#strings.capitalize(post.category)}">Meditation</span>
@@ -260,7 +260,7 @@
             <section class="posts-wrap">
 <div class="posts">
                     <div class="post-card" th:each="post : ${posts}" th:attr="data-cat=${post.category}">
-                        <img class="thumb" th:src="@{'/assets/images/' + ${post.imageUrl}}" th:alt="${post.title}" src="/assets/images/pexels-ajaybhargavguduru-939700.jpg">
+                        <img class="thumb" th:src="@{/site-assets/{name}/image(name=${post.imageUrl})}" th:alt="${post.title}">
                         <div class="post-body">
                             <span class="chip" th:text="${#strings.capitalize(post.category)}">Meditation</span>
                             <div class="p-meta"><i class="far fa-calendar-alt"></i> <span th:text="${#temporals.format(post.createdAt, 'dd MMM, yyyy')}">05 May, 2025</span></div>
@@ -294,7 +294,7 @@
 <div class="widget">
                     <h3>Recent Posts</h3>
                     <div class="recent-row" th:each="post : ${recentPosts}">
-                        <img th:src="@{'/assets/images/' + ${post.imageUrl}}" th:alt="${post.title}" src="/assets/images/pexels-pixabay-220650.jpg">
+                        <img th:src="@{/site-assets/{name}/image(name=${post.imageUrl})}" th:alt="${post.title}">
                         <a th:href="@{'/blog/view?id=' + ${post.id}}">
                             <div class="r-t" th:text="${post.title}">Mindful Living Practices</div>
                             <div class="r-d" th:text="${#temporals.format(post.createdAt, 'dd MMM, yyyy')}">28 Apr, 2025</div>
@@ -343,7 +343,7 @@
                 </div>
                 <div class="wf-row">
                     <label for="aImage">Image URL <small>(optional)</small></label>
-                    <input type="text" id="aImage" name="imageUrl" placeholder="e.g. /assets/images/pexels-pixabay-220650.jpg">
+                    <input type="text" id="aImage" name="imageUrl" placeholder="e.g. /site-assets/pexels-pixabay-220650/image">
                 </div>
                 <div class="wf-row">
                     <label for="aContent">Article content *</label>
@@ -357,7 +357,7 @@
     </main>
     <div class="footer">
         <div class="part1">
-            <img src="/assets/images/transparent_logo.png" alt="logo" width="260px" height="190px">
+            <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="logo" width="260px" height="190px">
             <div class="part1-desc">
                 <h4>Dhamma Nature is a peaceful community held together by meditation, honest Dhamma talks, and the quiet service of everyday generosity.</h4>
             </div>

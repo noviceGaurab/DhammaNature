@@ -90,8 +90,8 @@
 
         // Sermon Data
         const sermons = [
-            { date: '2025-08-31', time: 'Aug 31, 2025 @ 10:00 AM - 12:00 PM', title: 'The Path to Enlightenment', speaker: 'Ajahn Brahm', image: 'assets/images/pexels-koithyr-1360255.jpg', description: 'A profound exploration of spiritual growth and inner peace led by renowned monk Ajahn Brahm.' },
-            { date: '2025-09-01', time: 'Sep 1, 2025 @ 07:00 PM - 09:00 PM', title: 'Mindfulness in Daily Life', speaker: 'Ajahn Thanissaro', image: 'assets/images/pexels-ron-lach-10461522.jpg', description: 'Learn practical mindfulness techniques to enhance your everyday life with Ajahn Thanissaro.' }
+            { date: '2025-08-31', time: 'Aug 31, 2025 @ 10:00 AM - 12:00 PM', title: 'The Path to Enlightenment', speaker: 'Ajahn Brahm', image: '/site-assets/pexels-koithyr-1360255/image', description: 'A profound exploration of spiritual growth and inner peace led by renowned monk Ajahn Brahm.' },
+            { date: '2025-09-01', time: 'Sep 1, 2025 @ 07:00 PM - 09:00 PM', title: 'Mindfulness in Daily Life', speaker: 'Ajahn Thanissaro', image: '/site-assets/pexels-ron-lach-10461522/image', description: 'Learn practical mindfulness techniques to enhance your everyday life with Ajahn Thanissaro.' }
         ];
 
         function renderSermons() {

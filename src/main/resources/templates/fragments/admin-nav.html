@@ -14,7 +14,7 @@
 
 <aside th:fragment="adminSidebar(activePage)" class="admin-sidebar">
   <div class="admin-brand">
-    <img src="/assets/images/transparent_logo.png" alt="Dhamma Nature Admin">
+    <img th:src="@{/site-assets/transparent_logo/image(name='transparent_logo')}" alt="Dhamma Nature Admin">
     <div>
       <span class="admin-brand-title">Dhamma Nature</span>
       <span class="admin-brand-subtitle">Admin Panel</span>

@@ -512,7 +512,7 @@ tr:hover td {
 .part1 {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .part1 img {

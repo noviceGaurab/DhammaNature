@@ -294,7 +294,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background-image: url('/assets/images/pexels-ajaybhargavguduru-939700.jpg');
+            background-image: url('/site-assets/pexels-ajaybhargavguduru-939700/image');
             margin-right: 10px;
         }
 
@@ -776,7 +776,7 @@
         .part1 {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .part1 img {
