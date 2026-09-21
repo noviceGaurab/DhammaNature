@@ -59,6 +59,7 @@ public class DataSeeder implements CommandLineRunner {
                 seedDemoData(admin);
             }
             ensureUpcomingDemoContent();
+            ensureCenterCoverImages();
             seedMarketplace();
             seedBlog(admin);
             seedBlogComments();
@@ -87,6 +88,25 @@ public class DataSeeder implements CommandLineRunner {
         if (upcomingOpportunities < 2) {
             seedUpcomingOpportunities(center);
         }
+    }
+
+    /** Assigns a distinct cover image to each seeded center so the directory
+     * never shows the same fallback thumbnail on multiple cards. */
+    private void ensureCenterCoverImages() {
+        setCoverImage("Mokshya Yoga Retreat Center", "pexels-eky-rima-nurya-ganda-174710171-15147310");
+        setCoverImage("Transcendental Meditation Center", "pexels-2152214764-32117889");
+    }
+
+    private void setCoverImage(String centerName, String imageName) {
+        meditationCenterRepository.findByNameContainingIgnoreCase(centerName).stream()
+                .filter(c -> c.getName().equalsIgnoreCase(centerName))
+                .findFirst()
+                .ifPresent(c -> {
+                    if (!imageName.equals(c.getCoverImageUrl())) {
+                        c.setCoverImageUrl(imageName);
+                        meditationCenterRepository.save(c);
+                    }
+                });
     }
 
     private void seedUpcomingEvents(MeditationCenter center) {
@@ -300,6 +320,7 @@ public class DataSeeder implements CommandLineRunner {
                 .description("A meditation and wellness center serving both domestic and international participants, offering hybrid online and physical guidance.")
                 .contactEmail("info@themokshya.com")
                 .website("https://themokshya.com")
+                .coverImageUrl("pexels-eky-rima-nurya-ganda-174710171-15147310")
                 .supportsOnlineSessions(true)
                 .supportsPhysicalSessions(true)
                 .verified(true)
@@ -311,6 +332,7 @@ public class DataSeeder implements CommandLineRunner {
                 .description("An established meditation institution that communicates mainly through Facebook, with a website in development.")
                 .contactEmail("info@tm-center.org")
                 .facebookUrl("https://facebook.com")
+                .coverImageUrl("pexels-2152214764-32117889")
                 .supportsOnlineSessions(true)
                 .supportsPhysicalSessions(true)
                 .verified(true)
