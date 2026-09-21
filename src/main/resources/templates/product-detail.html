@@ -151,7 +151,8 @@
     <section class="pd-grid">
         <div class="pd-gallery">
             <img th:if="${product.imageData != null}" th:src="@{/products/{id}/image(id=${product.id})}" th:alt="${product.productName}"/>
-            <img th:unless="${product.imageData != null}" th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" alt="product"/>
+            <img th:unless="${product.imageData != null} or ${#strings.isEmpty(product.imageUrl)}" th:src="@{/site-assets/{name}/image(name=${product.imageUrl})}" th:alt="${product.productName}"/>
+            <img th:unless="${product.imageData != null} or not ${#strings.isEmpty(product.imageUrl)}" th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" alt="product"/>
         </div>
         <div class="pd-info">
             <div>
@@ -251,7 +252,8 @@
         <div class="pd-related-grid">
             <a class="pd-related-card" th:each="rp : ${relatedProducts}" th:href="@{'/marketplace/' + ${rp.id}}">
                 <img th:if="${rp.imageData != null}" th:src="@{/products/{id}/image(id=${rp.id})}" th:alt="${rp.productName}"/>
-                <img th:unless="${rp.imageData != null}" th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" th:alt="${rp.productName}"/>
+                <img th:unless="${rp.imageData != null} or ${#strings.isEmpty(rp.imageUrl)}" th:src="@{/site-assets/{name}/image(name=${rp.imageUrl})}" th:alt="${rp.productName}"/>
+                <img th:unless="${rp.imageData != null} or not ${#strings.isEmpty(rp.imageUrl)}" th:src="@{/site-assets/pexels-pixabay-236302/image(name='pexels-pixabay-236302')}" th:alt="${rp.productName}"/>
                 <div class="body">
                     <span class="cat" th:text="${rp.category}"></span>
                     <h4 th:text="${rp.productName}">Product</h4>

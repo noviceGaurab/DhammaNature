@@ -285,7 +285,8 @@
                 <div class="prod-grid" th:unless="${#lists.isEmpty(myProducts)}" style="margin-bottom:18px;">
                     <article class="prod-card" th:each="p : ${myProducts}">
                         <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}">
-                        <img th:unless="${p.imageData != null}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" th:alt="${p.productName}">
+                        <img th:unless="${p.imageData != null} or ${#strings.isEmpty(p.imageUrl)}" th:src="@{/site-assets/{name}/image(name=${p.imageUrl})}" th:alt="${p.productName}">
+                        <img th:unless="${p.imageData != null} or not ${#strings.isEmpty(p.imageUrl)}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" th:alt="${p.productName}">
                         <div class="pc-body">
                             <div class="pc-name" th:text="${p.productName}">Product name</div>
                             <div class="pc-cat" th:text="${p.category.displayName}">Category</div>

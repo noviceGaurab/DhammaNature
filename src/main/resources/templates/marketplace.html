@@ -127,7 +127,8 @@
             <article class="card" th:each="p : ${featuredProducts}">
                 <a class="card-media" th:href="@{'/marketplace/' + ${p.id}}">
 <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}"/>
-                    <img th:unless="${p.imageData != null}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="product"/>
+                    <img th:unless="${p.imageData != null} or ${#strings.isEmpty(p.imageUrl)}" th:src="@{/site-assets/{name}/image(name=${p.imageUrl})}" th:alt="${p.productName}"/>
+                    <img th:unless="${p.imageData != null} or not ${#strings.isEmpty(p.imageUrl)}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="product"/>
                     <span class="badge-featured">Featured</span>
                     <span class="badge-purchased" th:if="${#lists.contains(purchasedIds, p.id)}">Already purchased</span>
                 </a>
@@ -169,8 +170,9 @@
         <div class="grid">
             <article class="card" th:each="p : ${products}">
                 <a class="card-media" th:href="@{'/marketplace/' + ${p.id}}">
-                    <img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}"/>
-                    <img th:unless="${p.imageData != null}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="product"/>
+<img th:if="${p.imageData != null}" th:src="@{/products/{id}/image(id=${p.id})}" th:alt="${p.productName}"/>
+                    <img th:unless="${p.imageData != null} or ${#strings.isEmpty(p.imageUrl)}" th:src="@{/site-assets/{name}/image(name=${p.imageUrl})}" th:alt="${p.productName}"/>
+                    <img th:unless="${p.imageData != null} or not ${#strings.isEmpty(p.imageUrl)}" th:src="@{/site-assets/pexels-tkirkgoz-15277853/image(name='pexels-tkirkgoz-15277853')}" alt="product"/>
                     <span class="badge-purchased" th:if="${#lists.contains(purchasedIds, p.id)}">Already purchased</span>
                 </a>
                 <div class="card-body">

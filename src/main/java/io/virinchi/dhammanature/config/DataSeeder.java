@@ -446,13 +446,13 @@ public class DataSeeder implements CommandLineRunner {
 
         seedProduct(himalayan, "Sandalwood Mala",
                 "108-bead sandalwood prayer mala for japa and mindfulness practice.",
-                "18.00", 40, ProductCategory.PRAYER_BEADS, "pexels-pixabay-236302.jpg");
+                "18.00", 40, ProductCategory.PRAYER_BEADS, "beads.png");
         seedProduct(himalayan, "Rudraksha Prayer Beads",
                 "Hand-strung rudraksha beads blessed for daily meditation.",
-                "24.00", 25, ProductCategory.PRAYER_BEADS, "pexels-pixabay-45178.jpg");
+                "24.00", 25, ProductCategory.PRAYER_BEADS, "beads 2nd.png");
         seedProduct(lotus, "Bodhi Seed Mala",
                 "Classic bodhi seed mala with guru bead, ideal for longer sittings.",
-                "27.00", 22, ProductCategory.PRAYER_BEADS, "pexels-pixabay-50709.jpg");
+                "27.00", 22, ProductCategory.PRAYER_BEADS, "3rd beads.png");
         seedProduct(stupa, "Rosewood Wrist Mala",
                 "Compact 21-bead wrist mala for on-the-go mindfulness.",
                 "12.50", 55, ProductCategory.PRAYER_BEADS, "pexels-ron-lach-10461522.jpg");
@@ -462,13 +462,13 @@ public class DataSeeder implements CommandLineRunner {
 
         seedProduct(himalayan, "Himalayan Incense Bundle",
                 "Naturally scented incense sticks crafted with Himalayan herbs.",
-                "9.50", 80, ProductCategory.INCENSE, "pexels-caleboquendo-3030090.jpg");
+                "9.50", 80, ProductCategory.INCENSE, "incense bundle.png");
         seedProduct(himalayan, "Temple Resin Incense",
                 "Traditional resin incense for shrine and home practice.",
                 "12.00", 50, ProductCategory.INCENSE, "pexels-tkirkgoz-15277853.jpg");
         seedProduct(lotus, "Nag Champa Gift Pack",
                 "A fragrant multipack of nag champa sticks for daily offerings.",
-                "8.00", 90, ProductCategory.INCENSE, "pexels-cryschanxanhy-29547000.jpg");
+                "8.00", 90, ProductCategory.INCENSE, "bundle.png");
         seedProduct(stupa, "Cedarwood Cone Incense",
                 "Slow-burning cedar cones with a grounding forest aroma.",
                 "7.50", 70, ProductCategory.INCENSE, "pexels-tkirkgoz-13047288.jpg");
@@ -478,10 +478,10 @@ public class DataSeeder implements CommandLineRunner {
 
         seedProduct(himalayan, "Introduction to the Dhamma",
                 "A clear beginner guide to the Buddha's teachings and daily practice.",
-                "15.00", 30, ProductCategory.BOOKS, "pexels-ajaybhargavguduru-939700.jpg");
+                "15.00", 30, ProductCategory.BOOKS, "intro to dhamma.png");
         seedProduct(himalayan, "Mindfulness Journal",
                 "Lined journal with gentle prompts for reflection after meditation.",
-                "11.00", 45, ProductCategory.BOOKS, "pexels-nishantaneja-2381616.jpg");
+                "11.00", 45, ProductCategory.BOOKS, "book.png");
         seedProduct(lotus, "Four Noble Truths Handbook",
                 "A concise study companion with notes for discussion groups.",
                 "13.50", 28, ProductCategory.BOOKS, "pexels-pexels-user-1493533273-27021625.jpg");
@@ -494,10 +494,10 @@ public class DataSeeder implements CommandLineRunner {
 
         seedProduct(himalayan, "Brass Buddha Statue",
                 "Compact brass Buddha figure suitable for a home shrine.",
-                "42.00", 15, ProductCategory.STATUES, "pexels-pixabay-220650.jpg");
+                "42.00", 15, ProductCategory.STATUES, "carved buddha.png");
         seedProduct(lotus, "Meditating Buddha Figurine",
                 "Serene seated Buddha cast for altar or meditation corner.",
-                "38.00", 20, ProductCategory.STATUES, "pexels-pixabay-236302.jpg");
+                "38.00", 20, ProductCategory.STATUES, "carved 2nd buddh.png");
         seedProduct(stupa, "Standing Blessing Buddha",
                 "Standing Buddha in blessing mudra, finished in warm bronze tone.",
                 "55.00", 10, ProductCategory.STATUES, "pexels-pixabay-45178.jpg");
@@ -513,7 +513,7 @@ public class DataSeeder implements CommandLineRunner {
                 "36.00", 18, ProductCategory.ACCESSORIES, "pexels-koithyr-1360255.jpg");
         seedProduct(lotus, "Yoga Mat & Strap Kit",
                 "Non-slip mat with cotton strap for home practice sessions.",
-                "31.00", 26, ProductCategory.ACCESSORIES, "pexels-ron-lach-10461522.jpg");
+                "31.00", 26, ProductCategory.ACCESSORIES, "pouch for meditation.png");
         seedProduct(stupa, "Eye Pillow Set",
                 "Lavender-filled eye pillows for savasana and rest.",
                 "16.00", 40, ProductCategory.ACCESSORIES, "pexels-sibi-ar-3290250-4940194.jpg");
@@ -529,7 +529,7 @@ public class DataSeeder implements CommandLineRunner {
                 "14.00", 35, ProductCategory.HANDICRAFTS, "pexels-nishantaneja-2385606.jpg");
         seedProduct(himalayan, "Thangka-Inspired Wall Art",
                 "Small cloth print inspired by traditional thangka motifs.",
-                "22.00", 12, ProductCategory.HANDICRAFTS, "pexels-rgsk97-1027821.jpg");
+                "22.00", 12, ProductCategory.HANDICRAFTS, "Wall art.jpg");
         seedProduct(lotus, "Handmade Offering Bowls",
                 "Set of seven brass offering bowls for shrine arrangements.",
                 "33.00", 16, ProductCategory.HANDICRAFTS, "pexels-tkirkgoz-15277853.jpg");
@@ -538,7 +538,7 @@ public class DataSeeder implements CommandLineRunner {
                 "26.00", 20, ProductCategory.HANDICRAFTS, "pexels-cryschanxanhy-29547000.jpg");
         seedProduct(lotus, "Carved Wooden Altar Shelf",
                 "Compact wall shelf for statues, candles, and incense.",
-                "48.00", 8, ProductCategory.HANDICRAFTS, "pexels-eky-rima-nurya-ganda-174710171-15147310.jpg");
+                "48.00", 8, ProductCategory.HANDICRAFTS, "carved table.png");
         seedProduct(stupa, "Lokta Paper Notebook",
                 "Eco lokta paper notebook for retreat notes and reflections.",
                 "9.00", 50, ProductCategory.HANDICRAFTS, "pexels-ajaybhargavguduru-939700.jpg");
@@ -566,17 +566,22 @@ public class DataSeeder implements CommandLineRunner {
 
     private void seedProduct(Vendor vendor, String name, String description, String price,
                              int stock, ProductCategory category, String imageUrl) {
-        if (productRepository.existsByProductNameIgnoreCase(name)) {
-            return;
-        }
-        productRepository.save(Product.builder()
-                .vendor(vendor)
-                .productName(name)
-                .description(description)
-                .price(new BigDecimal(price))
-                .stockQuantity(stock)
-                .category(category)
-                .imageUrl(imageUrl)
-                .build());
+        productRepository.findByProductNameContainingIgnoreCase(name).stream()
+                .filter(p -> p.getProductName().equalsIgnoreCase(name))
+                .findFirst()
+                .ifPresentOrElse(p -> {
+                    if (!imageUrl.equals(p.getImageUrl())) {
+                        p.setImageUrl(imageUrl);
+                        productRepository.save(p);
+                    }
+                }, () -> productRepository.save(Product.builder()
+                        .vendor(vendor)
+                        .productName(name)
+                        .description(description)
+                        .price(new BigDecimal(price))
+                        .stockQuantity(stock)
+                        .category(category)
+                        .imageUrl(imageUrl)
+                        .build()));
     }
 }
