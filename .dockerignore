@@ -1,0 +1,10 @@
+.idea
+.git
+.mvn
+out
+target
+uploads
+postman
+cp.txt
+*.iml
+*.postman_collection.json
