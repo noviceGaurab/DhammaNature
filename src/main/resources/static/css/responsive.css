@@ -1,0 +1,56 @@
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 820px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body:not(.admin-body) table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  body:not(.admin-body) [class*="table-wrap"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body:not(.admin-body) .section-hero h1,
+  body:not(.admin-body) .page-head h1 {
+    font-size: 32px;
+  }
+
+  .cta-band {
+    padding: 44px 20px;
+  }
+
+  .cta-band h2 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  body:not(.admin-body) .section-hero h1,
+  body:not(.admin-body) .page-head h1 {
+    font-size: 27px;
+  }
+
+  .cta-band h2 {
+    font-size: 22px;
+  }
+
+  .cta-band .btn-gold,
+  .cta-band .btn-saffron,
+  .cta-band .btn-outline {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}

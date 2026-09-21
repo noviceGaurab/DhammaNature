@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Edit Gallery Image</title>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
+    <link rel="stylesheet" href="/css/responsive.css"/>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('gallery')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('Edit Gallery Image', 'Update the title and description, or replace the photo.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Edit Image</h2>
+                    <p>Changes appear on the public gallery immediately.</p>
+                </div>
+                <a href="/admin/gallery" class="admin-btn secondary">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Gallery
+                </a>
+            </div>
+
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h3>
+                        <i class="fa-solid fa-image"></i>
+                        Image Details
+                    </h3>
+                </div>
+
+                <div class="admin-card-body">
+                    <p th:if="${param.error == 'title'}" style="color:#dc3545; margin-bottom:12px;">Please provide an image title.</p>
+                    <form method="post" th:action="@{'/admin/gallery/' + ${img.id} + '/update'}"
+                          enctype="multipart/form-data" class="admin-form-grid">
+                        <div class="col-12 d-flex justify-content-center mb-3">
+                            <img class="admin-thumbnail"
+                                 th:src="@{/gallery/{id}/image(id=${img.id})}"
+                                 th:alt="${img.title}"
+                                 style="width:140px; height:100px; object-fit:cover; border-radius:8px;"
+                                 onerror="this.style.display='none'">
+                        </div>
+                        <input type="text" name="title" class="admin-form-control" placeholder="Image title"
+                               th:value="${img.title}" required>
+                        <input type="text" name="description" class="admin-form-control" placeholder="Short description"
+                               th:value="${img.description}">
+                        <input type="file" name="file" accept="image/*" class="admin-form-control">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="admin-btn success">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                Save Changes
+                            </button>
+                            <a href="/admin/gallery" class="admin-btn secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>

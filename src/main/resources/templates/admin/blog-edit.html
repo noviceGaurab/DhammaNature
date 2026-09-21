@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Edit Blog Post</title>
+    <th:block th:replace="~{fragments/admin-nav :: adminAssets}"></th:block>
+    <link rel="stylesheet" href="/css/responsive.css"/>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside th:replace="~{fragments/admin-nav :: adminSidebar('blog')}"></aside>
+
+    <div class="admin-main">
+        <header th:replace="~{fragments/admin-nav :: adminTopbar('Edit Blog Post', 'Update the article title, category, image, or content.')}"></header>
+
+        <main class="admin-content">
+            <div class="admin-page-header">
+                <div class="admin-page-title">
+                    <h2>Edit Article</h2>
+                    <p>Your changes go live immediately when the article is approved.</p>
+                </div>
+                <a href="/admin/blog" class="admin-btn secondary">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Blog Posts
+                </a>
+            </div>
+
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h3>
+                        <i class="fa-solid fa-pen-nib"></i>
+                        Article Details
+                    </h3>
+                    <span class="admin-badge warning" th:if="${post.status.name() == 'PENDING'}">Pending</span>
+                    <span class="admin-badge success" th:if="${post.status.name() == 'APPROVED'}">Approved</span>
+                    <span class="admin-badge danger" th:if="${post.status.name() == 'REJECTED'}">Rejected</span>
+                </div>
+
+                <div class="admin-card-body">
+                    <p th:if="${param.error}" style="color:#dc3545; margin-bottom:12px;">Please provide both an article title and content.</p>
+                    <form method="post" th:action="@{'/admin/blog/' + ${post.id} + '/update'}">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold">Article Title *</label>
+                                <input type="text" name="title" class="admin-form-control" placeholder="Article title"
+                                       th:value="${post.title}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Category</label>
+                                <select name="category" class="admin-form-control">
+                                    <option value="meditation" th:selected="${post.category != null and post.category == 'meditation'}">Meditation</option>
+                                    <option value="lifestyle" th:selected="${post.category != null and post.category == 'lifestyle'}">Lifestyle</option>
+                                    <option value="teachings" th:selected="${post.category != null and post.category == 'teachings'}">Teachings</option>
+                                    <option value="community" th:selected="${post.category != null and post.category == 'community'}">Community</option>
+                                    <option value="general" th:selected="${post.category == null or post.category == '' or post.category == 'general'}">General</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Image URL <small>(optional)</small></label>
+                                <input type="text" name="imageUrl" class="admin-form-control"
+                                       placeholder="e.g. /site-assets/pexels-pixabay-220650/image"
+                                       th:value="${post.imageUrl}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Article Content *</label>
+                                <textarea name="content" rows="10" class="admin-form-control"
+                                          placeholder="Article content" th:text="${post.content}" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="admin-btn success">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                Save Changes
+                            </button>
+                            <a href="/admin/blog" class="admin-btn secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-nav :: bootstrapJs}"></div>
+</body>
+</html>
