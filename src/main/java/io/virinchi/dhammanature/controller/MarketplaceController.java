@@ -58,6 +58,7 @@ public class MarketplaceController {
         model.addAttribute("pageBase", cat != null ? "/marketplace?cat=" + cat.name() : "/marketplace");
         model.addAttribute("purchasedIds",
                 sessionUserResolver.resolve(session).map(u -> marketplaceService.purchasedProductIds(u.getId())).orElse(List.of()));
+        model.addAttribute("soldIds", marketplaceService.purchasedProductIds());
         return "marketplace";
     }
 
@@ -79,6 +80,7 @@ public class MarketplaceController {
                 .map(u -> marketplaceService.purchasedProductIds(u.getId()).contains(id))
                 .orElse(false);
         model.addAttribute("alreadyPurchased", purchased);
+        model.addAttribute("productPurchased", marketplaceService.isPurchased(id));
         model.addAttribute("inWishlist",
                 sessionUserResolver.resolve(session).map(user -> user.getWishlist().stream()
                         .anyMatch(p -> p.getId().equals(id))).orElse(false));
@@ -87,9 +89,24 @@ public class MarketplaceController {
 
     /** Step 1 of buying: choose quantity + how you want to pay (eSewa, card, cash, redeemed points). */
     @GetMapping("/marketplace/{id}/checkout")
-    public String checkout(@PathVariable Integer id, HttpSession session, Model model) {
+    public String checkout(@PathVariable Integer id, HttpSession session, Model model,
+                           RedirectAttributes redirectAttributes) {
         if (sessionUserResolver.resolve(session).isEmpty()) {
             return "redirect:/login";
+        }
+        try {
+            String reservedKey = "marketplace.reserved." + id;
+            if (session.getAttribute(reservedKey) == null) {
+                if (marketplaceService.isPurchased(id) || marketplaceService.getProduct(id).getStockQuantity() <= 0) {
+                    redirectAttributes.addFlashAttribute("error", "No more in stock.");
+                    return "redirect:/marketplace/" + id;
+                }
+                marketplaceService.reserveStock(id);
+                session.setAttribute(reservedKey, Boolean.TRUE);
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/marketplace/" + id;
         }
         var product = marketplaceService.getProduct(id);
         model.addAttribute("product", product);
@@ -146,6 +163,25 @@ public class MarketplaceController {
             return "redirect:/marketplace";
         }
         return "order-confirm";
+    }
+
+    @PostMapping("/marketplace/order/{id}/cancel")
+    public String cancelOrder(@PathVariable Integer id,
+                              @RequestParam(required = false) String cancelReason,
+                              HttpSession session, RedirectAttributes redirectAttributes) {
+        return sessionUserResolver.resolve(session)
+                .map(user -> {
+                    try {
+                        marketplaceService.cancelOrder(user, id, cancelReason);
+                        redirectAttributes.addFlashAttribute("success",
+                                "Your order has been cancelled." + (cancelReason != null && !cancelReason.isBlank()
+                                ? " We've noted your reason: \"" + cancelReason + "\"." : ""));
+                    } catch (Exception e) {
+                        redirectAttributes.addFlashAttribute("error", e.getMessage());
+                    }
+                    return "redirect:/marketplace/order-confirmed?orderId=" + id;
+                })
+                .orElse("redirect:/login");
     }
 
     @PostMapping("/marketplace/{id}/wishlist")

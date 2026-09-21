@@ -190,7 +190,18 @@
             <tr th:each="o : ${orders}"><td th:text="${o.product.productName}"></td><td th:text="${o.quantity}"></td><td th:text="'$' + ${#numbers.formatDecimal(o.totalPrice, 1, 2)}"></td>
             <td th:text="${o.pointsUsed > 0 ? o.pointsUsed + ' pts' : (o.paymentMethod != null ? o.paymentMethod.displayName : 'eSewa')}"></td>
             <td><span class="status" th:text="${o.status}"></span></td><td th:text="${#temporals.format(o.orderDate, 'dd MMM yyyy')}"></td>
-            <td><a th:href="@{'/marketplace/order-confirmed?orderId=' + ${o.id}}" style="padding:6px 14px; border-radius:20px; background:#e6f4ea; color:#006015; font-size:12px; font-weight:700; text-decoration:none;">View</a></td></tr></table>
+            <td><a th:href="@{'/marketplace/order-confirmed?orderId=' + ${o.id}}" style="padding:6px 14px; border-radius:20px; background:#e6f4ea; color:#006015; font-size:12px; font-weight:700; text-decoration:none;">View</a> <span th:if="${o.status.name() == 'CANCELLED'}">—</span> <span th:if="${o.status.name() == 'DELIVERED'}">✓</span>
+                <form th:if="${o.status.name() != 'CANCELLED' and o.status.name() != 'DELIVERED'}" method="post" th:action="@{'/marketplace/order/' + ${o.id} + '/cancel'}" style="display:flex; gap:4px; align-items:center; margin-top:6px;" onsubmit="return confirm('Cancel this order? Any reward points used will be refunded.');">
+                    <select name="cancelReason" style="padding:5px 8px; border-radius:14px; border:1px solid #d8c4a8; font-size:11px; width:110px;" required>
+                        <option value="" disabled selected>Reason...</option>
+                        <option>Changed my mind</option>
+                        <option>Ordered by mistake</option>
+                        <option>Found it cheaper elsewhere</option>
+                        <option>Delivery too slow</option>
+                        <option>Payment issue</option>
+                    </select>
+                    <button type="submit" style="padding:6px 12px; border-radius:20px; border:1px solid #8f2a23; background:#fdecea; color:#8f2a23; font-size:12px; font-weight:700; cursor:pointer;">Cancel</button>
+                </form></td></tr></table>
         </div>
     </section>
     <section class="panel">

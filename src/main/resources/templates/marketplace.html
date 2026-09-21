@@ -130,7 +130,8 @@
                     <p class="card-desc" th:text="${p.description}">Description</p>
                     <div class="card-meta">
                         <p class="price" th:text="'$' + ${#numbers.formatDecimal(p.price, 1, 2)}">$0.00</p>
-                        <span class="stock" th:text="${p.stockQuantity} + ' in stock'">0 in stock</span>
+                        <span class="stock" th:if="${#lists.contains(soldIds, p.id) or p.stockQuantity <= 0}">No more in stock</span>
+                        <span class="stock" th:unless="${#lists.contains(soldIds, p.id) or p.stockQuantity <= 0}" th:text="${p.stockQuantity} + ' in stock'">0 in stock</span>
                     </div>
                     <p class="vendor"><small th:text="'Sold by ' + ${p.vendor.vendorName}"></small></p>
                     <a th:href="@{'/marketplace/' + ${p.id}}" class="btn btn-primary">View details</a>
@@ -171,7 +172,9 @@
                     <p class="card-desc" th:text="${p.description}">Description</p>
                     <div class="card-meta">
                         <p class="price" th:text="'$' + ${#numbers.formatDecimal(p.price, 1, 2)}">$0.00</p>
-                        <span class="stock" th:classappend="${p.stockQuantity &lt; 10} ? ' low' : ''"
+                        <span class="stock" th:if="${#lists.contains(soldIds, p.id) or p.stockQuantity <= 0}">No more in stock</span>
+                        <span class="stock" th:classappend="${! #lists.contains(soldIds, p.id) and p.stockQuantity &lt; 10} ? ' low' : ''"
+                              th:unless="${#lists.contains(soldIds, p.id) or p.stockQuantity <= 0}"
                               th:text="${p.stockQuantity} + ' in stock'">0 in stock</span>
                     </div>
                     <p class="vendor"><small th:text="'Sold by ' + ${p.vendor.vendorName}"></small></p>

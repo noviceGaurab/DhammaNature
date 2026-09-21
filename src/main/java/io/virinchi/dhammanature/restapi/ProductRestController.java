@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,14 +25,14 @@ public class ProductRestController {
     private final VendorRepository vendorRepository;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public ResponseEntity<?> getAllProducts() {
+        return ResponseEntity.ok(productRepository.findAll().stream().map(ApiViews::product).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable("id") Integer id) {
         return productRepository.findById(id)
-                .map(product -> ResponseEntity.ok((Object) product))
+                .map(product -> ResponseEntity.ok((Object) ApiViews.product(product)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(error("Product " + id + " not found")));
     }
@@ -65,7 +64,7 @@ public class ProductRestController {
 
         try {
             Product saved = productRepository.save(product);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+            return ResponseEntity.status(HttpStatus.CREATED).body(ApiViews.product(saved));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body(error("Could not save product - invalid data."));
         }

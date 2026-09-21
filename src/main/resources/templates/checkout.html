@@ -115,10 +115,8 @@
                 <div class="summary-item"><span>Product</span><strong th:text="${product.productName}">Product</strong></div>
                 <div class="summary-item"><span>Sold by</span><span th:text="${product.vendor.vendorName}">Vendor</span></div>
                 <div class="summary-item"><span>Unit price</span><span th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$0.00</span></div>
-                <div class="qty-row" style="margin-top:14px;">
-                    <label style="font-weight:800; font-size:14px;">Quantity</label>
-                    <input type="number" name="quantity" id="quantity" min="1" value="1">
-                </div>
+                <div class="summary-item"><span>Quantity</span><strong>1</strong></div>
+                <div class="summary-item" style="border-bottom:none;"><span>This is a one-of-a-kind item - it is reserved for you once your order is confirmed.</span></div>
             </div>
             <div class="co-card">
                 <h2><i class="fas fa-credit-card"></i> How would you like to pay?</h2>
@@ -152,7 +150,7 @@
                 <div class="summary-total"><span>Total</span><span id="sumTotal">$0.00</span></div>
                 <div class="points-bal">
                     <i class="fas fa-star"></i>
-                    <span>You'll earn <strong>+<span id="sumPoints">1</span> point</strong> for this purchase.</span>
+                    <span>You'll earn <strong>+1 point</strong> for this purchase.</span>
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top:18px;"><i class="fas fa-lock"></i> Confirm &amp; pay</button>
                 <a href="/marketplace" class="btn btn-outline" style="width:100%; text-align:center; margin-top:10px;">Cancel</a>
@@ -205,14 +203,8 @@
             }
 
             var unitPrice = parseFloat(document.getElementById('sumSub').getAttribute('data-price') || '1');
-            var qtyInput = document.getElementById('quantity');
-            function update() {
-                var q = Math.max(1, parseInt(qtyInput.value) || 1);
-                document.getElementById('sumSub').textContent = '$' + (unitPrice * q).toFixed(2);
-                document.getElementById('sumTotal').textContent = '$' + (unitPrice * q).toFixed(2);
-                document.getElementById('sumPoints').textContent = q;
-            }
-            qtyInput.addEventListener('input', update);
+            document.getElementById('sumSub').textContent = '$' + unitPrice.toFixed(2);
+            document.getElementById('sumTotal').textContent = '$' + unitPrice.toFixed(2);
 
             document.querySelectorAll('.pm-opt').forEach(function (opt) {
                 var radio = opt.querySelector('input[type=radio]');

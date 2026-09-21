@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,8 +112,12 @@ public class MarketplaceService {
     @Transactional
     public ProductOrder purchase(User user, Integer productId, int quantity, PaymentMethod paymentMethod) {
         Product product = getProduct(productId);
-        if (product.getStockQuantity() < quantity) {
-            throw new IllegalStateException("Not enough stock for \"" + product.getProductName() + "\".");
+        if (isPurchased(productId)) {
+            throw new IllegalStateException("\"" + product.getProductName()
+                    + "\" has already been purchased and is no longer available.");
+        }
+        if (product.getStockQuantity() < 0) {
+            throw new IllegalStateException("No more in stock.");
         }
         BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
         int pointsUsed = 0;
@@ -121,8 +126,6 @@ public class MarketplaceService {
             rewardService.spendPoints(user, pointsUsed,
                     "Paid for \"" + product.getProductName() + "\" x " + quantity + " with reward points");
         }
-        product.setStockQuantity(product.getStockQuantity() - quantity);
-        productRepository.save(product);
 
         ProductOrder order = productOrderRepository.save(ProductOrder.builder()
                 .user(user).product(product).quantity(quantity)
@@ -154,9 +157,95 @@ public class MarketplaceService {
         return productOrderRepository.findPurchasedProductIdsByUser(userId);
     }
 
+    /** Ids of every product that has been sold (any user, non-cancelled) - these are "No more in stock". */
+    public List<Integer> purchasedProductIds() {
+        return productOrderRepository.findAllPurchasedProductIds();
+    }
+
+    /** True once any (non-cancelled) purchase exists for this product - it is then no longer offered for sale. */
+    public boolean isPurchased(Integer productId) {
+        return productOrderRepository.existsByProduct_IdAndStatusNot(productId, OrderStatus.CANCELLED);
+    }
+
+    /**
+     * Reserves one unit the moment "Buy now" is clicked by lowering the stock
+     * count immediately, so the item reads "No more in stock" for everyone else.
+     */
+    @Transactional
+    public void reserveStock(Integer productId) {
+        Product product = getProduct(productId);
+        if (product.getStockQuantity() <= 0) {
+            throw new IllegalStateException("No more in stock.");
+        }
+        product.setStockQuantity(product.getStockQuantity() - 1);
+        productRepository.save(product);
+    }
+
     public ProductOrder getOrder(Integer id) {
         return productOrderRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Order not found"));
+    }
+
+    /**
+     * Cancels an order that has not been delivered yet: restores stock,
+     * refunds any reward points used, and claws back the purchase points when
+     * the user still has enough. The customer-selected reason is stored for
+     * future review.
+     */
+    @Transactional
+    public ProductOrder cancelOrder(User user, Integer orderId, String cancelReason) {
+        ProductOrder order = getOrder(orderId);
+        if (!order.getUser().getId().equals(user.getId())) {
+            throw new IllegalStateException("You do not have permission to cancel this order.");
+        }
+        if (order.getStatus() == OrderStatus.CANCELLED) {
+            throw new IllegalStateException("This order has already been cancelled.");
+        }
+        if (order.getStatus() == OrderStatus.DELIVERED) {
+            throw new IllegalStateException("This order has already been delivered and cannot be cancelled.");
+        }
+
+        order.setStatus(OrderStatus.CANCELLED);
+        order.setCancelledAt(LocalDateTime.now());
+        order.setCancelReason(cancelReason != null ? cancelReason.trim() : null);
+
+        Product product = order.getProduct();
+        product.setStockQuantity(product.getStockQuantity() + order.getQuantity());
+        productRepository.save(product);
+
+        int refundPoints = order.getPointsUsed();
+        if (refundPoints > 0) {
+            rewardService.awardPoints(user, refundPoints,
+                    "Refunded points for cancelled order: " + product.getProductName());
+        }
+        int clawbackPoints = Math.max(1, order.getQuantity());
+        try {
+            rewardService.spendPoints(user, clawbackPoints,
+                    "Points removed for cancelled order: " + product.getProductName());
+        } catch (IllegalStateException e) {
+            // User has already spent the purchase points - nothing left to claw back.
+        }
+
+        productOrderRepository.save(order);
+        notificationService.notifyUser(user, "Order cancelled: " + product.getProductName(),
+                "Your order has been cancelled"
+                        + (order.getCancelReason() != null ? " - " + order.getCancelReason() : "") + "."
+                        + (refundPoints > 0 ? " " + refundPoints + " reward points were refunded to your account." : ""),
+                NotificationType.ORDER);
+        emailService.sendToUser(user, "Order cancelled: " + product.getProductName(),
+                "Hi " + user.getFullName() + ",\n\n"
+                        + "Your order has been cancelled:\n"
+                        + " - " + product.getProductName() + " x " + order.getQuantity()
+                        + "\nTotal: $" + order.getTotalPrice()
+                        + (refundPoints > 0 ? "\nReward points refunded: " + refundPoints : "")
+                        + (order.getCancelReason() != null && !order.getCancelReason().isBlank()
+                        ? "\nReason: " + order.getCancelReason() : "")
+                        + "\n\nWith metta,\nThe Dhamma Nature team");
+        emailService.sendSiteAlert("Order cancelled",
+                user.getFullName() + " (" + user.getEmail() + ") cancelled " + order.getQuantity()
+                        + "x " + product.getProductName() + " (order #" + order.getId()
+                        + "). Reason: " + (order.getCancelReason() != null ? order.getCancelReason() : "not given"));
+        return order;
     }
 
     public List<ProductOrder> ordersFor(Integer userId) {

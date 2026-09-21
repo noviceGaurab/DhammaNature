@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,14 +22,14 @@ public class GalleryRestController {
     private final GalleryService galleryService;
 
     @GetMapping
-    public List<Gallery> getAllGalleryItems() {
-        return galleryRepository.findAll();
+    public ResponseEntity<?> getAllGalleryItems() {
+        return ResponseEntity.ok(galleryRepository.findAll().stream().map(ApiViews::gallery).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getGalleryById(@PathVariable("id") Integer id) {
         return galleryRepository.findById(id)
-                .map(gallery -> ResponseEntity.ok((Object) gallery))
+                .map(gallery -> ResponseEntity.ok((Object) ApiViews.gallery(gallery)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(error("Gallery item " + id + " not found")));
     }
@@ -42,7 +41,7 @@ public class GalleryRestController {
         }
         try {
             Gallery saved = galleryService.createFromApi(request.title().trim(), request.description());
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+            return ResponseEntity.status(HttpStatus.CREATED).body(ApiViews.gallery(saved));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body(error("Could not save gallery item - invalid data."));
         }

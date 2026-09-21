@@ -46,6 +46,12 @@ public class ProductOrder {
     @Builder.Default
     private int pointsUsed = 0;
 
+    /** Why the customer cancelled the order - kept for future review. */
+    @Column(length = 500)
+    private String cancelReason;
+
+    private LocalDateTime cancelledAt;
+
     @Column(updatable = false)
     private LocalDateTime orderDate;
 
