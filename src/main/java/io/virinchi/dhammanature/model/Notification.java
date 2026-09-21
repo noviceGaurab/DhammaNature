@@ -30,6 +30,7 @@ public class Notification {
     private String message;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 32)
     @Builder.Default
     private NotificationType type = NotificationType.SYSTEM;
 
