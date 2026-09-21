@@ -405,10 +405,10 @@
                 var filtered = list.filter(function (c) {
                     return activeFilter === 'all' || modeOf(c) === activeFilter;
                 });
-                grid.innerHTML = filtered.map(cardHtml).join('');
+                if (grid) grid.innerHTML = filtered.map(cardHtml).join('');
                 var empty = filtered.length === 0;
-                emptyMsg.style.display = empty ? '' : 'none';
-                grid.style.display = empty ? 'none' : '';
+                if (emptyMsg) emptyMsg.style.display = empty ? '' : 'none';
+                if (grid) grid.style.display = empty ? 'none' : '';
             }
 
             var searchInput = document.getElementById('centerSearch');
@@ -423,7 +423,8 @@
                         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
                         .then(function (data) { render(data); })
                         .catch(function () {
-                            window.location.href = q ? '/centers?q=' + encodeURIComponent(q) : '/centers';
+                            if (emptyMsg) emptyMsg.style.display = '';
+                            if (grid) grid.style.display = 'none';
                         });
                 }, 350);
             }

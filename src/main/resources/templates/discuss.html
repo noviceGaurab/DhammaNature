@@ -422,8 +422,8 @@
 
     <script th:inline="javascript">
         var PARTICIPANTS = JSON.parse(/*[[${participantsJson}]]*/ '[]');
-        var CURRENT_USER_ID = [[$,{currentUser : != null ? currentUser.id : -1,}]];
-        var DISCUSS_SLUG = [[$,{slug}]];
+        var CURRENT_USER_ID = [[${currentUser != null ? currentUser.id : -1}]];
+        var DISCUSS_SLUG = [[${slug}]];
 
         document.addEventListener('DOMContentLoaded', function () {
             var hamburger = document.querySelector('.hamburger');
