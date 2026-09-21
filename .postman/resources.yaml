@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: cb2caf12-2fa9-41ea-802b-2a0b1cf747e0
+
+localResources:
+  collections:
+    - ../DhammaNature.postman_collection.json
