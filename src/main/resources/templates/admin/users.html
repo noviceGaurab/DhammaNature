@@ -82,6 +82,8 @@
                                 <th>Understood</th>
                                 <th>Accepted Terms</th>
                                 <th>Joined</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
 
@@ -109,6 +111,26 @@
                                     <span class="admin-badge danger" th:unless="${u.acceptedTerms}">No</span>
                                 </td>
                                 <td th:text="${#temporals.format(u.createdAt, 'dd MMM yyyy')}">01 Jan 2024</td>
+                                <td>
+                                    <span class="admin-badge success" th:if="${u.active}">Active</span>
+                                    <span class="admin-badge danger" th:unless="${u.active}">Blocked</span>
+                                </td>
+                                <td>
+                                    <form th:if="${u.active}" method="post" th:action="@{'/admin/users/' + ${u.id} + '/block'}"
+                                          onsubmit="return confirm('Block this user? They will not be able to sign in, but their account and data are kept.');">
+                                        <input type="hidden" name="page" th:value="${page}"/>
+                                        <button type="submit" class="admin-btn danger">
+                                            <i class="fa-solid fa-user-slash"></i> Block
+                                        </button>
+                                    </form>
+                                    <form th:unless="${u.active}" method="post" th:action="@{'/admin/users/' + ${u.id} + '/unblock'}"
+                                          onsubmit="return confirm('Unblock this user and let them sign in again?');">
+                                        <input type="hidden" name="page" th:value="${page}"/>
+                                        <button type="submit" class="admin-btn success">
+                                            <i class="fa-solid fa-user-check"></i> Unblock
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

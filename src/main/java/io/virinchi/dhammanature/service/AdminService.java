@@ -96,4 +96,17 @@ public class AdminService {
     public long quizAttemptCount(Integer quizId) {
         return quizAttemptRepository.countByQuiz_Id(quizId);
     }
+
+    /**
+     * Soft-deletes a user from the admin panel: the account is marked inactive so
+     * they can no longer sign in, but every related record (bookings, donations,
+     * comments, reports, etc.) is preserved so the person can be unblocked again.
+     */
+    @Transactional
+    public void setUserActive(Integer userId, boolean active) {
+        userRepository.findById(userId).ifPresent(u -> {
+            u.setActive(active);
+            userRepository.save(u);
+        });
+    }
 }

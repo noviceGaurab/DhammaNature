@@ -108,10 +108,16 @@
                         <p>No evidence documents uploaded - verify with caution or contact the owner.</p>
                     </div>
 
-                    <div class="vendor-actions">
+<div class="vendor-actions">
                         <form th:unless="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/verify'}">
                             <button type="submit" class="admin-btn success">
                                 <i class="fa-solid fa-check"></i> Approve seller
+                            </button>
+                        </form>
+                        <form th:unless="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/reject'}"
+                              onsubmit="return confirm('Reject this vendor\'s application? Their products will stay hidden and the seller will not be approved.');">
+                            <button type="submit" class="admin-btn danger">
+                                <i class="fa-solid fa-user-slash"></i> Reject application
                             </button>
                         </form>
                         <span class="admin-badge success" th:if="${v.verified}">

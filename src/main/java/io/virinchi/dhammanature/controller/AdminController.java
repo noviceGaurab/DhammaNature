@@ -75,6 +75,26 @@ public class AdminController {
         return "redirect:/admin/incidents";
     }
 
+    /** Soft-deletes (blocks) a user so they can no longer sign in; their data is preserved. */
+    @PostMapping("/users/{id}/block")
+    public String blockUser(@PathVariable Integer id,
+                            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "1") int page,
+                            HttpSession session) {
+        sessionUserResolver.require(session);
+        adminService.setUserActive(id, false);
+        return "redirect:/admin?page=" + page;
+    }
+
+    /** Restores a previously blocked (soft-deleted) user. */
+    @PostMapping("/users/{id}/unblock")
+    public String unblockUser(@PathVariable Integer id,
+                              @org.springframework.web.bind.annotation.RequestParam(defaultValue = "1") int page,
+                              HttpSession session) {
+        sessionUserResolver.require(session);
+        adminService.setUserActive(id, true);
+        return "redirect:/admin?page=" + page;
+    }
+
     @GetMapping
     public String users(@org.springframework.web.bind.annotation.RequestParam(defaultValue = "1") int page, Model model) {
         int pageSize = 10;
