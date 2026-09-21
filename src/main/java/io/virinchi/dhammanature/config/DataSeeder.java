@@ -53,7 +53,7 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        vendorRepository.backfillLegacyVerifiedColumn();
+
         User admin = ensureAdmin();
         if (seedDemoData) {
             if (meditationCenterRepository.count() == 0) {
