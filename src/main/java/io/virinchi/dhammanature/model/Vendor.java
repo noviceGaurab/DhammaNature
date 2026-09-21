@@ -1,5 +1,6 @@
 package io.virinchi.dhammanature.model;
 
+import io.virinchi.dhammanature.model.enums.VendorStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,8 +29,15 @@ public class Vendor {
     private String address;
 
     /** Administrators verify vendors before products become publicly available (Section 4.1 / Business Rule 3). */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     @Builder.Default
-    private boolean verified = false;
+    private VendorStatus status = VendorStatus.PENDING;
+
+    /** True once an admin has approved this seller; the public marketplace only shows their products. */
+    public boolean isVerified() {
+        return status == VendorStatus.VERIFIED;
+    }
 
     /** The login account this vendor operates under. */
     @OneToOne(fetch = FetchType.LAZY, optional = false)

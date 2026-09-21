@@ -53,6 +53,7 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
+        vendorRepository.backfillLegacyVerifiedColumn();
         User admin = ensureAdmin();
         if (seedDemoData) {
             if (meditationCenterRepository.count() == 0) {
@@ -581,7 +582,7 @@ public class DataSeeder implements CommandLineRunner {
                         .vendorName(vendorName)
                         .contactDetails(email)
                         .address(address)
-                        .verified(true)
+                        .status(VendorStatus.VERIFIED)
                         .user(vendorUser)
                         .build()));
     }

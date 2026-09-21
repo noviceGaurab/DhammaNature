@@ -47,6 +47,7 @@
         .vs-badge { display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
         .vs-badge.ok { background: #e6f4ea; color: #006015; }
         .vs-badge.warn { background: #fff3cd; color: #8a6d1a; }
+        .vs-badge.bad { background: #fdecea; color: #8f2a23; }
         .vendor-name { font-size: 18px; font-weight: 800; color: #1d1a16; margin: 10px 0 4px; }
         .vendor-meta { font-size: 13.5px; color: #777; margin-bottom: 14px; }
         .status-note { font-size: 13.5px; color: #555; background: #f8f9fa; border: 1px dashed #ddd; border-radius: 10px; padding: 12px 14px; }
@@ -234,8 +235,9 @@
             <section class="card">
                 <h2><i class="fa-solid fa-user-shield"></i> Seller overview</h2>
                 <p class="sub">Your shop identity and account standing.</p>
-                <span class="vs-badge ok" th:if="${vendor.verified}"><i class="fa-solid fa-circle-check"></i> Verified</span>
-                <span class="vs-badge warn" th:unless="${vendor.verified}"><i class="fa-solid fa-clock"></i> Pending verification</span>
+                <span class="vs-badge ok" th:if="${vendor.status.name() == 'VERIFIED'}"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                <span class="vs-badge warn" th:if="${vendor.status.name() == 'PENDING'}"><i class="fa-solid fa-clock"></i> Pending verification</span>
+                <span class="vs-badge bad" th:if="${vendor.status.name() == 'REJECTED'}"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>
                 <div class="vendor-name" th:text="${vendor.vendorName}">Vendor</div>
                 <div class="vendor-meta">
                     <span th:text="${vendor.contactDetails != null ? vendor.contactDetails : ''}"></span>
@@ -246,16 +248,20 @@
                     <div class="stat"><b th:text="${categoryCount}">0</b><span>Categories</span></div>
                     <div class="stat"><b th:text="${totalStock}">0</b><span>Items in stock</span></div>
                 </div>
-                <p class="status-note" th:unless="${vendor.verified}">
+                <p class="status-note" th:if="${vendor.status.name() == 'PENDING'}">
                     <i class="fa-solid fa-circle-info"></i>
                     An administrator is reviewing your application. <b>Listing unlocks once your account is verified.</b>
                 </p>
-                <p class="status-note" th:if="${vendor.verified}">
+                <p class="status-note bad" th:if="${vendor.status.name() == 'REJECTED'}">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    Your application was rejected. Contact the administrator for the reason and to discuss reapplying.
+                </p>
+                <p class="status-note" th:if="${vendor.status.name() == 'VERIFIED'}">
                     <i class="fa-solid fa-circle-check"></i>
                     Your shop is live - products you add are visible to the whole community on the marketplace.
                 </p>
 
-                <div class="vendor-docs" th:if="${!vendor.verified}">
+                <div class="vendor-docs" th:unless="${vendor.status.name() == 'VERIFIED'}">
                     <h3 style="font-size:15px; color:#1d1a16; display:flex; align-items:center; gap:8px; margin:14px 0 8px;">
                         <i class="fa-solid fa-folder-open" style="color:#008000;"></i> Submitted evidence
                     </h3>
@@ -304,7 +310,8 @@
                 </div>
 
                 <a th:if="${vendor.verified}" href="/vendor/studio/products/add" class="btn btn-green btn-block"><i class="fa-solid fa-plus"></i> Add a product</a>
-                <button type="button" class="btn btn-green btn-block" th:unless="${vendor.verified}" disabled title="Available once your vendor account is verified"><i class="fa-solid fa-lock"></i> Add a product (unlocks after approval)</button>
+                <button type="button" class="btn btn-green btn-block" th:if="${vendor.status.name() == 'PENDING'}" disabled title="Available once your vendor account is verified"><i class="fa-solid fa-lock"></i> Add a product (unlocks after approval)</button>
+                <button type="button" class="btn btn-green btn-block" th:if="${vendor.status.name() == 'REJECTED'}" disabled title="Your application was rejected"><i class="fa-solid fa-lock"></i> Add a product (rejected - contact admin)</button>
             </section>
         </div>
 

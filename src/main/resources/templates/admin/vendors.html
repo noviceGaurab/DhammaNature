@@ -28,7 +28,7 @@
                     <h3 th:text="${#lists.size(vendors)}">0</h3>
                     <p>Total Vendors</p>
                 </div>
-                <div class="admin-stat-card">
+<div class="admin-stat-card">
                     <div class="admin-stat-icon warn"><i class="fa-solid fa-clock"></i></div>
                     <h3 th:text="${pendingCount}">0</h3>
                     <p>Pending Review</p>
@@ -37,6 +37,11 @@
                     <div class="admin-stat-icon ok"><i class="fa-solid fa-circle-check"></i></div>
                     <h3 th:text="${verifiedCount}">0</h3>
                     <p>Verified</p>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon danger"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <h3 th:text="${rejectedCount}">0</h3>
+                    <p>Rejected</p>
                 </div>
             </section>
 
@@ -56,8 +61,9 @@
                         <span th:text="${v.vendorName}">Vendor Name</span>
                     </h3>
                     <div class="vendor-header-right">
-                        <span class="admin-badge success" th:if="${v.verified}"><i class="fa-solid fa-circle-check"></i> Verified</span>
-                        <span class="admin-badge warning" th:unless="${v.verified}"><i class="fa-solid fa-clock"></i> Pending</span>
+                        <span class="admin-badge success" th:if="${v.status.name() == 'VERIFIED'}"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                        <span class="admin-badge warning" th:if="${v.status.name() == 'PENDING'}"><i class="fa-solid fa-clock"></i> Pending</span>
+                        <span class="admin-badge danger" th:if="${v.status.name() == 'REJECTED'}"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>
                         <span class="admin-badge" th:classappend="${#lists.size(v.documents) > 0} ? '' : ' danger'" th:text="${#lists.size(v.documents)} + ' document(s)'">0 docs</span>
                     </div>
                 </div>
@@ -70,7 +76,7 @@
                         <div><span class="meta-label">Products</span><span th:text="${#lists.size(v.products)} + ' product(s)'">0</span></div>
                     </div>
 
-                    <div class="vendor-scam-banner" th:unless="${v.verified}">
+<div class="vendor-scam-banner" th:unless="${v.status.name() == 'VERIFIED'}">
                         <div class="scam-title"><i class="fa-solid fa-shield-heart"></i> Scam / legitimacy check</div>
                         <p class="scam-copy">Ask yourself: is the registration document legible and dated? Does the tax ID match a plausible business? Is there a real shop address with supporting proof (lease, utility bill, photos)? Do they have past work references? Red flags: no documents, screenshots with no information, mismatched names, or vague addresses.</p>
                         <div class="scam-checklist">
@@ -109,26 +115,29 @@
                     </div>
 
 <div class="vendor-actions">
-                        <form th:unless="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/verify'}">
+                        <form th:if="${v.status.name() == 'PENDING' or v.status.name() == 'REJECTED'}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/verify'}">
                             <button type="submit" class="admin-btn success">
                                 <i class="fa-solid fa-check"></i> Approve seller
                             </button>
                         </form>
-                        <form th:unless="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/reject'}"
+                        <form th:if="${v.status.name() == 'PENDING'}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/reject'}"
                               onsubmit="return confirm('Reject this vendor\'s application? Their products will stay hidden and the seller will not be approved.');">
                             <button type="submit" class="admin-btn danger">
                                 <i class="fa-solid fa-user-slash"></i> Reject application
                             </button>
                         </form>
-                        <span class="admin-badge success" th:if="${v.verified}">
+                        <span class="admin-badge success" th:if="${v.status.name() == 'VERIFIED'}">
                             <i class="fa-solid fa-circle-check"></i> Approved
                         </span>
-                        <form th:if="${v.verified}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/reject'}"
+                        <form th:if="${v.status.name() == 'VERIFIED'}" method="post" th:action="@{'/admin/vendors/' + ${v.id} + '/reject'}"
                               onsubmit="return confirm('Revoke this seller\'s verification? Their products will be hidden from the marketplace.');">
                             <button type="submit" class="admin-btn danger">
                                 <i class="fa-solid fa-user-slash"></i> Revoke
                             </button>
                         </form>
+                        <span class="admin-badge danger" th:if="${v.status.name() == 'REJECTED'}">
+                            <i class="fa-solid fa-circle-xmark"></i> Rejected
+                        </span>
                     </div>
                 </div>
             </section>

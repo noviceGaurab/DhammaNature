@@ -5,6 +5,7 @@ import io.virinchi.dhammanature.model.enums.NotificationType;
 import io.virinchi.dhammanature.model.enums.OrderStatus;
 import io.virinchi.dhammanature.model.enums.PaymentMethod;
 import io.virinchi.dhammanature.model.enums.ProductCategory;
+import io.virinchi.dhammanature.model.enums.VendorStatus;
 import io.virinchi.dhammanature.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,20 +40,20 @@ public class MarketplaceService {
     private final EmailService emailService;
 
     public List<Product> browseAvailable() {
-        return productRepository.findByVendor_VerifiedTrue();
+        return productRepository.findByVendor_Status(VendorStatus.VERIFIED);
     }
 
     /** Database-paginated view of the available catalogue, optionally filtered by category. */
     public Page<Product> pagedAvailable(ProductCategory category, Pageable pageable) {
         return category == null
-                ? productRepository.findByVendor_VerifiedTrue(pageable)
-                : productRepository.findByVendor_VerifiedTrueAndCategory(category, pageable);
+                ? productRepository.findByVendor_Status(VendorStatus.VERIFIED, pageable)
+                : productRepository.findByVendor_StatusAndCategory(VendorStatus.VERIFIED, category, pageable);
     }
 
     public long countAvailable(ProductCategory category) {
         return category == null
-                ? productRepository.countByVendor_VerifiedTrue()
-                : productRepository.countByVendor_VerifiedTrueAndCategory(category);
+                ? productRepository.countByVendor_Status(VendorStatus.VERIFIED)
+                : productRepository.countByVendor_StatusAndCategory(VendorStatus.VERIFIED, category);
     }
 
     /** Products grouped by category in enum display order; empty categories are omitted. */

@@ -327,6 +327,7 @@ body.admin-body {
 .admin-stat-icon.info  { background: var(--a-info-light); color: var(--a-info); }
 .admin-stat-icon.warn  { background: var(--a-warning-light); color: var(--a-warning); }
 .admin-stat-icon.ok    { background: var(--a-success-light); color: var(--a-success); }
+.admin-stat-icon.danger { background: var(--a-danger-light); color: #b91c1c; }
 
 .admin-stat-card h3 {
   margin: 0;

@@ -307,8 +307,12 @@ public class AdminController {
     public String vendors(Model model) {
         var all = adminService.allVendors();
         model.addAttribute("vendors", all);
-        model.addAttribute("pendingCount", all.stream().filter(v -> !v.isVerified()).count());
-        model.addAttribute("verifiedCount", all.stream().filter(Vendor::isVerified).count());
+        model.addAttribute("pendingCount", all.stream()
+                .filter(v -> v.getStatus() == io.virinchi.dhammanature.model.enums.VendorStatus.PENDING).count());
+        model.addAttribute("verifiedCount", all.stream()
+                .filter(v -> v.getStatus() == io.virinchi.dhammanature.model.enums.VendorStatus.VERIFIED).count());
+        model.addAttribute("rejectedCount", all.stream()
+                .filter(v -> v.getStatus() == io.virinchi.dhammanature.model.enums.VendorStatus.REJECTED).count());
         return "admin/vendors";
     }
 

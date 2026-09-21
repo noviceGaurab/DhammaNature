@@ -4,6 +4,7 @@ import io.virinchi.dhammanature.dto.ProductCreateRequest;
 import io.virinchi.dhammanature.model.Product;
 import io.virinchi.dhammanature.model.Vendor;
 import io.virinchi.dhammanature.model.enums.ProductCategory;
+import io.virinchi.dhammanature.model.enums.VendorStatus;
 import io.virinchi.dhammanature.repository.ProductRepository;
 import io.virinchi.dhammanature.repository.VendorRepository;
 import jakarta.servlet.http.HttpSession;
@@ -38,7 +39,7 @@ public class ProductRestController {
     @PostMapping
     public ResponseEntity<?> saveProduct(@Valid @RequestBody ProductCreateRequest request, HttpSession session) {
         apiAuth.requireAdmin(session);
-        Vendor vendor = vendorRepository.findByVerifiedTrue().stream().findFirst().orElseThrow(
+        Vendor vendor = vendorRepository.findByStatus(VendorStatus.VERIFIED).stream().findFirst().orElseThrow(
                 () -> new ApiException(HttpStatus.SERVICE_UNAVAILABLE,
                         "No verified vendor available to list this product."));
 

@@ -5,6 +5,7 @@ import io.virinchi.dhammanature.model.Vendor;
 import io.virinchi.dhammanature.model.VendorDocument;
 import io.virinchi.dhammanature.model.enums.Role;
 import io.virinchi.dhammanature.model.enums.VendorDocType;
+import io.virinchi.dhammanature.model.enums.VendorStatus;
 import io.virinchi.dhammanature.repository.UserRepository;
 import io.virinchi.dhammanature.repository.VendorDocumentRepository;
 import io.virinchi.dhammanature.repository.VendorRepository;
@@ -44,7 +45,7 @@ public class VendorService {
         userRepository.save(user);
         Vendor vendor = vendorRepository.save(Vendor.builder()
                 .vendorName(vendorName).contactDetails(contactDetails).address(address)
-                .verified(false).user(user).build());
+                .status(VendorStatus.PENDING).user(user).build());
         if (documents != null && !documents.isEmpty()) {
             documents.forEach(d -> d.setVendor(vendor));
             vendorDocumentRepository.saveAll(documents);
@@ -54,7 +55,8 @@ public class VendorService {
     }
 
     public List<Vendor> pendingVerification() {
-        return vendorRepository.findAll().stream().filter(v -> !v.isVerified()).toList();
+        return vendorRepository.findAll().stream()
+                .filter(v -> v.getStatus() == VendorStatus.PENDING).toList();
     }
 
     /** Evidence checklist status, e.g. how many of each document type were supplied. */
@@ -78,7 +80,7 @@ public class VendorService {
     public void verify(Integer vendorId, User admin) {
         requireAdmin(admin);
         vendorRepository.findById(vendorId).ifPresent(v -> {
-            v.setVerified(true);
+            v.setStatus(VendorStatus.VERIFIED);
             vendorRepository.save(v);
         });
     }
@@ -87,7 +89,7 @@ public class VendorService {
     public void reject(Integer vendorId, User admin) {
         requireAdmin(admin);
         vendorRepository.findById(vendorId).ifPresent(v -> {
-            v.setVerified(false);
+            v.setStatus(VendorStatus.REJECTED);
             vendorRepository.save(v);
         });
     }
