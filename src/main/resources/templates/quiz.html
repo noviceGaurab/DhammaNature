@@ -92,8 +92,21 @@
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 900px) { .stats-strip { grid-template-columns: 1fr 1fr; } .steps { grid-template-columns: 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
         @media (max-width: 576px) { .stats-strip { grid-template-columns: 1fr; } .section-hero h1 { font-size: 30px; } .part1-desc { width: auto; } }
+        @media (max-width: 900px) {
+            .part1, .part2, .part3 { padding-left: 0; text-align: center; align-items: center; }
+        }
+        @media (max-width: 576px) {
+            .wrap { padding: 36px 16px 20px; }
+            .card { padding: 20px 16px; }
+            .step { padding: 22px 16px; }
+            .stat-card { padding: 20px 14px; }
+            .section-title { font-size: 22px; }
+            .chips { gap: 8px; }
+            .chip { padding: 7px 14px; font-size: 13px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

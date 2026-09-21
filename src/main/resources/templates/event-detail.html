@@ -77,8 +77,24 @@
         .btn-outline-white:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
         @media (max-width: 900px) { .ev-grid { grid-template-columns: 1fr; } .ev-related-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 576px) { .ev-head h1 { font-size: 26px; } .ev-related-grid { grid-template-columns: 1fr; } }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .ev-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .ev-main { padding: 28px 16px 20px; }
+            .ev-card .hd { padding: 14px 16px; }
+            .ev-card .bd { padding: 16px; }
+            .ev-side .side-card { padding: 18px; }
+            .ev-meta { gap: 8px; }
+            .ev-meta span { flex: 1 1 130px; justify-content: flex-start; }
+            .ev-related-card { padding: 15px; }
+            .ev-cta { padding: 36px 18px; }
+            .ev-cta h2 { font-size: 22px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

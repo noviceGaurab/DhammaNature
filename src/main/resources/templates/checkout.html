@@ -73,8 +73,17 @@
         .copyright a { color: #fff; text-decoration: none; }
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 800px) { .co-grid { grid-template-columns: 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
+        @media (max-width: 600px) {
+            .co-main { padding: 32px 16px 16px; }
+            .co-head h1 { font-size: 27px; }
+            .co-card { padding: 18px 16px; }
+            .pm-opt { padding: 12px; }
+            .pm-ic { width: 36px; height: 36px; font-size: 15px; }
+            .pm-sub { font-size: 12px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

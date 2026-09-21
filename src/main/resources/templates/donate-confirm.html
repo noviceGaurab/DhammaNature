@@ -100,8 +100,15 @@
             .result .lead, .badge { display: block; }
             .receipt { box-shadow: none; border: 1px solid #aaa; }
         }
+        @media (max-width: 576px) {
+            .receipt-amount .amount { font-size: 40px; }
+            .receipt-top { flex-wrap: wrap; }
+            .receipt-grid { padding: 8px 16px 16px; }
+            .actions .btn-green, .actions .btn-outline { width: 100%; justify-content: center; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

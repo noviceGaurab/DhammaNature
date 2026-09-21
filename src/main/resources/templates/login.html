@@ -8,7 +8,26 @@
     <link rel="stylesheet" href="/css/login.css">
     <link rel="stylesheet" href="/css/carousel.css">
     <script defer src="/JS/carousel.js"></script>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    <style>
+        @media (max-width: 480px) {
+            .auth-panel { padding: 30px 18px; }
+            .auth-title { font-size: 1.45rem; }
+            .auth-title::after { margin: 12px auto 0; }
+            .auth-subtitle { font-size: 0.9rem; margin: 10px 0 24px; }
+            .input-wrapper input { padding: 14px 40px; font-size: 16px; }
+            .password-toggle { right: 8px; }
+            .checkbox-row { padding: 10px 12px; }
+            .auth-switch { margin-top: 20px; padding-top: 18px; }
+            .auth-visit { right: 12px; bottom: 12px; padding: 8px 14px; font-size: 0.82rem; }
+        }
+        @media (max-width: 400px) {
+            .auth-cover { display: none; }
+            .cover-quote { display: none; }
+            .auth-panel-decor::before { font-size: 160px; }
+        }
+    </style>
+    </head>
 <body class="auth-page">
     <div class="auth-wrap">
         <div class="auth-card">

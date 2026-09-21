@@ -54,8 +54,24 @@
         @media (max-width: 768px) {
             .info-grid, .stats-strip, .category-grid { grid-template-columns:1fr; }
         }
+        @media (max-width: 900px) {
+            .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 576px) {
+            .category-grid { grid-template-columns: 1fr; }
+            .main-container { padding: 12px; }
+            .content-wrapper { margin: 12px 0; }
+            .main-title { font-size: 26px; }
+            .search-bar { padding: 10px; }
+            .search-bar input { margin: 0; flex-grow: 1; }
+            .discussion-section { padding: 14px; }
+            .sidebar { padding: 14px; }
+            .comment { padding: 12px; }
+            .topic-header { display: none; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

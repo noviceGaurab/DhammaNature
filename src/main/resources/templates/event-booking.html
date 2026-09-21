@@ -62,8 +62,22 @@
         .bk-cta { background: #fff; border-radius: 16px; padding: 20px 24px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
         @media (max-width: 900px) { .bk-grid { grid-template-columns: 1fr; } }
         @media (max-width: 576px) { .bk-head h1 { font-size: 26px; } .chk-grid { grid-template-columns: 1fr; } }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .bk-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .bk-main { padding: 28px 16px 20px; }
+            .bk-card .hd { padding: 14px 16px; }
+            .bk-card .bd { padding: 16px; }
+            .side-card { padding: 18px; }
+            .bk-meta { gap: 8px; }
+            .bk-meta span { flex: 1 1 130px; justify-content: flex-start; }
+            .agree-row { padding: 12px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

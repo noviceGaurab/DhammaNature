@@ -148,8 +148,28 @@
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 900px) { .article-layout { grid-template-columns: 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
         @media (max-width: 576px) { .article-card h1 { font-size: 26px; } .article-card .hero-img { height: 230px; } .part1-desc { width: auto; } }
+        @media (max-width: 900px) {
+            .part1, .part2, .part3 { padding-left: 0; text-align: center; align-items: center; }
+        }
+        @media (max-width: 768px) {
+            .post-content img { max-width: 100%; height: auto; }
+            .post-content pre, .post-content code { overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+        }
+        @media (max-width: 576px) {
+            .wrap { padding: 36px 16px 20px; }
+            .article-card { padding: 22px 18px; }
+            .article-meta { gap: 10px; }
+            .pull-quote { padding: 14px 16px; font-size: 16px; }
+            .author-box { flex-direction: column; text-align: center; }
+            .comments-section { padding: 20px 18px; }
+            .comment-replies { margin-left: 12px; padding-left: 10px; }
+            .newsletter { padding: 30px 18px; }
+            .nl-form input { min-width: 0; width: 100%; }
+            .nl-form button { width: 100%; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

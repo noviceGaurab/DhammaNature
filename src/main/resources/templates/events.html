@@ -111,8 +111,22 @@
             .stat-box .n { font-size: 26px; }
             .part1-desc { width: auto; }
         }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .events-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .events-main { padding: 28px 16px 20px; }
+            .section-hero { margin-bottom: 30px; }
+            .stats-row { gap: 14px; }
+            .ff-tab { flex: 1 1 100%; }
+            .ev-body { padding: 16px; }
+            .ev-book { width: 100%; text-align: center; }
+            .why-head h2 { font-size: 24px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

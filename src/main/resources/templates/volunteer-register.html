@@ -68,8 +68,18 @@
         .part3 h2 { padding-top: 16px; font-size: 24px; color: #ffd700; }
         .part3-desc { padding-top: 20px; font-weight: normal; padding-right: 20px; }
         @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .vr-head h1 { font-size: 26px; } .part1, .part2, .part3 { padding-left: 0; align-items: center; } }
+        @media (max-width: 576px) {
+            .vr-main { padding: 36px 16px 20px; }
+            .vr-head h1 { font-size: 23px; }
+            .vr-card .hd { padding: 16px 18px; }
+            .vr-card .bd { padding: 16px 18px; }
+            .vr-cta { flex-direction: column; align-items: stretch; }
+            .vr-cta .btn { width: 100%; text-align: center; box-sizing: border-box; }
+            .warn { flex-direction: column; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

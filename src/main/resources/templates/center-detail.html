@@ -97,8 +97,25 @@
         .btn-outline-b:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
         @media (max-width: 900px) { .stats-strip { grid-template-columns: 1fr 1fr 1fr; } .ct-grid { grid-template-columns: 1fr; } .engage-grid, .testi-grid { grid-template-columns: 1fr; } }
         @media (max-width: 576px) { .ct-head h1 { font-size: 26px; } .stats-strip { grid-template-columns: 1fr; } .ct-cover img { height: 220px; } }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .ct-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .ct-main { padding: 28px 16px 10px; }
+            .ct-card .hd { padding: 14px 16px; }
+            .ct-card .bd { padding: 16px; }
+            .ct-side .side-card { padding: 18px; }
+            .visitor-card { padding: 20px; }
+            .testi-card { padding: 18px; }
+            .ct-cta-inner { padding: 34px 18px; }
+            .ct-cta-inner h3 { font-size: 22px; }
+            .event-row .btn,
+            .engage-row .btn { width: 100%; text-align: center; box-sizing: border-box; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

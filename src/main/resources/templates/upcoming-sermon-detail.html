@@ -78,8 +78,26 @@
         .btn-outline-w:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
         @media (max-width: 900px) { .sd-grid { grid-template-columns: 1fr; } .sd-cover img { height: 280px; } }
         @media (max-width: 576px) { .sd-head h1 { font-size: 26px; } .sd-cover img { height: 220px; } }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .sd-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .sd-main { padding: 28px 16px 20px; }
+            .sd-card .hd { padding: 14px 16px; }
+            .sd-card .bd { padding: 16px; }
+            .sd-side .side-card { padding: 18px; }
+            .side-cta { padding: 20px 16px; }
+            .sd-info-row { flex-direction: column; align-items: flex-start; }
+            .sd-info-row .v { text-align: left; }
+            .sd-actions .btn { width: 100%; text-align: center; box-sizing: border-box; }
+            .faq-item { padding: 14px 16px; }
+            .sd-cta { padding: 34px 18px; }
+            .sd-cta h2 { font-size: 22px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

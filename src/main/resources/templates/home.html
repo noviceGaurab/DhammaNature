@@ -50,8 +50,18 @@
         .tm-btn { padding: 10px 20px; border-radius: 30px; border: none; cursor: pointer; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block; background: #9e2b25; color: #fff; }
         .tm-btn.tm-dl { background: #fff; border: 2px solid #9e2b25; color: #9e2b25; }
         .tm-btn:hover { transform: translateY(-2px); }
+        @media (max-width: 576px) {
+            .container1 { padding: 0 20px; }
+            .container-3 { flex-direction: column; text-align: center; }
+            .container-3 h3 { max-width: 100%; padding-right: 0; }
+            .sermons .sermon-actions { flex-direction: column; }
+            .sermons .sermon-actions .button-sermons { flex-basis: auto; width: 100%; }
+            .part1-desc { width: 100%; }
+            .transcript-modal { padding: 18px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

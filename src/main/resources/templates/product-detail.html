@@ -102,8 +102,26 @@
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } .pd-gallery img { height: 320px; } .pd-reviews-grid { grid-template-columns: 1fr; } .pd-related-grid { grid-template-columns: 1fr 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
         @media (max-width: 576px) { .pd-related-grid { grid-template-columns: 1fr; } .part1-desc { width: auto; } }
+        @media (max-width: 768px) {
+            .pd-main { padding: 34px 18px 16px; }
+            .pd-info { padding: 24px 20px; }
+            .pd-section h2 { font-size: 23px; }
+        }
+        @media (max-width: 576px) {
+            .pd-main { padding: 26px 14px 14px; }
+            .pd-gallery img { height: 260px; }
+            .pd-info { padding: 20px 16px; }
+            .pd-info h1 { font-size: 24px; }
+            .pd-price { font-size: 22px; }
+            .pd-form .btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+            .pd-vendor { flex-wrap: wrap; }
+            .pd-rating-summary { padding: 18px; }
+            .pd-write-review { padding: 16px; }
+            .pd-related-card img { height: 130px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

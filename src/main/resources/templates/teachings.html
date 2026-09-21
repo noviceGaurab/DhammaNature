@@ -142,8 +142,28 @@
             .t-grid { grid-template-columns: 1fr; }
             .part1-desc { width: auto; }
         }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .teach-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .teach-main { padding: 28px 16px 20px; }
+            .featured-teach .ft-body { padding: 22px 18px; }
+            .ft-body h2 { font-size: 22px; }
+            .cat-toolbar { padding: 12px; }
+            .ct-search { width: 100%; }
+            .ct-search input { min-width: 0; flex: 1; }
+            .ct-tab { flex: 1 1 auto; }
+            .tw { padding: 18px; }
+            .steps-head h2 { font-size: 24px; }
+            .newsletter-container { padding: 40px 18px; }
+            .newsletter-container h2 { font-size: 24px; }
+            .newsletter-form input { min-width: 100%; width: 100%; box-sizing: border-box; }
+            .newsletter-form button { width: 100%; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

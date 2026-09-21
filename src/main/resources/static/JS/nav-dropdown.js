@@ -1,18 +1,55 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const hamburger = document.querySelector('.hamburger, .site-hamburger');
-    const nav = document.querySelector('nav, .site-nav');
-    const dropdowns = document.querySelectorAll('.dropdown, .site-dropdown');
+    const hamburger = document.querySelector('.header-main .hamburger, .site-header .site-hamburger, header .hamburger');
+    const nav = document.querySelector('.header-main nav, .site-header nav, header nav');
+    const dropdowns = document.querySelectorAll('.header-main .dropdown, .site-header .site-dropdown, header .dropdown');
+
+    function syncIcon() {
+        if (!hamburger) return;
+        const icon = hamburger.querySelector('i');
+        if (!icon) return;
+        const open = nav && nav.classList.contains('active');
+        icon.classList.remove('fa-bars', 'fa-times', 'fa-xmark');
+        icon.classList.add(open ? 'fa-xmark' : 'fa-bars');
+        hamburger.classList.toggle('is-open', !!open);
+    }
 
     if (hamburger && nav) {
+        const closeMenu = () => {
+            nav.classList.remove('active');
+            hamburger.classList.remove('is-open');
+            syncIcon();
+        };
+
         hamburger.addEventListener('click', (e) => {
             e.preventDefault();
             nav.classList.toggle('active');
-            hamburger.classList.toggle('is-open');
+            syncIcon();
             dropdowns.forEach((dropdown) => {
                 const panel = dropdown.querySelector('.dropdown-content, .site-dropdown-content');
                 if (panel) panel.classList.remove('active');
             });
         });
+
+        nav.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.closest('.dropdown-content, .site-dropdown-content')) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nav.classList.contains('active')) return;
+            if (nav.contains(e.target) || (hamburger && hamburger.contains(e.target))) return;
+            closeMenu();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && nav.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+
+        syncIcon();
     }
 
     dropdowns.forEach((dropdown) => {

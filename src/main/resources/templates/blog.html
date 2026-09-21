@@ -146,8 +146,30 @@
             .fsearch { width: 100%; }
             .fsearch input { width: 100%; min-width: 0; }
         }
+        @media (max-width: 900px) {
+            .blog-hero h1 { font-size: 34px; }
+        }
+        @media (max-width: 768px) {
+            .write-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 576px) {
+            .blog-hero { margin-bottom: 30px; }
+            .f-content { padding: 20px; }
+            .f-content h2 { font-size: 22px; }
+            .filter-bar { padding: 12px; }
+            .post-body { padding: 16px; }
+            .widget { padding: 18px; }
+            .write-article { padding: 24px 16px; }
+            .write-head h2 { font-size: 24px; }
+            .newsletter-container { padding: 36px 18px; }
+            .newsletter-container h2 { font-size: 24px; }
+            .newsletter-form input { min-width: 0; width: 100%; box-sizing: border-box; }
+            .blog-main { padding: 36px 16px 20px; }
+            .featured img, .featured-blog-carousel .dn-slide img { min-height: 220px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

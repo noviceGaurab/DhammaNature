@@ -156,8 +156,25 @@
             .part1-desc { width: auto; }
             .featured-spotlight { flex-direction: column; align-items: flex-start; }
         }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .sermons-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .sermons-main { padding: 28px 16px 20px; }
+            .s-search { flex: 1 1 100%; min-width: 0; }
+            .s-search input { flex: 1; min-width: 0; }
+            .s-tab { flex: 1 1 auto; }
+            .cal-btn { width: 100%; text-align: center; }
+            .sw { padding: 18px; }
+            .newsletter-container { padding: 38px 18px; }
+            .newsletter-container h2 { font-size: 24px; }
+            .newsletter-form input { min-width: 100%; width: 100%; box-sizing: border-box; }
+            .newsletter-form button { width: 100%; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

@@ -80,8 +80,27 @@
         .v-cta a { display: inline-block; padding: 14px 34px; border-radius: 40px; background: #fff; color: #006015; font-weight: 800; text-decoration: none; transition: transform .2s; }
         .v-cta a:hover { transform: translateY(-2px); }
         @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
+        @media (max-width: 900px) {
+            .v-band { padding: 36px 20px; }
+        }
+        @media (max-width: 576px) {
+            .v-band { padding: 30px 16px; }
+            .v-band h2 { font-size: 24px; }
+            .v-stats { padding: 30px 16px; gap: 16px; }
+            .v-stat { padding: 18px 14px; min-width: 0; flex: 1 1 45%; }
+            .v-section-title { padding: 14px 16px 26px; }
+            .v-section-title h2 { font-size: 26px; }
+            .v-steps { padding: 0 16px 36px; }
+            .v-areas { padding: 0 16px 36px; }
+            .v-quotes { padding: 36px 16px; }
+            .v-cta { padding: 40px 16px; }
+            .v-cta h2 { font-size: 26px; }
+            .v-cta a { width: 100%; box-sizing: border-box; text-align: center; }
+            .row .btn { width: 100%; text-align: center; box-sizing: border-box; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

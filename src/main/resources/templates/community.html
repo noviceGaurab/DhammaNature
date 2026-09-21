@@ -103,8 +103,24 @@
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 900px) { .stats-strip { grid-template-columns: 1fr 1fr; } .two-col { grid-template-columns: 1fr; } .guidelines { grid-template-columns: 1fr 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
         @media (max-width: 576px) { .stats-strip { grid-template-columns: 1fr; } .guidelines { grid-template-columns: 1fr; } .section-hero h1 { font-size: 30px; } .part1-desc { width: auto; } }
+        @media (max-width: 900px) {
+            .event-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .give-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .part1, .part2, .part3 { padding-left: 0; text-align: center; align-items: center; }
+            .part1-desc { padding: 20px 10px; }
+        }
+        @media (max-width: 576px) {
+            .event-grid, .give-grid { grid-template-columns: 1fr; }
+            .wrap { padding: 36px 16px 20px; }
+            .event-card, .give-card, .quiz-card, .guide-card, .stat-card { padding: 18px 16px; }
+            .discussion-card { padding: 16px; }
+            .side-box { padding: 18px; }
+            .section-title { font-size: 22px; }
+            .cta-band { margin-top: 32px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

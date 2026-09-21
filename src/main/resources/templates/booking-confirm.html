@@ -68,8 +68,22 @@
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 900px) { .steps-grid { grid-template-columns: 1fr; } .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .part1, .part2, .part3 { padding-left: 0; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; padding: 0; } }
         @media (max-width: 576px) { .success-hero h1 { font-size: 28px; } .part1-desc { width: auto; } }
+        @media (max-width: 768px) {
+            .receipt-body { padding: 18px; }
+            .receipt-head { padding: 16px 18px; }
+        }
+        @media (max-width: 576px) {
+            .success-hero .tick { width: 64px; height: 64px; font-size: 30px; }
+            .success-hero p { font-size: 15px; }
+            .receipt-body { padding: 16px; }
+            .points-note { flex-direction: column; align-items: flex-start; }
+            .step-card { padding: 18px 14px; }
+            .confirm-cta { padding: 18px 14px; }
+            .confirm-cta .btn { width: 100%; margin: 6px 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

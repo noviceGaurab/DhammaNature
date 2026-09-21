@@ -40,8 +40,16 @@
         .copyright a { color: #fff; text-decoration: none; }
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
+        @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } }
+        @media (max-width: 576px) {
+            .grid { grid-template-columns: 1fr; gap: 18px; }
+            .page-heading h1 { font-size: 27px; }
+            .vendor-cta { padding: 24px 20px; }
+            .vendor-cta .btn-cta { width: 100%; text-align: center; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

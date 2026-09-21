@@ -71,8 +71,15 @@
         .danger-zone { margin-top: 22px; border-top: 1px dashed #e1d5d3; padding-top: 20px; }
         .danger-zone h3 { font-size: 15px; color: #8f2a23; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
         .danger-zone p { font-size: 13px; color: #888; margin-bottom: 12px; }
+        @media (max-width: 576px) {
+            .wrap { padding: 32px 16px 20px; }
+            .page-head h1 { font-size: 27px; }
+            .card { padding: 20px 16px; }
+            .danger-zone .btn-danger { width: 100%; justify-content: center; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

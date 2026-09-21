@@ -114,8 +114,24 @@
             .stat-box .n { font-size: 26px; }
             .part1-desc { width: auto; }
         }
+    /* ===== Responsive additions (mobile/tablet) ===== */
+        @media (max-width: 900px) {
+            .centers-main { padding-top: 40px; }
+        }
+        @media (max-width: 576px) {
+            .centers-main { padding: 28px 16px 20px; }
+            .stats-row { gap: 14px; }
+            .search-filter { padding: 14px; }
+            .sf-search { flex: 1 1 100%; max-width: 100%; }
+            .sf-btn { width: 100%; text-align: center; }
+            .ff-tab { flex: 1 1 100%; }
+            .center-card img { height: 160px; }
+            .cc-body { padding: 15px; }
+            .steps-head h2 { font-size: 24px; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">

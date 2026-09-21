@@ -38,8 +38,21 @@
         .copyright a { color: #fff; text-decoration: none; }
         .copyright a:hover { color: #ffd700; }
         @media (max-width: 900px) { .footer { flex-direction: column; align-items: center; text-align: center; padding: 20px; } .copyright { flex-direction: column; padding: 20px 0; text-align: center; } .copyright-sub { flex-direction: column; gap: 10px; } }
+        @media (max-width: 768px) {
+            .profile-hero { padding: 22px 18px; }
+        }
+        @media (max-width: 576px) {
+            .profile-hero { flex-direction: column; align-items: stretch; }
+            .profile-identity { flex-wrap: wrap; }
+            .profile-side .points-card, .profile-side .logout-btn { width: 100%; }
+            .points-card .points { font-size: 30px; }
+            .panel { padding: 18px 14px; }
+            .panel-head { flex-wrap: wrap; }
+            .wish-grid { grid-template-columns: 1fr; }
+        }
     </style>
-</head>
+<link rel="stylesheet" href="/css/responsive.css"/>
+    </head>
 <body>
     <header>
         <div class="header-img" id="hero">
