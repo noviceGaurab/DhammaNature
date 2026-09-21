@@ -94,13 +94,19 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <form method="post" th:action="@{'/admin/gallery/' + ${img.id} + '/delete'}"
-                                          onsubmit="return confirm('Delete this gallery image? This cannot be undone.');">
-                                        <button type="submit" class="admin-btn danger">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                            Delete
-                                        </button>
-                                    </form>
+                                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                        <a class="admin-btn" th:href="@{'/admin/gallery/' + ${img.id} + '/edit'}">
+                                            <i class="fa-solid fa-pen"></i>
+                                            Edit
+                                        </a>
+                                        <form method="post" th:action="@{'/admin/gallery/' + ${img.id} + '/delete'}"
+                                              onsubmit="return confirm('Delete this gallery image? This cannot be undone.');">
+                                            <button type="submit" class="admin-btn danger">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>

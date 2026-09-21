@@ -251,6 +251,26 @@ public class AdminController {
         return "redirect:/admin/gallery";
     }
 
+    @GetMapping("/gallery/{id}/edit")
+    public String editGalleryImage(@PathVariable Integer id, Model model) {
+        model.addAttribute("img", galleryService.get(id));
+        return "admin/gallery-edit";
+    }
+
+    @PostMapping("/gallery/{id}/update")
+    public String updateGalleryImage(@PathVariable Integer id,
+                                     @RequestParam(required = false) String title,
+                                     @RequestParam(required = false) String description,
+                                     @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        if (title == null || title.isBlank()) {
+            return "redirect:/admin/gallery/" + id + "/edit?error=title";
+        }
+        byte[] data = (file != null && !file.isEmpty()) ? file.getBytes() : null;
+        String contentType = (file != null && !file.isEmpty()) ? file.getContentType() : null;
+        galleryService.update(id, title, description, data, contentType);
+        return "redirect:/admin/gallery";
+    }
+
     @GetMapping("/centers")
     public String centers(Model model) {
         model.addAttribute("centers", adminService.allCenters());
@@ -303,6 +323,32 @@ public class AdminController {
         return "redirect:/admin/blog";
     }
 
+    @GetMapping("/blog/{id}/edit")
+    public String editBlogPost(@PathVariable Integer id, Model model) {
+        model.addAttribute("post", blogService.get(id));
+        return "admin/blog-edit";
+    }
+
+    @PostMapping("/blog/{id}/update")
+    public String updateBlogPost(@PathVariable Integer id,
+                                 @RequestParam(required = false) String title,
+                                 @RequestParam(required = false) String category,
+                                 @RequestParam(required = false) String imageUrl,
+                                 @RequestParam(required = false) String content) {
+        if (title == null || title.isBlank() || content == null || content.isBlank()) {
+            return "redirect:/admin/blog/" + id + "/edit?error=1";
+        }
+        blogService.update(id, title, category, imageUrl, content);
+        return "redirect:/admin/blog";
+    }
+
+    @PostMapping("/blog/{id}/delete")
+    public String deleteBlogPost(@PathVariable Integer id) {
+        blogService.delete(id);
+        discussionService.deleteTopicBySlug("blog-" + id);
+        return "redirect:/admin/blog";
+    }
+
     @GetMapping("/events")
     public String events(Model model) {
         var events = eventService.all();
@@ -345,6 +391,33 @@ public class AdminController {
                 .capacity(cap)
                 .build();
         eventService.publish(center, event);
+        return "redirect:/admin/events";
+    }
+
+    @GetMapping("/events/{id}/edit")
+    public String editEvent(@PathVariable Integer id, Model model) {
+        Event event = eventService.get(id);
+        model.addAttribute("event", event);
+        model.addAttribute("bookingCount", (long) bookingService.forEvent(id).size());
+        model.addAttribute("eventDateLocal", event.getEventDate() == null ? null
+                : event.getEventDate().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
+        model.addAttribute("centers", meditationCenterService.all());
+        model.addAttribute("modes", SessionMode.values());
+        return "admin/event-edit";
+    }
+
+    @PostMapping("/events/{id}/update")
+    public String updateEvent(@PathVariable Integer id,
+                              @RequestParam String title,
+                              @RequestParam(required = false) String description,
+                              @RequestParam("eventDate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime eventDate,
+                              @RequestParam(required = false) String venue,
+                              @RequestParam SessionMode mode,
+                              @RequestParam(required = false) String capacity,
+                              @RequestParam Integer centerId) {
+        MeditationCenter center = meditationCenterService.get(centerId);
+        Integer cap = (capacity == null || capacity.isBlank()) ? null : Integer.valueOf(capacity);
+        eventService.update(id, title, description, eventDate, venue, mode, cap, center);
         return "redirect:/admin/events";
     }
 

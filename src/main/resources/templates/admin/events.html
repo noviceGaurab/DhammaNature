@@ -67,14 +67,20 @@
                                 <td th:text="${ev.mode}">Physical</td>
                                 <td th:text="${ev.capacity != null ? ev.capacity : 'Unlimited'}">Unlimited</td>
                                 <td th:text="${bookingCounts[ev.id] ?: 0}">0</td>
-                                <td>
-                                    <form method="post" th:action="@{'/admin/events/' + ${ev.id} + '/delete'}"
-                                          onsubmit="return confirm('Delete this event? Any bookings against it will also be removed.');">
-                                        <button type="submit" class="admin-btn danger">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                            Delete
-                                        </button>
-                                    </form>
+<td>
+                                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                        <a class="admin-btn" th:href="@{'/admin/events/' + ${ev.id} + '/edit'}">
+                                            <i class="fa-solid fa-pen"></i>
+                                            Edit
+                                        </a>
+                                        <form method="post" th:action="@{'/admin/events/' + ${ev.id} + '/delete'}"
+                                              onsubmit="return confirm('Delete this event? Any bookings against it will also be removed.');">
+                                            <button type="submit" class="admin-btn danger">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>

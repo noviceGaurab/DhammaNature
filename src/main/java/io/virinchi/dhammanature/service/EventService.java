@@ -2,6 +2,7 @@ package io.virinchi.dhammanature.service;
 
 import io.virinchi.dhammanature.model.Event;
 import io.virinchi.dhammanature.model.MeditationCenter;
+import io.virinchi.dhammanature.model.enums.SessionMode;
 import io.virinchi.dhammanature.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -56,5 +57,20 @@ public class EventService {
             throw new NoSuchElementException("Event not found");
         }
         eventRepository.deleteById(id);
+    }
+
+    /** Admin edit of event details. Existing bookings are preserved. */
+    @Transactional
+    public Event update(Integer id, String title, String description, LocalDateTime eventDate,
+                        String venue, SessionMode mode, Integer capacity, MeditationCenter center) {
+        Event event = get(id);
+        event.setTitle(title);
+        event.setDescription(description);
+        event.setEventDate(eventDate);
+        event.setVenue(venue);
+        event.setMode(mode);
+        event.setCapacity(capacity);
+        event.setMeditationCenter(center);
+        return eventRepository.save(event);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +40,23 @@ public class GalleryService {
     @Transactional
     public void delete(Integer id) {
         galleryRepository.deleteById(id);
+    }
+
+    public Gallery get(Integer id) {
+        return galleryRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Gallery image not found"));
+    }
+
+    /** Admin edit of a gallery image's title/description, with an optional replacement image. */
+    @Transactional
+    public Gallery update(Integer id, String title, String description, byte[] newImage, String newContentType) {
+        Gallery g = get(id);
+        g.setTitle(title.trim());
+        g.setDescription(description);
+        if (newImage != null && newImage.length > 0) {
+            g.setImageData(newImage);
+            g.setImageContentType(newContentType);
+        }
+        return galleryRepository.save(g);
     }
 }

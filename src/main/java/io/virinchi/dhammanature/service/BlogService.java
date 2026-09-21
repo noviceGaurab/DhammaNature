@@ -98,4 +98,30 @@ public class BlogService {
             blogPostRepository.save(post);
         });
     }
+
+    public BlogPost get(Integer id) {
+        return blogPostRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
+    }
+
+    /** Admin edit of an article's content. The author, like count, and status are preserved. */
+    @Transactional
+    public BlogPost update(Integer id, String title, String category, String imageUrl, String content) {
+        BlogPost post = get(id);
+        post.setTitle(title.trim());
+        post.setCategory(category == null || category.isBlank() ? "general" : category.trim().toLowerCase());
+        if (imageUrl != null && !imageUrl.isBlank()) {
+            post.setImageUrl(imageUrl.trim());
+        }
+        post.setContent(content.trim());
+        return blogPostRepository.save(post);
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        if (!blogPostRepository.existsById(id)) {
+            throw new NoSuchElementException("Article not found");
+        }
+        blogPostRepository.deleteById(id);
+    }
 }

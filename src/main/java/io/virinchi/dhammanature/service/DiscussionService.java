@@ -152,6 +152,20 @@ public class DiscussionService {
         commentRepository.deleteById(commentId);
     }
 
+    /** Removes a discussion topic and all its comments (used when an admin deletes a blog article). */
+    @Transactional
+    public void deleteTopicBySlug(String slug) {
+        topicRepository.findBySlug(slug).ifPresent(t -> {
+            List<Comment> comments = commentRepository.findByTopic_Id(t.getId());
+            comments.forEach(c -> {
+                c.setParent(null);
+                commentRepository.save(c);
+            });
+            commentRepository.deleteByTopic_Id(t.getId());
+            topicRepository.delete(t);
+        });
+    }
+
     /** Deletes a comment but only when the acting user is its registered author. */
     @Transactional
     public void deleteOwned(Integer commentId, User actor) {

@@ -11,6 +11,10 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     List<Comment> findByTopic_IdAndHiddenFalseOrderByCreatedAtAsc(Integer topicId);
 
+    List<Comment> findByTopic_Id(Integer topicId);
+
+    void deleteByTopic_Id(Integer topicId);
+
     @EntityGraph(attributePaths = {"topic", "user"})
     List<Comment> findAllByOrderByCreatedAtDesc();
 

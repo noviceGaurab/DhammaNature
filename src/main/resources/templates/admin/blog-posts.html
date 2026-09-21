@@ -75,8 +75,12 @@
                                         Rejected
                                     </span>
                                 </td>
-                                <td>
+<td>
                                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                        <a class="admin-btn" th:href="@{'/admin/blog/' + ${p.id} + '/edit'}">
+                                            <i class="fa-solid fa-pen"></i>
+                                            Edit
+                                        </a>
                                         <form th:if="${p.status.name() != 'APPROVED'}" method="post" th:action="@{'/admin/blog/' + ${p.id} + '/approve'}">
                                             <button type="submit" class="admin-btn success">
                                                 <i class="fa-solid fa-check"></i>
@@ -87,6 +91,13 @@
                                             <button type="submit" class="admin-btn danger">
                                                 <i class="fa-solid fa-xmark"></i>
                                                 Reject
+                                            </button>
+                                        </form>
+                                        <form method="post" th:action="@{'/admin/blog/' + ${p.id} + '/delete'}"
+                                              onsubmit="return confirm('Delete this article? Its comments will also be removed.');">
+                                            <button type="submit" class="admin-btn danger">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                                Delete
                                             </button>
                                         </form>
                                     </div>
